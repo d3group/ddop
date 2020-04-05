@@ -1,3 +1,6 @@
+from sklearn.utils.validation import check_consistent_length
+from sklearn.utils.validation import _num_samples
+import numpy as np
 
 
 def cost(cp, ch, Y_pred, Y_true):
@@ -9,14 +12,26 @@ def cost(cp, ch, Y_pred, Y_true):
 
 
 def costs(cp, ch, Y_pred, Y_true):
+    check_consistent_length(Y_pred, Y_true)
+    Y_true = np.asanyarray(Y_true)
     costs = []
-    for i in Y_pred:
-        costs[i] = cost(cp, ch, Y_pred[i], Y_true[i])
+    length = len(Y_pred)
+    for i in range(length):
+        costs.append(cost(cp, ch, Y_pred[i], Y_true[i]))
     return costs
 
 
+def total_costs(cp, ch, Y_pred, Y_true):
+    check_consistent_length(Y_pred, Y_true)
+    Y_true = np.asanyarray(Y_true)
+    totalCosts = 0
+    length = len(Y_pred)
+    for i in range(length):
+        totalCosts += cost(cp, ch, Y_pred[i], Y_true[i])
+    return totalCosts
+
+
 def avg_costs(cp, ch, Y_pred, Y_true):
-    avg_costs = 0
-    for i in Y_pred:
-        avg_costs += cost(cp, ch, Y_pred[i], Y_true[i])
-    return avg_costs
+    totalCosts = total_costs(cp, ch, Y_pred, Y_true)
+    avgCosts = totalCosts/len(Y_pred)
+    return avgCosts
