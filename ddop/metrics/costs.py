@@ -1,37 +1,78 @@
 from sklearn.utils.validation import check_consistent_length
-from sklearn.utils.validation import _num_samples
+from sklearn.utils.validation import check_array
 import numpy as np
 
 
-def cost(cp, ch, Y_pred, Y_true):
-    if Y_pred > Y_true:
-        cost = (Y_pred - Y_true) * ch
+def _check_newsvendor_targets(y_true, y_pred, dtype="numeric"):
+    """Check that y_true and y_pred belong to the same newsvendor task
+    Parameters
+    ----------
+    y_true : array-like
+    y_pred : array-like
+
+    Returns
+    -------
+    y_true : array-like of shape (n_samples,n_outputs)
+        Ground truth (correct) target values.
+    y_pred : array-like of shape (n_samples,n_outputs)
+        Estimated target values.
+    dtype: str or list, default="numeric"
+        the dtype argument passed to check_array
+    """
+    check_consistent_length(y_true, y_pred)
+    y_true = check_array(y_true, ensure_2d=False, dtype=dtype)
+    y_pred = check_array(y_pred, ensure_2d=False, dtype=dtype)
+
+    if y_true.ndim == 1:
+        y_true = y_true.reshape((-1, 1))
+
+    if y_pred.ndim == 1:
+        y_pred = y_pred.reshape((-1, 1))
+
+    if y_true.shape[1] != y_pred.shape[1]:
+        raise ValueError("y_true and y_pred have different number of output "
+                         "({0}!={1})".format(y_true.shape[1], y_pred.shape[1]))
+
+    return y_true, y_pred
+
+
+def _multiply_cost_weights(x, cp, ch):
+    if x < 0:
+        # underage costs.
+        return abs(x) * cp
     else:
-        cost = (Y_true - Y_pred) * cp
-    return cost
+        # overage costs
+        return x * ch
 
 
-def costs(cp, ch, Y_pred, Y_true):
-    check_consistent_length(Y_pred, Y_true)
-    Y_true = np.asanyarray(Y_true)
-    costs = []
-    length = len(Y_pred)
-    for i in range(length):
-        costs.append(cost(cp, ch, Y_pred[i], Y_true[i]))
+def calc_costs(cp, ch, y_true, y_pred):
+    """description follows. Currently only for single output
+    """
+    y_true, y_pred = _check_newsvendor_targets(y_pred, y_true)
+    y_diff = y_pred - y_true
+    func = np.vectorize(_multiply_cost_weights)
+    costs = func(y_diff, cp, ch)
     return costs
 
 
-def total_costs(cp, ch, Y_pred, Y_true):
-    check_consistent_length(Y_pred, Y_true)
-    Y_true = np.asanyarray(Y_true)
-    totalCosts = 0
-    length = len(Y_pred)
-    for i in range(length):
-        totalCosts += cost(cp, ch, Y_pred[i], Y_true[i])
-    return totalCosts
+def calc_total_costs(cp, ch, y_pred, y_true):
+    """description follows. Currently only for single output
+        """
+    y_true, y_pred = _check_newsvendor_targets(y_pred, y_true)
+    y_diff = y_pred - y_true
+    func = np.vectorize(_multiply_cost_weights)
+    costs = func(y_diff, cp, ch)
+    total_costs = np.sum(costs)
+    return total_costs
 
 
-def avg_costs(cp, ch, Y_pred, Y_true):
-    totalCosts = total_costs(cp, ch, Y_pred, Y_true)
-    avgCosts = totalCosts/len(Y_pred)
-    return avgCosts
+def calc_avg_costs(cp, ch, y_pred, y_true):
+    """description follows. Currently only for single output
+            """
+    y_true, y_pred = _check_newsvendor_targets(y_pred, y_true)
+    y_diff = y_pred - y_true
+    func = np.vectorize(_multiply_cost_weights)
+    costs = func(y_diff, cp, ch)
+    total_costs = np.sum(costs)
+    avg_costs = total_costs / costs.size
+    return avg_costs
