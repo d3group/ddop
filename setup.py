@@ -5,7 +5,7 @@ with open('README.md') as f:
 
 setup(
     name='ddop',
-    version='v0.0.4',
+    version='v0.0.5',
     url='',
     license='MIT',
     author='Andreas Philippi',
@@ -17,5 +17,5 @@ setup(
     python_requires=">=3.7",
     install_requires=['sklearn>=0.0','pandas','PuLP==2.0',
                       'tensorflow==2.1.0', 'Keras==2.3.1',
-                      'numpy=1.18.2', 'scipy==1.4.1']
+                      'numpy==1.18.2', 'scipy==1.4.1']
 )
