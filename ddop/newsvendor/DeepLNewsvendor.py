@@ -61,7 +61,7 @@ class DeepLNewsvendor:
         model.compile(loss=self.__nv_loss(self.cp, self.ch), optimizer='adam')
         return model
 
-    def fit(self, X, Y, rand):
+    def fit(self, X, Y):
         model = self.__baseline_model(X)
         model.fit(X, Y, epochs=500, verbose=0)
         self.model_ = model
