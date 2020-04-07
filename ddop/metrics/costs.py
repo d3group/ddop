@@ -3,7 +3,7 @@ from sklearn.utils.validation import check_array
 import numpy as np
 
 
-def _check_newsvendor_targets(y_true, y_pred, dtype="numeric"):
+def _check_newsvendor_targets(y_true, y_pred):
     """Check that y_true and y_pred belong to the same newsvendor task
     Parameters
     ----------
@@ -16,12 +16,10 @@ def _check_newsvendor_targets(y_true, y_pred, dtype="numeric"):
         Ground truth (correct) target values.
     y_pred : array-like of shape (n_samples,n_outputs)
         Estimated target values.
-    dtype: str or list, default="numeric"
-        the dtype argument passed to check_array
     """
     check_consistent_length(y_true, y_pred)
-    y_true = check_array(y_true, ensure_2d=False, dtype=dtype)
-    y_pred = check_array(y_pred, ensure_2d=False, dtype=dtype)
+    y_true = check_array(y_true, ensure_2d=False, dtype="numeric")
+    y_pred = check_array(y_pred, ensure_2d=False, dtype="numeric")
 
     if y_true.ndim == 1:
         y_true = y_true.reshape((-1, 1))
@@ -45,20 +43,44 @@ def _multiply_cost_weights(x, cp, ch):
         return x * ch
 
 
-def calc_costs(cp, ch, y_true, y_pred):
-    """description follows. Currently only for single output
-    """
-    y_true, y_pred = _check_newsvendor_targets(y_pred, y_true)
+def calc_costs(y_true, y_pred, cp, ch):
+    """ Compute pairwise costs based on the the difference between y_true and y_pred
+        and the given underage and overage costs.
+        ----------
+        y_true : array-like
+        y_pred : array-like
+        cp : int or float
+            the underage costs per unit.
+        cp : int or float
+            the overage costs per unit.
+
+        Returns
+        -------
+        costs : array of floating point values, one for each individual target.
+        """
+    y_true, y_pred = _check_newsvendor_targets(y_true, y_pred)
     y_diff = y_pred - y_true
     func = np.vectorize(_multiply_cost_weights)
     costs = func(y_diff, cp, ch)
     return costs
 
 
-def calc_total_costs(cp, ch, y_pred, y_true):
-    """description follows. Currently only for single output
+def calc_total_costs(y_true, y_pred, cp, ch):
+    """ Compute total costs based on the the difference between y_true and y_pred
+        and the given underage and overage costs.
+        ----------
+        y_true : array-like
+        y_pred : array-like
+        cp : int or float
+            the underage costs per unit.
+        cp : int or float
+            the overage costs per unit.
+
+        Returns
+        -------
+        total_costs : float
         """
-    y_true, y_pred = _check_newsvendor_targets(y_pred, y_true)
+    y_true, y_pred = _check_newsvendor_targets(y_true, y_pred)
     y_diff = y_pred - y_true
     func = np.vectorize(_multiply_cost_weights)
     costs = func(y_diff, cp, ch)
@@ -66,10 +88,22 @@ def calc_total_costs(cp, ch, y_pred, y_true):
     return total_costs
 
 
-def calc_avg_costs(cp, ch, y_pred, y_true):
-    """description follows. Currently only for single output
-            """
-    y_true, y_pred = _check_newsvendor_targets(y_pred, y_true)
+def calc_avg_costs(y_true, y_pred, cp, ch):
+    """ Compute average costs based on the the difference between y_true and y_pred
+        and the given underage and overage costs.
+        ----------
+        y_true : array-like
+        y_pred : array-like
+        cp : int or float
+            the underage costs per unit.
+        cp : int or float
+            the overage costs per unit.
+
+        Returns
+        -------
+        avg_costs : float
+        """
+    y_true, y_pred = _check_newsvendor_targets(y_true, y_pred)
     y_diff = y_pred - y_true
     func = np.vectorize(_multiply_cost_weights)
     costs = func(y_diff, cp, ch)

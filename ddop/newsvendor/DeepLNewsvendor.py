@@ -5,6 +5,40 @@ from ..utils.validation import check_is_fitted
 
 
 class DeepLNewsvendor:
+    """A newsvendor estimator based on Deep Learning
+
+    Parameters
+    ----------
+    cp : float or int, default=None
+        the overage costs per unit.
+    ch : float or int, default=None
+        the underage costs per unit:
+
+    Attributes
+    ----------
+    model_ : tensorflow.python.keras.engine.sequential.Sequential
+        Sequential model from keras used for this estimator
+
+    References
+    ----------
+    .. [1] Gah-Yi Ban, Cynthia Rudin, "The Big Data Newsvendor: Practical Insights from
+            Machine Learning", 2018.
+
+    Examples
+    --------
+    >>> from ddop.datasets.load_datasets import load_data
+    >>> from ddop.newsvendor import KernelOptimization
+    >>> from sklearn.model_selection import train_test_split
+    >>> data = load_data("yaz_steak.csv")
+    >>> X = data.iloc[:,0:24]
+    >>> Y = data.iloc[:,24]
+    >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25)
+    >>> mdl = KernelOptimization(cp, ch)
+    >>> mdl.fit(X_train, Y_train)
+    >>> y_pred = mdl.predict(X_test)
+    >>> calc_avg_costs(cp, ch, Y_test, y_pred)
+    52.97
+    """
     def __init__(self, cp, ch):
         self.cp = cp
         self.ch = ch
@@ -26,7 +60,7 @@ class DeepLNewsvendor:
         model.compile(loss=self.__nv_loss(self.cp, self.ch), optimizer='adam')
         return model
 
-    def fit(self, X, Y):
+    def fit(self, X, Y, rand):
         model = self.__baseline_model(X)
         model.fit(X, Y, epochs=500, verbose=0)
         self.model_ = model

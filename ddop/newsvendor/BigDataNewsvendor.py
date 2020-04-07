@@ -2,29 +2,69 @@ import pulp
 from ..utils.validation import check_is_fitted
 from ..utils.kernels import Kernel
 import numpy as np
+import pandas as pd
 from sklearn.utils.validation import check_X_y
 from sklearn.utils.validation import check_array
 from scipy.spatial import distance_matrix
 
 
 class ERM:
-    def __init__(self, cp, ch, lp_type):
-        self.cp = 2
-        self.ch = 1
-        self.lp_type = 'minimize'
+    """A ERM (Empirical Risk Minimization Algorithms) newsvendor estimator
+    Parameters
+    ----------
+    cp : float or int, default=None
+        the overage costs per unit.
+    ch : float or int, default=None
+        the underage costs per unit:
+
+     Attributes
+    ----------
+    n_features_ : int
+        The number of features when ``fit`` is performed.
+    feature_weights_: 1d array
+        The calculated feature weights
+
+     References
+    ----------
+    .. [1] Gah-Yi Ban, Cynthia Rudin, "The Big Data Newsvendor: Practical Insights from
+    Machine Learning", 2018.
+
+    Examples
+    --------
+    >>> from ddop.datasets.load_datasets import load_data
+    >>> from ddop.newsvendor import ERM
+    >>> from sklearn.model_selection import train_test_split
+    >>> data = load_data("yaz_steak.csv")
+    >>> X = data.iloc[:,0:24]
+    >>> Y = data.iloc[:,24]
+    >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25)
+    >>> mdl = ERM(cp=15, ch=10)
+    >>> mdl.fit(X_train, Y_train)
+    >>> y_pred = mdl.predict(X_test)
+    >>> calc_avg_costs(cp, ch, Y_test, y_pred)
+    48.85
+    """
+    def __init__(self, cp, ch):
+        self.cp = cp
+        self.ch = ch
 
     def fit(self, X, y):
+        X, y = check_X_y(X, y)
+
+        # Determine output settings
+        self.n_features_ = X.shape[1]
+
         # Add intercept
-        X.insert(0, 'intercept', 1)
+        n_samples = X.shape[0]
+        X = np.c_[np.ones(n_samples), X]
 
-        if self.lp_type == 'minimize':
-            nvAlgo = pulp.LpProblem(sense=pulp.LpMinimize)
+        """ Following code is based on dataframe/series format. Therefore convert X to dataframe and
+        y to series. Procedure will be changed to a numpy based format in the next development step
+        """
+        X = pd.DataFrame(X)
+        y = pd.Series(y)
 
-        elif self.lp_type == 'maximize':
-            nvAlgo = pulp.LpProblem(sense=pulp.LpMaximize)
-
-        else:
-            raise NameError('lp_type must be eigther minimize or maximize')
+        nvAlgo = pulp.LpProblem(sense=pulp.LpMinimize)
 
         n = X.index.values
         p = X.columns.values
@@ -36,30 +76,84 @@ class ERM:
         nvAlgo += (sum([self.cp * u[i] for i in n]) + sum([self.ch * o[i] for i in n])) / len(n)
 
         for i in n:
-            nvAlgo += u[i] >= y.loc[i] - q['intercept'] - sum([q[j] * X.loc[i, j] for j in p if j != 'intercept'])
-            nvAlgo += o[i] >= q['intercept'] + sum([q[j] * X.loc[i, j] for j in p if j != 'intercept']) - y[i]
+            nvAlgo += u[i] >= y.loc[i] - q[0] - sum([q[j] * X.loc[i, j] for j in p if j != 0])
+            nvAlgo += o[i] >= q[0] + sum([q[j] * X.loc[i, j] for j in p if j != 0]) - y[i]
 
         nvAlgo.solve()
 
-        self.q_ = q
+        feature_weights = []
+        for feature in q:
+            feature_weights += [q[feature].value()]
+
+        self.feature_weights_ = np.array(feature_weights)
 
         return self
 
+    def _validate_X_predict(self, X):
+        """Validate X whenever one tries to predict"""
+        X = check_array(X)
+
+        n_features = X.shape[1]
+        if self.n_features_ != n_features:
+            raise ValueError("Number of features of the model must match the input. "
+                             "Model n_features is %s and input n_features is %s "
+                             % (self.n_features_, n_features))
+
+        return X
+
     def predict(self, X):
         check_is_fitted(self)
-        X.insert(0, 'intercept', 1)
-        pred = []
-        for index, row in X.iterrows():
-            # access data using column names
-            value = 0
-            for name in X.columns:
-                value = value + row[name] * self.q_[name].value()
-            pred += [value]
+        X = self._validate_X_predict(X)
+        # Add intercept
+        n_samples = X.shape[0]
+        X = np.c_[np.ones(n_samples), X]
+        pred = X.dot(self.feature_weights_)
         return pred
 
 
 class KernelOptimization:
-    def __init__(self, cp, ch, kernel_type, kernel_weight):
+    """A Kernel Optimization newsvendor estimator
+    Parameters
+    ----------
+    cp : float or int, default=None
+        the overage costs per unit.
+    ch : float or int, default=None
+        the underage costs per unit:
+    kernel_type:  {"uniform", "gaussian"}, default="uniform"
+        The type of the kernel function
+    kerne_weight: float or int, default=1
+        The weight of the kernel function
+
+    Attributes
+    ----------
+    n_features_ : int
+        The number of features when ``fit`` is performed.
+    X_ : 2d array
+        The historic X-data
+    Y_ : 1d array
+        The historic y-data
+
+    References
+    ----------
+    .. [1] Gah-Yi Ban, Cynthia Rudin, "The Big Data Newsvendor: Practical Insights from
+    Machine Learning", 2018.
+
+    Examples
+    --------
+    >>> from ddop.datasets.load_datasets import load_data
+    >>> from ddop.newsvendor import KernelOptimization
+    >>> from sklearn.model_selection import train_test_split
+    >>> data = load_data("yaz_steak.csv")
+    >>> X = data.iloc[:,0:24]
+    >>> Y = data.iloc[:,24]
+    >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25)
+    >>> mdl = KernelOptimization(cp, ch)
+    >>> mdl.fit(X_train, Y_train)
+    >>> y_pred = mdl.predict(X_test)
+    >>> calc_avg_costs(cp, ch, Y_test, y_pred)
+    61.68
+    """
+    def __init__(self, cp, ch, kernel_type="uniform", kernel_weight=1):
         self.cp = cp
         self.ch = ch
         self.kernel_type = kernel_type
