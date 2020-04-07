@@ -27,13 +27,13 @@ class DeepLNewsvendor:
     Examples
     --------
     >>> from ddop.datasets.load_datasets import load_data
-    >>> from ddop.newsvendor import KernelOptimization
+    >>> from ddop.newsvendor import DeepLNewsvendor
     >>> from sklearn.model_selection import train_test_split
     >>> data = load_data("yaz_steak.csv")
     >>> X = data.iloc[:,0:24]
     >>> Y = data.iloc[:,24]
     >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25)
-    >>> mdl = KernelOptimization(cp, ch)
+    >>> mdl = DeepLNewsvendor(cp, ch)
     >>> mdl.fit(X_train, Y_train)
     >>> y_pred = mdl.predict(X_test)
     >>> calc_avg_costs(cp, ch, Y_test, y_pred)
