@@ -21,8 +21,8 @@ class DeepLNewsvendor:
 
     References
     ----------
-    .. [1] Gah-Yi Ban, Cynthia Rudin, "The Big Data Newsvendor: Practical Insights from
-            Machine Learning", 2018.
+    .. [1] Afshin Oroojlooyjadid, Lawrence V. Snyder, Martin Takáˇc,
+            "Applying Deep Learning to the Newsvendor Problem", 2018.
 
     Examples
     --------
