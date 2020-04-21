@@ -84,7 +84,7 @@ def calc_total_costs(y_true, y_pred, cp, ch):
     y_diff = y_pred - y_true
     func = np.vectorize(_multiply_cost_weights)
     costs = func(y_diff, cp, ch)
-    total_costs = np.sum(costs)
+    total_costs = np.sum(costs, axis=0)
     return total_costs
 
 
@@ -107,6 +107,6 @@ def calc_avg_costs(y_true, y_pred, cp, ch):
     y_diff = y_pred - y_true
     func = np.vectorize(_multiply_cost_weights)
     costs = func(y_diff, cp, ch)
-    total_costs = np.sum(costs)
-    avg_costs = total_costs / costs.size
+    total_costs = np.sum(costs, axis=0)
+    avg_costs = total_costs / costs.shape[0]
     return avg_costs

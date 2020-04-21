@@ -5,7 +5,7 @@ with open('README.md') as f:
 
 setup(
     name='ddop',
-    version='v0.0.8',
+    version='v0.2.0',
     url='',
     license='MIT',
     author='Andreas Philippi',
