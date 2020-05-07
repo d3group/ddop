@@ -2,7 +2,6 @@ import pulp
 from ..utils.validation import check_is_fitted
 from ..utils.kernels import Kernel
 import numpy as np
-import pandas as pd
 from sklearn.utils.validation import check_X_y
 from sklearn.utils.validation import check_array
 from scipy.spatial import distance_matrix
@@ -12,10 +11,10 @@ class ERM:
     """A ERM (Empirical Risk Minimization Algorithms) newsvendor estimator
     Parameters
     ----------
-    cp : float or int, default=None
-        the overage costs per unit.
-    ch : float or int, default=None
-        the underage costs per unit:
+    cu : float or int, default=None
+        the underage costs per unit.
+    co : float or int, default=None
+        the overage costs per unit:
 
      Attributes
     ----------
@@ -39,18 +38,18 @@ class ERM:
     >>> data = load_data("yaz_steak.csv")
     >>> X = data.iloc[:,0:24]
     >>> Y = data.iloc[:,24]
-    >>> cp,ch = 15,10
+    >>> cu,co = 15,10
     >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25)
-    >>> mdl = ERM(cp=15, ch=10)
+    >>> mdl = ERM(cu=15, co=10)
     >>> mdl.fit(X_train, Y_train)
     >>> y_pred = mdl.predict(X_test)
-    >>> calc_avg_costs(Y_test, y_pred, cp, ch)
+    >>> calc_avg_costs(Y_test, y_pred, cu, co)
     48.85
     """
 
-    def __init__(self, cp, ch):
-        self.cp = cp
-        self.ch = ch
+    def __init__(self, cu, co):
+        self.cu = cu
+        self.co = co
 
     def fit(self, X, y):
         X, y = check_X_y(X, y, multi_output=True)
@@ -78,7 +77,7 @@ class ERM:
             u = pulp.LpVariable.dicts('u', n, lowBound=0)
             o = pulp.LpVariable.dicts('o', n, lowBound=0)
 
-            nvAlgo += (sum([self.cp * u[i] for i in n]) + sum([self.ch * o[i] for i in n])) / len(n)
+            nvAlgo += (sum([self.cu * u[i] for i in n]) + sum([self.co * o[i] for i in n])) / len(n)
 
             for i in n:
                 nvAlgo += u[i] >= output_row[i] - q[0] - sum([q[j] * X[i, j] for j in p if j != 0])
@@ -131,10 +130,10 @@ class KernelOptimization:
     """A Kernel Optimization newsvendor estimator
     Parameters
     ----------
-    cp : float or int, default=None
-        the overage costs per unit.
-    ch : float or int, default=None
-        the underage costs per unit:
+    cu : float or int, default=None
+        the underage costs per unit.
+    co : float or int, default=None
+        the overage costs per unit:
     kernel_type:  {"uniform", "gaussian"}, default="uniform"
         The type of the kernel function
     kerne_weight: float or int, default=1
@@ -164,18 +163,18 @@ class KernelOptimization:
     >>> data = load_data("yaz_steak.csv")
     >>> X = data.iloc[:,0:24]
     >>> Y = data.iloc[:,24]
-    >>> cp,ch = 15,10
+    >>> cu,co = 15,10
     >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25)
-    >>> mdl = KernelOptimization(cp, ch)
+    >>> mdl = KernelOptimization(cu, co)
     >>> mdl.fit(X_train, Y_train)
     >>> y_pred = mdl.predict(X_test)
-    >>> calc_avg_costs(Y_test, y_pred, cp, ch)
+    >>> calc_avg_costs(Y_test, y_pred, cu, co)
     61.68
     """
 
-    def __init__(self, cp, ch, kernel_type="uniform", kernel_weight=1):
-        self.cp = cp
-        self.ch = ch
+    def __init__(self, cu, co, kernel_type="uniform", kernel_weight=1):
+        self.cu = cu
+        self.co = co
         self.kernel_type = kernel_type
         self.kernel_weight = kernel_weight
         self.kernel = Kernel(self.kernel_type, self.kernel_weight)
@@ -237,7 +236,7 @@ class KernelOptimization:
 
                     elif value != last_value and i < (y_hist.shape[0] - 1):
                         tf_lhs = K_sum / K_sum_total
-                        tf_rhs = self.cp / (self.cp + self.ch)
+                        tf_rhs = self.cu / (self.cu + self.co)
                         if tf_lhs >= tf_rhs:
                             pred += [last_value]
                             break

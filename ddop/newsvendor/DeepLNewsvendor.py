@@ -14,10 +14,10 @@ class DeepLNewsvendor:
 
     Parameters
     ----------
-    cp : float or int
-        The overage costs per unit.
-    ch : float or int
+    cu : float or int
         The underage costs per unit.
+    co : float or int
+        The overage costs per unit.
     hidden_layers : {'auto', 'custom'}, default='auto'
         Whether to use a automated or customized hidden layer structure.
         -   When set to 'auto' the network will use two hidden layers. The first
@@ -62,19 +62,19 @@ class DeepLNewsvendor:
     >>> data = load_data("yaz_steak.csv")
     >>> X = data.iloc[:,0:24]
     >>> Y = data.iloc[:,24]
-    >>> cp,ch = 15,10
+    >>> cu,co = 15,10
     >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25)
-    >>> mdl = DeepLNewsvendor(cp, ch)
+    >>> mdl = DeepLNewsvendor(cu, co)
     >>> mdl.fit(X_train, Y_train)
     >>> y_pred = mdl.predict(X_test)
-    >>> calc_avg_costs(Y_test, y_pred, cp, ch)
+    >>> calc_avg_costs(Y_test, y_pred, cu, co)
     52.97
     """
 
-    def __init__(self, cp, ch, hidden_layers='auto', neurons=[100],
+    def __init__(self, cu, co, hidden_layers='auto', neurons=[100],
                  activations=['relu'], optimizer='adam', epochs=100, verbose=1):
-        self.cp = cp
-        self.ch = ch
+        self.cu = cu
+        self.co = co
         self.hidden_layers = hidden_layers
         self.neurons = neurons
         self.activations = activations
@@ -82,10 +82,10 @@ class DeepLNewsvendor:
         self.epochs = epochs
         self.verbose = verbose
 
-    def __nv_loss(self, cp, ch):
+    def __nv_loss(self, cu, co):
         def customized_loss(y_true, y_pred):
             self.tensor_ = y_true
-            loss = K.switch(K.less(y_pred, y_true), cp * (y_true - y_pred), ch * (y_pred - y_true))
+            loss = K.switch(K.less(y_pred, y_true), cu * (y_true - y_pred), co * (y_pred - y_true))
             return K.sum(loss)
 
         return customized_loss
@@ -111,7 +111,7 @@ class DeepLNewsvendor:
             model.add(Dense(n_outputs))
             model.build((None, n_features))
 
-        model.compile(loss=self.__nv_loss(self.cp, self.ch), optimizer=self.optimizer)
+        model.compile(loss=self.__nv_loss(self.cu, self.co), optimizer=self.optimizer)
 
         return model
 
