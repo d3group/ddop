@@ -1,15 +1,17 @@
 from sklearn.tree._criterion cimport Criterion
 from sklearn.tree._criterion cimport SIZE_t, DOUBLE_t
+from sklearn.tree._utils cimport sizet_ptr_to_ndarray
+from sklearn.tree._utils cimport safe_realloc
 from libc.stdlib cimport calloc
 from libc.string cimport memcpy
 from libc.string cimport memset
 from libc.math cimport fabs
-
 import numpy as np
 cimport numpy as np
 from libc.stdio cimport printf
 
 np.import_array()
+
 
 cdef class NewsvendorCriterion(Criterion):
     """Newsvendor impurity criterion, which minimizes the following loss function:
@@ -20,10 +22,12 @@ cdef class NewsvendorCriterion(Criterion):
         The code was inspired by:
         <https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/tree/_criterion.pyx>`_.
     """
-    cdef double cu
-    cdef double co
+    #cdef double cu
+    cdef  SIZE_t* cu
+    cdef  SIZE_t* co
 
-    def __cinit__(self, SIZE_t n_outputs, SIZE_t n_samples, double cu, double co):
+    def __cinit__(self, SIZE_t n_outputs, SIZE_t n_samples, np.ndarray[SIZE_t, ndim=1] cu,
+                  np.ndarray[SIZE_t, ndim=1] co):
         """Initialize parameters for this criterion.
         Parameters
         ----------
@@ -37,8 +41,8 @@ cdef class NewsvendorCriterion(Criterion):
             The overage costs per unit:
         """
 
-        self.cu = cu
-        self.co = co
+        self.cu = NULL
+        self.co = NULL
 
         # Default values
         self.sample_weight = NULL
@@ -61,6 +65,9 @@ cdef class NewsvendorCriterion(Criterion):
         self.sum_left = NULL
         self.sum_right = NULL
 
+        safe_realloc(&self.cu, n_outputs)
+        safe_realloc(&self.co, n_outputs)
+
         # Allocate memory for the accumulators
         self.sum_total = <double*> calloc(n_outputs, sizeof(double))
         self.sum_left = <double*> calloc(n_outputs, sizeof(double))
@@ -71,6 +78,15 @@ cdef class NewsvendorCriterion(Criterion):
                 self.sum_right == NULL):
             raise MemoryError()
 
+        cdef SIZE_t k = 0
+        for k in range(n_outputs):
+            self.cu[k] = cu[k]
+            self.co[k] = co[k]
+
+
+    def __reduce__(self):
+        return type(self), (self.n_outputs, self.n_samples, sizet_ptr_to_ndarray(self.cu, self.n_outputs),
+                            sizet_ptr_to_ndarray(self.co, self.n_outputs)), self.__getstate__()
 
     cdef int init(self, const DOUBLE_t[:, ::1] y, DOUBLE_t* sample_weight,
                   double weighted_n_samples, SIZE_t* samples, SIZE_t start,
@@ -117,7 +133,7 @@ cdef class NewsvendorCriterion(Criterion):
         """Reset the criterion at pos=start."""
         cdef SIZE_t n_bytes = self.n_outputs * sizeof(double)
         memset(self.sum_left, 0, n_bytes)
-        memcuy(self.sum_right, self.sum_total, n_bytes)
+        memcpy(self.sum_right, self.sum_total, n_bytes)
 
         self.weighted_n_left = 0.0
         self.weighted_n_right = self.weighted_n_node_samples
@@ -206,6 +222,9 @@ cdef class NewsvendorCriterion(Criterion):
 
         cdef double* sum_total = self.sum_total
 
+        cdef SIZE_t* cu = self.cu
+        cdef SIZE_t* co = self.co
+
         for k in range(self.n_outputs):
 
             for p in range(self.start, self.end):
@@ -215,9 +234,9 @@ cdef class NewsvendorCriterion(Criterion):
                     w = sample_weight[i]
 
                 if self.y[i, k] - sum_total[k] / self.weighted_n_node_samples > 0.0:
-                    impurity += fabs(self.y[i, k] - sum_total[k] / self.weighted_n_node_samples) * self.cu
+                    impurity += fabs(self.y[i, k] - sum_total[k] / self.weighted_n_node_samples) * cu[k]
                 else:
-                    impurity += fabs(self.y[i, k] - sum_total[k] / self.weighted_n_node_samples) * self.co
+                    impurity += fabs(self.y[i, k] - sum_total[k] / self.weighted_n_node_samples) * co[k]
 
         return impurity
 
@@ -245,6 +264,9 @@ cdef class NewsvendorCriterion(Criterion):
         cdef SIZE_t k
         cdef DOUBLE_t w = 1.0
 
+        cdef SIZE_t* cu = self.cu
+        cdef SIZE_t* co = self.co
+
         # left child
         for k in range(self.n_outputs):
             for p in range(start, pos):
@@ -254,9 +276,9 @@ cdef class NewsvendorCriterion(Criterion):
                     w = sample_weight[i]
 
                 if self.y[i, k] - sum_left[k] / self.weighted_n_left > 0.0:
-                    impurity_left_temp += fabs(self.y[i, k] - sum_left[k] / self.weighted_n_left) * self.cu
+                    impurity_left_temp += fabs(self.y[i, k] - sum_left[k] / self.weighted_n_left) * cu[k]
                 else:
-                    impurity_left_temp += fabs(self.y[i, k] - sum_left[k] / self.weighted_n_left) * self.co
+                    impurity_left_temp += fabs(self.y[i, k] - sum_left[k] / self.weighted_n_left) * co[k]
 
         # right child
         for k in range(self.n_outputs):
@@ -267,9 +289,9 @@ cdef class NewsvendorCriterion(Criterion):
                     w = sample_weight[i]
 
                 if self.y[i, k] - sum_right[k] / self.weighted_n_right > 0.0:
-                    impurity_right_temp += fabs(self.y[i, k] - sum_right[k] / self.weighted_n_right) * self.cu
+                    impurity_right_temp += fabs(self.y[i, k] - sum_right[k] / self.weighted_n_right) * cu[k]
                 else:
-                    impurity_right_temp += fabs(self.y[i, k] - sum_right[k] / self.weighted_n_right) * self.co
+                    impurity_right_temp += fabs(self.y[i, k] - sum_right[k] / self.weighted_n_right) * co[k]
 
         impurity_left[0] = impurity_left_temp
         impurity_right[0] = impurity_right_temp
