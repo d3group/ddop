@@ -9,15 +9,17 @@ ACTIVATIONS = ['elu', 'selu', 'linear', 'tanh', 'relu', 'softmax', 'softsign', '
                'sigmoid', 'hard_sigmoid', 'exponential']
 
 
-class DeepLNewsvendor:
+class DeepLearningNewsvendor:
     """A newsvendor estimator based on Deep Learning
 
     Parameters
     ----------
-    cu : float or int
-        The underage costs per unit.
-    co : float or int
-        The overage costs per unit.
+    cu : {array-like of shape (n_outputs,), Number or None}, default=None
+       The underage costs per unit. If None, then underage costs are one
+       for each target variable
+    co : {array-like of shape (n_outputs,), Number or None}, default=None
+       The overage costs per unit. If None, then overage costs are one
+       for each target variable
     hidden_layers : {'auto', 'custom'}, default='auto'
         Whether to use a automated or customized hidden layer structure.
         -   When set to 'auto' the network will use two hidden layers. The first
@@ -57,14 +59,14 @@ class DeepLNewsvendor:
     Examples
     --------
     >>> from ddop.datasets.load_datasets import load_data
-    >>> from ddop.newsvendor import DeepLNewsvendor
+    >>> from ddop.newsvendor import DeepLearningNewsvendor
     >>> from sklearn.model_selection import train_test_split
     >>> data = load_data("yaz_steak.csv")
     >>> X = data.iloc[:,0:24]
     >>> Y = data.iloc[:,24]
     >>> cu,co = 15,10
     >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25)
-    >>> mdl = DeepLNewsvendor(cu, co)
+    >>> mdl = DeepLearningNewsvendor(cu, co)
     >>> mdl.fit(X_train, Y_train)
     >>> y_pred = mdl.predict(X_test)
     >>> calc_avg_costs(Y_test, y_pred, cu, co)
@@ -106,7 +108,6 @@ class DeepLNewsvendor:
 
         else:
             for size, activation in zip(neurons, activations):
-                print(size, activation)
                 model.add(Dense(units=size, activation=activation))
             model.add(Dense(n_outputs))
             model.build((None, n_features))

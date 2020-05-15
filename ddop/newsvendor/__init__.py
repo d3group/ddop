@@ -1,4 +1,8 @@
-from .BigDataNewsvendor import ERM, KernelOptimization
-from .DeepLNewsvendor import DeepLNewsvendor
+from .KernelOptimizationNewsvendor import KernelOptimizationNewsvendor
+from .EmpiricalRiskMinimizationNewsvendor import EmpiricalRiskMinimizationNewsvendor
+from .DeepLearningNewsvendor import DeepLearningNewsvendor
+from .RandomForestNewsvendor import RandomForestNewsvendor
+from .DecisionTreeNewsvendor import DecisionTreeNewsvendor
 
-__all__ = ["ERM", "KernelOptimization", "DeepLNewsvendor"]
+__all__ = ["EmpiricalRiskMinimizationNewsvendor", "KernelOptimizationNewsvendor",
+           "DeepLearningNewsvendor", "RandomForestNewsvendor", "DecisionTreeNewsvendor"]

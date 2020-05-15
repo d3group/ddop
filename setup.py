@@ -8,7 +8,7 @@ with open('README.md') as f:
 
 extensions = [
     Extension("criterion",
-              ['ddop/newsvendor/criterion.pyx'],
+              ['ddop/utils/criterion.pyx'],
               include_dirs=[numpy.get_include()]),
 ]
 

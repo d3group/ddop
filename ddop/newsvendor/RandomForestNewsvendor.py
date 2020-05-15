@@ -1,280 +1,189 @@
-from criterion import NewsvendorCriterion
-
-import numbers
-import warnings
-from math import ceil
-
-import numpy as np
-from scipy.sparse import issparse
-
-from sklearn.utils import check_random_state
-from sklearn.utils.validation import _check_sample_weight
-from sklearn.tree import _tree
-from sklearn.tree._tree import Tree
-from sklearn.tree._splitter import Splitter
-from sklearn.tree import _splitter
-from sklearn.tree._tree import BestFirstTreeBuilder
-from sklearn.tree._tree import DepthFirstTreeBuilder
-from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble._forest import ForestRegressor
-from sklearn.utils.validation import check_array
-
-# =============================================================================
-# Types and constants
-# =============================================================================
-
-DTYPE = _tree.DTYPE
-DOUBLE = _tree.DOUBLE
-
-DENSE_SPLITTERS = {"best": _splitter.BestSplitter,
-                   "random": _splitter.RandomSplitter}
-
-SPARSE_SPLITTERS = {"best": _splitter.BestSparseSplitter,
-                    "random": _splitter.RandomSparseSplitter}
-
-
-class NewsvendorDecisionTreeRegressor(DecisionTreeRegressor):
-    def __init__(self, *,
-                 cu = 1,
-                 co = 1,
-                 splitter="best",
-                 max_depth=None,
-                 min_samples_split=2,
-                 min_samples_leaf=1,
-                 min_weight_fraction_leaf=0.,
-                 max_features=None,
-                 random_state=None,
-                 max_leaf_nodes=None,
-                 min_impurity_decrease=0.,
-                 min_impurity_split=None,
-                 presort='deprecated',
-                 ccp_alpha=0.0):
-        super().__init__(
-            splitter=splitter,
-            max_depth=max_depth,
-            min_samples_split=min_samples_split,
-            min_samples_leaf=min_samples_leaf,
-            min_weight_fraction_leaf=min_weight_fraction_leaf,
-            max_features=max_features,
-            max_leaf_nodes=max_leaf_nodes,
-            random_state=random_state,
-            min_impurity_decrease=min_impurity_decrease,
-            min_impurity_split=min_impurity_split,
-            presort=presort,
-            ccp_alpha=ccp_alpha)
-
-        self.cu = cu
-        self.co = co
-
-    def fit(self, X, y, sample_weight=None, check_input=True,
-            X_idx_sorted=None):
-
-        random_state = check_random_state(self.random_state)
-
-        if self.ccp_alpha < 0.0:
-            raise ValueError("ccp_alpha must be greater than or equal to 0")
-
-        if check_input:
-            # Need to validate separately here.
-            # We can't pass multi_ouput=True because that would allow y to be
-            # csr.
-            check_X_params = dict(dtype=DTYPE, accept_sparse="csc")
-            check_y_params = dict(ensure_2d=False, dtype=None)
-
-            if y is None:
-                raise ValueError("y cannot be None")
-
-            X = check_array(X, **check_X_params)
-            y = check_array(y, **check_y_params)
-
-            if issparse(X):
-                X.sort_indices()
-
-                if X.indices.dtype != np.intc or X.indptr.dtype != np.intc:
-                    raise ValueError("No support for np.int64 index based "
-                                     "sparse matrices")
-
-        # Determine output settings
-        n_samples, self.n_features_ = X.shape
-
-        y = np.atleast_1d(y)
-        expanded_class_weight = None
-
-        if y.ndim == 1:
-            # reshape is necessary to preserve the data contiguity against vs
-            # [:, np.newaxis] that does not.
-            y = np.reshape(y, (-1, 1))
-
-        self.n_outputs_ = y.shape[1]
-
-        if getattr(y, "dtype", None) != DOUBLE or not y.flags.contiguous:
-            y = np.ascontiguousarray(y, dtype=DOUBLE)
-
-        # Check parameters
-        max_depth = (np.iinfo(np.int32).max if self.max_depth is None
-                     else self.max_depth)
-        max_leaf_nodes = (-1 if self.max_leaf_nodes is None
-                          else self.max_leaf_nodes)
-
-        if isinstance(self.min_samples_leaf, numbers.Integral):
-            if not 1 <= self.min_samples_leaf:
-                raise ValueError("min_samples_leaf must be at least 1 "
-                                 "or in (0, 0.5], got %s"
-                                 % self.min_samples_leaf)
-            min_samples_leaf = self.min_samples_leaf
-        else:  # float
-            if not 0. < self.min_samples_leaf <= 0.5:
-                raise ValueError("min_samples_leaf must be at least 1 "
-                                 "or in (0, 0.5], got %s"
-                                 % self.min_samples_leaf)
-            min_samples_leaf = int(ceil(self.min_samples_leaf * n_samples))
-
-        if isinstance(self.min_samples_split, numbers.Integral):
-            if not 2 <= self.min_samples_split:
-                raise ValueError("min_samples_split must be an integer "
-                                 "greater than 1 or a float in (0.0, 1.0]; "
-                                 "got the integer %s"
-                                 % self.min_samples_split)
-            min_samples_split = self.min_samples_split
-        else:  # float
-            if not 0. < self.min_samples_split <= 1.:
-                raise ValueError("min_samples_split must be an integer "
-                                 "greater than 1 or a float in (0.0, 1.0]; "
-                                 "got the float %s"
-                                 % self.min_samples_split)
-            min_samples_split = int(ceil(self.min_samples_split * n_samples))
-            min_samples_split = max(2, min_samples_split)
-
-        min_samples_split = max(min_samples_split, 2 * min_samples_leaf)
-
-        if isinstance(self.max_features, str):
-            if self.max_features == "auto":
-                max_features = self.n_features_
-            elif self.max_features == "sqrt":
-                max_features = max(1, int(np.sqrt(self.n_features_)))
-            elif self.max_features == "log2":
-                max_features = max(1, int(np.log2(self.n_features_)))
-            else:
-                raise ValueError("Invalid value for max_features. "
-                                 "Allowed string values are 'auto', "
-                                 "'sqrt' or 'log2'.")
-        elif self.max_features is None:
-            max_features = self.n_features_
-        elif isinstance(self.max_features, numbers.Integral):
-            max_features = self.max_features
-        else:  # float
-            if self.max_features > 0.0:
-                max_features = max(1,
-                                   int(self.max_features * self.n_features_))
-            else:
-                max_features = 0
-
-        self.max_features_ = max_features
-
-        if len(y) != n_samples:
-            raise ValueError("Number of labels=%d does not match "
-                             "number of samples=%d" % (len(y), n_samples))
-        if not 0 <= self.min_weight_fraction_leaf <= 0.5:
-            raise ValueError("min_weight_fraction_leaf must in [0, 0.5]")
-        if max_depth <= 0:
-            raise ValueError("max_depth must be greater than zero. ")
-        if not (0 < max_features <= self.n_features_):
-            raise ValueError("max_features must be in (0, n_features]")
-        if not isinstance(max_leaf_nodes, numbers.Integral):
-            raise ValueError("max_leaf_nodes must be integral number but was "
-                             "%r" % max_leaf_nodes)
-        if -1 < max_leaf_nodes < 2:
-            raise ValueError(("max_leaf_nodes {0} must be either None "
-                              "or larger than 1").format(max_leaf_nodes))
-
-        if sample_weight is not None:
-            sample_weight = _check_sample_weight(sample_weight, X, DOUBLE)
-
-        if expanded_class_weight is not None:
-            if sample_weight is not None:
-                sample_weight = sample_weight * expanded_class_weight
-            else:
-                sample_weight = expanded_class_weight
-
-        # Set min_weight_leaf from min_weight_fraction_leaf
-        if sample_weight is None:
-            min_weight_leaf = (self.min_weight_fraction_leaf *
-                               n_samples)
-        else:
-            min_weight_leaf = (self.min_weight_fraction_leaf *
-                               np.sum(sample_weight))
-
-        min_impurity_split = self.min_impurity_split
-        if min_impurity_split is not None:
-            warnings.warn("The min_impurity_split parameter is deprecated. "
-                          "Its default value has changed from 1e-7 to 0 in "
-                          "version 0.23, and it will be removed in 0.25. "
-                          "Use the min_impurity_decrease parameter instead.",
-                          FutureWarning)
-
-            if min_impurity_split < 0.:
-                raise ValueError("min_impurity_split must be greater than "
-                                 "or equal to 0")
-        else:
-            min_impurity_split = 0
-
-        if self.min_impurity_decrease < 0.:
-            raise ValueError("min_impurity_decrease must be greater than "
-                             "or equal to 0")
-
-        if self.presort != 'deprecated':
-            warnings.warn("The parameter 'presort' is deprecated and has no "
-                          "effect. It will be removed in v0.24. You can "
-                          "suppress this warning by not passing any value "
-                          "to the 'presort' parameter.",
-                          FutureWarning)
-
-        # Build tree
-        criterion = NewsvendorCriterion(self.n_outputs_, n_samples, self.cu, self.co)
-
-        SPLITTERS = SPARSE_SPLITTERS if issparse(X) else DENSE_SPLITTERS
-
-        splitter = self.splitter
-        if not isinstance(self.splitter, Splitter):
-            splitter = SPLITTERS[self.splitter](criterion,
-                                                self.max_features_,
-                                                min_samples_leaf,
-                                                min_weight_leaf,
-                                                random_state)
-
-        self.tree_ = Tree(self.n_features_,
-                          # TODO: tree should't need this in this case
-                          np.array([1] * self.n_outputs_, dtype=np.intp),
-                          self.n_outputs_)
-
-        # Use BestFirst if max_leaf_nodes given; use DepthFirst otherwise
-        if max_leaf_nodes < 0:
-            builder = DepthFirstTreeBuilder(splitter, min_samples_split,
-                                            min_samples_leaf,
-                                            min_weight_leaf,
-                                            max_depth,
-                                            self.min_impurity_decrease,
-                                            min_impurity_split)
-        else:
-            builder = BestFirstTreeBuilder(splitter, min_samples_split,
-                                           min_samples_leaf,
-                                           min_weight_leaf,
-                                           max_depth,
-                                           max_leaf_nodes,
-                                           self.min_impurity_decrease,
-                                           min_impurity_split)
-
-        builder.build(self.tree_, X, y, sample_weight, X_idx_sorted)
-
-        self._prune_tree()
-
-        return self
-
+from .DecisionTreeNewsvendor import DecisionTreeNewsvendor
 
 class RandomForestNewsvendor(ForestRegressor):
+    """A random forest regressor for a newsvendor problem.
+
+    The implementation is based on the RandomForestRegressor from scikit-learn [4].
+    It was adaped to solve the newsvendor problem by using a random forest as described
+    in [3]. Therefore it takes two additional parameter co and cu and a custom criterion
+    is used to build the trees.
+
+    Parameters
+    ----------
+    criterion : {"newsvendor"}, default="newsvendor"
+        The function to measure the quality of a split. Supported is only
+        "newsvendor", which minimizes the Loss-function described in [5]
+    cu : {array-like of shape (n_outputs,), Number or None}, default=None
+       The underage costs per unit. If None, then underage costs are one
+       for each target variable
+    co : {array-like of shape (n_outputs,), Number or None}, default=None
+       The overage costs per unit. If None, then overage costs are one
+       for each target variable
+    n_estimators : int, default=100
+        The number of trees in the forest.
+    max_depth : int, default=None
+        The maximum depth of the tree. If None, then nodes are expanded until
+        all leaves are pure or until all leaves contain less than
+        min_samples_split samples.
+    min_samples_split : int or float, default=2
+        The minimum number of samples required to split an internal node:
+        - If int, then consider `min_samples_split` as the minimum number.
+        - If float, then `min_samples_split` is a fraction and
+          `ceil(min_samples_split * n_samples)` are the minimum
+          number of samples for each split.
+    min_samples_leaf : int or float, default=1
+        The minimum number of samples required to be at a leaf node.
+        A split point at any depth will only be considered if it leaves at
+        least ``min_samples_leaf`` training samples in each of the left and
+        right branches.  This may have the effect of smoothing the model,
+        especially in regression.
+        - If int, then consider `min_samples_leaf` as the minimum number.
+        - If float, then `min_samples_leaf` is a fraction and
+          `ceil(min_samples_leaf * n_samples)` are the minimum
+          number of samples for each node.
+    min_weight_fraction_leaf : float, default=0.0
+        The minimum weighted fraction of the sum total of weights (of all
+        the input samples) required to be at a leaf node. Samples have
+        equal weight when sample_weight is not provided.
+    max_features : {"auto", "sqrt", "log2"}, int or float, default="auto"
+        The number of features to consider when looking for the best split:
+        - If int, then consider `max_features` features at each split.
+        - If float, then `max_features` is a fraction and
+          `int(max_features * n_features)` features are considered at each
+          split.
+        - If "auto", then `max_features=n_features`.
+        - If "sqrt", then `max_features=sqrt(n_features)`.
+        - If "log2", then `max_features=log2(n_features)`.
+        - If None, then `max_features=n_features`.
+        Note: the search for a split does not stop until at least one
+        valid partition of the node samples is found, even if it requires to
+        effectively inspect more than ``max_features`` features.
+    max_leaf_nodes : int, default=None
+        Grow trees with ``max_leaf_nodes`` in best-first fashion.
+        Best nodes are defined as relative reduction in impurity.
+        If None then unlimited number of leaf nodes.
+    min_impurity_decrease : float, default=0.0
+        A node will be split if this split induces a decrease of the impurity
+        greater than or equal to this value.
+        The weighted impurity decrease equation is the following::
+            N_t / N * (impurity - N_t_R / N_t * right_impurity
+                                - N_t_L / N_t * left_impurity)
+        where ``N`` is the total number of samples, ``N_t`` is the number of
+        samples at the current node, ``N_t_L`` is the number of samples in the
+        left child, and ``N_t_R`` is the number of samples in the right child.
+        ``N``, ``N_t``, ``N_t_R`` and ``N_t_L`` all refer to the weighted sum,
+        if ``sample_weight`` is passed.
+    bootstrap : bool, default=True
+        Whether bootstrap samples are used when building trees. If False, the
+        whole dataset is used to build each tree.
+    oob_score : bool, default=False
+        whether to use out-of-bag samples to estimate
+        the R^2 on unseen data.
+    n_jobs : int, default=None
+        The number of jobs to run in parallel. :meth:`fit`, :meth:`predict`,
+        :meth:`decision_path` and :meth:`apply` are all parallelized over the
+        trees. ``None`` means 1 unless in a :obj:`joblib.parallel_backend`
+        context. ``-1`` means using all processors.
+    random_state : int or RandomState, default=None
+        Controls both the randomness of the bootstrapping of the samples used
+        when building trees (if ``bootstrap=True``) and the sampling of the
+        features to consider when looking for the best split at each node
+        (if ``max_features < n_features``).
+    verbose : int, default=0
+        Controls the verbosity when fitting and predicting.
+    warm_start : bool, default=False
+        When set to ``True``, reuse the solution of the previous call to fit
+        and add more estimators to the ensemble, otherwise, just fit a whole
+        new forest.
+    ccp_alpha : non-negative float, default=0.0
+        Complexity parameter used for Minimal Cost-Complexity Pruning. The
+        subtree with the largest cost complexity that is smaller than
+        ``ccp_alpha`` will be chosen. By default, no pruning is performed. See
+        :ref:`minimal_cost_complexity_pruning` for details.
+    max_samples : int or float, default=None
+        If bootstrap is True, the number of samples to draw from X
+        to train each base estimator.
+        - If None (default), then draw `X.shape[0]` samples.
+        - If int, then draw `max_samples` samples.
+        - If float, then draw `max_samples * X.shape[0]` samples. Thus,
+          `max_samples` should be in the interval `(0, 1)`.
+
+    Attributes
+    ----------
+    base_estimator_ : DecisionTreeNewsvendor
+        The child estimator template used to create the collection of fitted
+        sub-estimators.
+    estimators_ : list of DecisionTreeRegressor
+        The collection of fitted sub-estimators.
+    feature_importances_ : ndarray of shape (n_features,)
+        The impurity-based feature importances.
+        The higher, the more important the feature.
+        The importance of a feature is computed as the (normalized)
+        total reduction of the criterion brought by that feature.  It is also
+        known as the Gini importance.
+        Warning: impurity-based feature importances can be misleading for
+        high cardinality features (many unique values). See
+        :func:`sklearn.inspection.permutation_importance` as an alternative.
+    n_features_ : int
+        The number of features when ``fit`` is performed.
+    n_outputs_ : int
+        The number of outputs when ``fit`` is performed.
+    oob_score_ : float
+        Score of the training dataset obtained using an out-of-bag estimate.
+        This attribute exists only when ``oob_score`` is True.
+    oob_prediction_ : ndarray of shape (n_samples,)
+        Prediction computed with out-of-bag estimate on the training set.
+        This attribute exists only when ``oob_score`` is True.
+
+    See Also
+    --------
+    DecisionTreeNewsvendor, ForestRegressor [4]
+
+    Notes
+    -----
+    The default values for the parameters controlling the size of the trees
+    (e.g. ``max_depth``, ``min_samples_leaf``, etc.) lead to fully grown and
+    unpruned trees which can potentially be very large on some data sets. To
+    reduce memory consumption, the complexity and size of the trees should be
+    controlled by setting those parameter values.
+    The features are always randomly permuted at each split. Therefore,
+    the best found split may vary, even with the same training data,
+    ``max_features=n_features`` and ``bootstrap=False``, if the improvement
+    of the criterion is identical for several splits enumerated during the
+    search of the best split. To obtain a deterministic behaviour during
+    fitting, ``random_state`` has to be fixed.[4]
+
+    References
+    ----------
+    .. [1] L. Breiman, "Random Forests", Machine Learning, 45(1), 5-32, 2001.
+    .. [2] P. Geurts, D. Ernst., and L. Wehenkel, "Extremely randomized
+           trees", Machine Learning, 63(1), 3-42, 2006.
+    .. [3] J. Meller and F. Taigel "Machine Learning for Inventory Management:
+            Analyzing Two Concepts to Get From Data to Decisions",
+            Available at SSRN 3256643 (2019)
+    .. [4]  scikit-learn, ForestRegressor,
+            <https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/ensemble/_forest.py>
+     Examples
+    --------
+    >>> from ddop.datasets.load_datasets import load_data
+    >>> from ddop.newsvendor import RandomForestNewsvendor
+    >>> from ddop.metrics.costs import calc_avg_costs
+    >>> from sklearn.model_selection import train_test_split
+    >>> data = load_data("yaz_steak.csv")
+    >>> X = data.iloc[:,0:24]
+    >>> Y = data.iloc[:,24]
+    >>> cu,co = 15,10
+    >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25)
+    >>> mdl = RandomForestNewsvendor(max_depth=5, cu=cu, co=co, random_state=0)
+    >>> mdl.fit(X_train, Y_train)
+    >>> y_pred = mdl.predict(X_test)
+    >>> calc_avg_costs(Y_test, y_pred, cu, co)
+    71.24
+    """
     def __init__(self,
-                 cu = 1,
-                 co = 1,
+                 cu = None,
+                 co = None,
                  n_estimators=100, *,
                  max_depth=None,
                  min_samples_split=2,
@@ -283,7 +192,6 @@ class RandomForestNewsvendor(ForestRegressor):
                  max_features="auto",
                  max_leaf_nodes=None,
                  min_impurity_decrease=0.,
-                 min_impurity_split=None,
                  bootstrap=True,
                  oob_score=False,
                  n_jobs=None,
@@ -293,12 +201,12 @@ class RandomForestNewsvendor(ForestRegressor):
                  ccp_alpha=0.0,
                  max_samples=None):
         super().__init__(
-            base_estimator=NewsvendorDecisionTreeRegressor(),
+            base_estimator=DecisionTreeNewsvendor(),
             n_estimators=n_estimators,
             estimator_params=("cu", "co", "max_depth", "min_samples_split",
                               "min_samples_leaf", "min_weight_fraction_leaf",
                               "max_features", "max_leaf_nodes",
-                              "min_impurity_decrease", "min_impurity_split",
+                              "min_impurity_decrease",
                               "random_state", "ccp_alpha"),
             bootstrap=bootstrap,
             oob_score=oob_score,
@@ -307,7 +215,7 @@ class RandomForestNewsvendor(ForestRegressor):
             verbose=verbose,
             warm_start=warm_start,
             max_samples=max_samples)
-
+        self.criterion = "NewsvendorCriterion"
         self.cu = cu
         self.co = co
         self.max_depth = max_depth
@@ -317,5 +225,4 @@ class RandomForestNewsvendor(ForestRegressor):
         self.max_features = max_features
         self.max_leaf_nodes = max_leaf_nodes
         self.min_impurity_decrease = min_impurity_decrease
-        self.min_impurity_split = min_impurity_split
         self.ccp_alpha = ccp_alpha

@@ -2,20 +2,19 @@ import math
 
 
 class Kernel:
-    def __init__(self, kernel_type, kernel_weight):
+    def __init__(self, kernel_type, kernel_bandwidth):
         self.kernel_type = kernel_type
-        self.kernel_weight = kernel_weight
-        self.kernel_type = "gaussian"
+        self.kernel_bandwidth = kernel_bandwidth
 
     def __uniform_kernel(self, u):
-        if (u / self.kernel_weight) <= 1:
-            k_w = 0.5 / self.kernel_weight
+        if (u / self.kernel_bandwidth) <= 1:
+            k_w = 0.5 / self.kernel_bandwidth
         else:
             k_w = 0
         return k_w
 
     def __gaussian_kernel(self, u):
-        k_w = 1 / math.sqrt(2 * math.pi) * math.pow(math.e, -0.5 * math.pow(u / self.kernel_weight, 2))
+        k_w = 1 / math.sqrt(2 * math.pi) * math.pow(math.e, -0.5 * math.pow(u / self.kernel_bandwidth, 2))
         return k_w
 
     def get_kernel_output(self, u):

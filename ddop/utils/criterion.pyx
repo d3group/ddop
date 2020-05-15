@@ -1,6 +1,5 @@
 from sklearn.tree._criterion cimport Criterion
 from sklearn.tree._criterion cimport SIZE_t, DOUBLE_t
-from sklearn.tree._utils cimport sizet_ptr_to_ndarray
 from sklearn.tree._utils cimport safe_realloc
 from libc.stdlib cimport calloc
 from libc.string cimport memcpy
@@ -8,26 +7,30 @@ from libc.string cimport memset
 from libc.math cimport fabs
 import numpy as np
 cimport numpy as np
-from libc.stdio cimport printf
 
 np.import_array()
 
 
 cdef class NewsvendorCriterion(Criterion):
     """Newsvendor impurity criterion, which minimizes the following loss function:
-        Loss(q(x),D) = sum_{i=1}^{N} co(q(x)-d)^+ + cu(d-q(x))^+
-        Here, excess quantity (i.e., if (q(x)-d) > 0) is considered with co in the
-        loss function, whereas missing quantities ((q(x)-d) < 0) are weighted with co.
 
-        The code was inspired by:
-        <https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/tree/_criterion.pyx>`_.
+    Loss(q(x),D) = sum_{i=1}^{N} co(q(x)-d)^+ + cu(d-q(x))^+
+    Here, excess quantity (i.e., if (q(x)-d) > 0) is considered with co in the
+    loss function, whereas missing quantities ((q(x)-d) < 0) are weighted with co.
+
+    The code was inspired by [1]
+
+    References
+    ----------
+    .. [1] sklearn, criterion,
+            <https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/tree/_criterion.pyx>`_.
     """
-    #cdef double cu
-    cdef  SIZE_t* cu
-    cdef  SIZE_t* co
 
-    def __cinit__(self, SIZE_t n_outputs, SIZE_t n_samples, np.ndarray[SIZE_t, ndim=1] cu,
-                  np.ndarray[SIZE_t, ndim=1] co):
+    cdef  DOUBLE_t* cu
+    cdef  DOUBLE_t* co
+
+    def __cinit__(self, SIZE_t n_outputs, SIZE_t n_samples, np.ndarray[DOUBLE_t, ndim=1] cu,
+                  np.ndarray[DOUBLE_t, ndim=1] co):
         """Initialize parameters for this criterion.
         Parameters
         ----------
@@ -35,9 +38,9 @@ cdef class NewsvendorCriterion(Criterion):
             The number of targets to be predicted
         n_samples : SIZE_t
             The total number of samples to fit on
-        cu : SIZE_t
+        cu : numpy.ndarray, dtype=SIZE_t
             The underage costs per unit.
-        co : SIZE_t
+        co : numpy.ndarray, dtype=SIZE_t
             The overage costs per unit:
         """
 
@@ -85,8 +88,19 @@ cdef class NewsvendorCriterion(Criterion):
 
 
     def __reduce__(self):
-        return type(self), (self.n_outputs, self.n_samples, sizet_ptr_to_ndarray(self.cu, self.n_outputs),
-                            sizet_ptr_to_ndarray(self.co, self.n_outputs)), self.__getstate__()
+        data_cu = self.cu
+        data_co = self.co
+        size = self.n_outputs
+        cdef np.npy_intp shape_cu[1]
+        cdef np.npy_intp shape_co[1]
+        shape_cu[0] = <np.npy_intp> size
+        shape_co[0] = <np.npy_intp> size
+        # sizet_ptr_to_ndarray(self.cu, self.n_outputs)
+
+        return type(self), (self.n_outputs, self.n_samples,
+                            np.PyArray_SimpleNewFromData(1, shape_cu, np.NPY_FLOAT, data_cu).copy(),
+                            np.PyArray_SimpleNewFromData(1, shape_co, np.NPY_FLOAT, data_co).copy()), \
+               self.__getstate__()
 
     cdef int init(self, const DOUBLE_t[:, ::1] y, DOUBLE_t* sample_weight,
                   double weighted_n_samples, SIZE_t* samples, SIZE_t start,
@@ -222,8 +236,8 @@ cdef class NewsvendorCriterion(Criterion):
 
         cdef double* sum_total = self.sum_total
 
-        cdef SIZE_t* cu = self.cu
-        cdef SIZE_t* co = self.co
+        cdef DOUBLE_t* cu = self.cu
+        cdef DOUBLE_t* co = self.co
 
         for k in range(self.n_outputs):
 
@@ -264,8 +278,8 @@ cdef class NewsvendorCriterion(Criterion):
         cdef SIZE_t k
         cdef DOUBLE_t w = 1.0
 
-        cdef SIZE_t* cu = self.cu
-        cdef SIZE_t* co = self.co
+        cdef DOUBLE_t* cu = self.cu
+        cdef DOUBLE_t* co = self.co
 
         # left child
         for k in range(self.n_outputs):
