@@ -1,2 +1,10 @@
 venv/
+build/
+dist/
+.eggs/
+
 *.c
+*.pyd
+
+test.py
+main.py
