@@ -169,6 +169,5 @@ class DeepLearningNewsvendor(BaseNewsvendor):
 
     def predict(self, X):
         check_is_fitted(self)
-        X = self._validate_X_predict(X)
         pred = self.model_.predict(X)
         return pred

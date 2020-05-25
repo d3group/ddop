@@ -116,6 +116,17 @@ class EmpiricalRiskMinimizationNewsvendor(BaseNewsvendor):
 
         return self
 
+    def _validate_X_predict(self, X):
+        """Validate X whenever one tries to predict"""
+        X = check_array(X)
+
+        n_features = X.shape[1]
+        if self.n_features_ != n_features:
+            raise ValueError("Number of features of the model must match the input. "
+                             "Model n_features is %s and input n_features is %s "
+                             % (self.n_features_, n_features))
+        return X
+
     def predict(self, X):
         """Predict value for X.
 

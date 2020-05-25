@@ -2,7 +2,7 @@ from .base import BaseNewsvendor
 from ..utils.validation import check_cu_co
 from ..utils.kernels import Kernel
 import numpy as np
-from sklearn.utils.validation import check_is_fitted
+from sklearn.utils.validation import check_is_fitted, check_array
 from scipy.spatial import distance_matrix
 
 
@@ -99,6 +99,17 @@ class KernelOptimizationNewsvendor(BaseNewsvendor):
         self.cu_, self.co_ = check_cu_co(self.cu, self.co, self.n_outputs_)
 
         return self
+
+    def _validate_X_predict(self, X):
+        """Validate X whenever one tries to predict"""
+        X = check_array(X)
+
+        n_features = X.shape[1]
+        if self.n_features_ != n_features:
+            raise ValueError("Number of features of the model must match the input. "
+                             "Model n_features is %s and input n_features is %s "
+                             % (self.n_features_, n_features))
+        return X
 
     def predict(self, X):
         """Predict value for X.
