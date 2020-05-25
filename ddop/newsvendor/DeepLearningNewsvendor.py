@@ -85,6 +85,7 @@ class DeepLearningNewsvendor(BaseNewsvendor):
             co=co)
 
     def __nv_loss(self, cu, co):
+        """Create a newsvendor loss function with the given under- and overage costs"""
         def customized_loss(y_true, y_pred):
             self.tensor_ = y_true
             loss = K.switch(K.less(y_pred, y_true), cu * (y_true - y_pred), co * (y_pred - y_true))
@@ -117,6 +118,21 @@ class DeepLearningNewsvendor(BaseNewsvendor):
         return model
 
     def fit(self, X, y):
+        """Fit the model to the training set (X, y).
+
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_features)
+            The training input samples.
+        y : array-like of shape (n_samples, n_outputs)
+            The target values.
+
+        Returns
+        ----------
+        self : DeepLearningNewsvendor
+            Fitted estimator
+        """
+
         # Validate input parameters
         self._validate_hyperparameters()
 
@@ -168,6 +184,18 @@ class DeepLearningNewsvendor(BaseNewsvendor):
                              self.verbose)
 
     def predict(self, X):
+        """Predict value for X.
+
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_features)
+            The input samples to predict.
+
+        Returns
+        ----------
+        y : array-like of shape (n_samples, n_outputs)
+            The predicted values
+        """
         check_is_fitted(self)
         pred = self.model_.predict(X)
         return pred
