@@ -1,11 +1,11 @@
 import pulp
-from ..utils.validation import check_is_fitted, check_cu_co
+from ..utils.validation import check_cu_co
 import numpy as np
-from sklearn.utils.validation import check_X_y
-from sklearn.utils.validation import check_array
+from sklearn.utils.validation import check_array, check_is_fitted
+from .base import BaseNewsvendor
 
 
-class EmpiricalRiskMinimizationNewsvendor:
+class EmpiricalRiskMinimizationNewsvendor(BaseNewsvendor):
     """A Empirical Risk Minimization Newsvendor estimator
 
     Implements the Empirical Risk Minimization Method described in [1]
@@ -45,14 +45,14 @@ class EmpiricalRiskMinimizationNewsvendor:
     >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25)
     >>> mdl = EmpiricalRiskMinimizationNewsvendor(cu=15, co=10)
     >>> mdl.fit(X_train, Y_train)
-    >>> y_pred = mdl.predict(X_test)
-    >>> calc_avg_costs(Y_test, y_pred, cu, co)
+    >>> mdl.score(X_test, y_test)
     48.85
     """
 
     def __init__(self, cu, co):
-        self.cu = cu
-        self.co = co
+        super().__init__(
+            cu=cu,
+            co=co)
 
     def fit(self, X, y):
         """ Calculate the feature weights for estimator
@@ -61,7 +61,7 @@ class EmpiricalRiskMinimizationNewsvendor:
         ----------
         X : array-like of shape (n_samples, n_features)
             The training input samples.
-        y : array-like of shape (n_samples, n_features)
+        y : array-like of shape (n_samples, n_outputs)
             The target values.
 
         Returns
@@ -69,8 +69,7 @@ class EmpiricalRiskMinimizationNewsvendor:
         self : EmpiricalRiskMinimizationNewsvendor
             Fitted estimator
         """
-
-        X, y = check_X_y(X, y, multi_output=True)
+        X, y = self._validate_data(X, y, multi_output=True)
 
         if y.ndim == 1:
             y = np.reshape(y, (-1, 1))
@@ -80,7 +79,7 @@ class EmpiricalRiskMinimizationNewsvendor:
         self.n_outputs_ = y.shape[1]
 
         # Check and format under- and overage costs
-        cu, co = check_cu_co(self.cu, self.co, self.n_outputs_)
+        self.cu_, self.co_ = check_cu_co(self.cu, self.co, self.n_outputs_)
 
         # Add intercept
         n_samples = X.shape[0]
@@ -100,7 +99,7 @@ class EmpiricalRiskMinimizationNewsvendor:
             u = pulp.LpVariable.dicts('u', n, lowBound=0)
             o = pulp.LpVariable.dicts('o', n, lowBound=0)
 
-            nvAlgo += (sum([cu[k] * u[i] for i in n]) + sum([co[k] * o[i] for i in n])) / len(n)
+            nvAlgo += (sum([self.cu_[k] * u[i] for i in n]) + sum([self.co_[k] * o[i] for i in n])) / len(n)
 
             for i in n:
                 nvAlgo += u[i] >= y[i] - q[0] - sum([q[j] * X[i, j] for j in p if j != 0])
@@ -116,18 +115,6 @@ class EmpiricalRiskMinimizationNewsvendor:
         self.feature_weights_ = np.array(feature_weights)
 
         return self
-
-    def _validate_X_predict(self, X):
-        """Validate X whenever one tries to predict"""
-        X = check_array(X)
-
-        n_features = X.shape[1]
-        if self.n_features_ != n_features:
-            raise ValueError("Number of features of the model must match the input. "
-                             "Model n_features is %s and input n_features is %s "
-                             % (self.n_features_, n_features))
-
-        return X
 
     def predict(self, X):
         """Predict value for X.

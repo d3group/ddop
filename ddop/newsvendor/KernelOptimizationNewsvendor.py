@@ -1,12 +1,12 @@
-from ..utils.validation import check_is_fitted, check_cu_co
+from .base import BaseNewsvendor
+from ..utils.validation import check_cu_co
 from ..utils.kernels import Kernel
 import numpy as np
-from sklearn.utils.validation import check_X_y
-from sklearn.utils.validation import check_array
+from sklearn.utils.validation import check_is_fitted
 from scipy.spatial import distance_matrix
 
 
-class KernelOptimizationNewsvendor:
+class KernelOptimizationNewsvendor(BaseNewsvendor):
     """A Kernel Optimization Newsvendor estimator
 
     Implements the Kernel Optimization Method described in [1]
@@ -56,17 +56,17 @@ class KernelOptimizationNewsvendor:
     >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25, random_state=1)
     >>> mdl = KernelOptimizationNewsvendor(cu, co)
     >>> mdl.fit(X_train, Y_train)
-    >>> y_pred = mdl.predict(X_test)
-    >>> calc_avg_costs(Y_test, y_pred, cu, co)
+    >>> mdl.score(X_test,y_test)
     9.29
     """
 
     def __init__(self, cu, co, kernel_type="uniform", kernel_bandwidth=1):
-        self.cu = cu
-        self.co = co
         self.kernel_type = kernel_type
         self.kernel_bandwidth = kernel_bandwidth
         self.kernel = Kernel(self.kernel_type, self.kernel_bandwidth)
+        super().__init__(
+            cu=cu,
+            co=co)
 
     def fit(self, X, y):
         """ Set the data needed for the Kernel Optimization estimator
@@ -83,7 +83,7 @@ class KernelOptimizationNewsvendor:
         self : KernelOptimizationNewsvendor
             Fitted estimator
         """
-        X, y = check_X_y(X, y, multi_output=True)
+        X, y = self._validate_data(X, y, multi_output=True)
 
         if y.ndim == 1:
             y = np.reshape(y, (-1, 1))
@@ -99,18 +99,6 @@ class KernelOptimizationNewsvendor:
         self.cu_, self.co_ = check_cu_co(self.cu, self.co, self.n_outputs_)
 
         return self
-
-    def _validate_X_predict(self, X):
-        """Validate X whenever one tries to predict"""
-        X = check_array(X)
-
-        n_features = X.shape[1]
-        if self.n_features_ != n_features:
-            raise ValueError("Number of features of the model must match the input. "
-                             "Model n_features is %s and input n_features is %s "
-                             % (self.n_features_, n_features))
-
-        return X
 
     def predict(self, X):
         """Predict value for X.

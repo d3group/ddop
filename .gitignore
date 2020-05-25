@@ -2,6 +2,8 @@ venv/
 build/
 dist/
 .eggs/
+*.egg-info/
+
 
 *.c
 *.pyd

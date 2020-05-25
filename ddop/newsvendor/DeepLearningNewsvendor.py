@@ -1,15 +1,15 @@
+from .base import BaseNewsvendor
 from keras.models import Sequential
 from keras.layers import Dense
 import keras.backend as K
-from sklearn.utils.validation import check_X_y
+from sklearn.utils.validation import check_is_fitted
 import numpy as np
-from ..utils.validation import check_is_fitted
 
 ACTIVATIONS = ['elu', 'selu', 'linear', 'tanh', 'relu', 'softmax', 'softsign', 'softplus',
                'sigmoid', 'hard_sigmoid', 'exponential']
 
 
-class DeepLearningNewsvendor:
+class DeepLearningNewsvendor(BaseNewsvendor):
     """A newsvendor estimator based on Deep Learning
 
     Parameters
@@ -68,21 +68,21 @@ class DeepLearningNewsvendor:
     >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25)
     >>> mdl = DeepLearningNewsvendor(cu, co)
     >>> mdl.fit(X_train, Y_train)
-    >>> y_pred = mdl.predict(X_test)
-    >>> calc_avg_costs(Y_test, y_pred, cu, co)
+    >>> mdl.score(X_test, y_test)
     52.97
     """
 
     def __init__(self, cu, co, hidden_layers='auto', neurons=[100],
                  activations=['relu'], optimizer='adam', epochs=100, verbose=1):
-        self.cu = cu
-        self.co = co
         self.hidden_layers = hidden_layers
         self.neurons = neurons
         self.activations = activations
         self.optimizer = optimizer
         self.epochs = epochs
         self.verbose = verbose
+        super().__init__(
+            cu=cu,
+            co=co)
 
     def __nv_loss(self, cu, co):
         def customized_loss(y_true, y_pred):
@@ -120,7 +120,7 @@ class DeepLearningNewsvendor:
         # Validate input parameters
         self._validate_hyperparameters()
 
-        X, y = check_X_y(X, y, multi_output=True)
+        X, y = self._validate_data(X, y, multi_output=True)
 
         if y.ndim == 1:
             y = np.reshape(y, (-1, 1))
@@ -169,5 +169,6 @@ class DeepLearningNewsvendor:
 
     def predict(self, X):
         check_is_fitted(self)
+        X = self._validate_X_predict(X)
         pred = self.model_.predict(X)
         return pred

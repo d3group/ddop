@@ -1,5 +1,6 @@
 from criterion import NewsvendorCriterion
 from ..utils.validation import check_cu_co
+from ..metrics.costs import calc_avg_costs
 
 import numbers
 import warnings
@@ -185,9 +186,11 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
     >>> calc_avg_costs(Y_test, y_pred, cu, co)
     65.80
     """
+
     def __init__(self, *,
-                 cu = None,
-                 co = None,
+                 criterion="NewsvendorCriterion",
+                 cu=None,
+                 co=None,
                  splitter="best",
                  max_depth=None,
                  min_samples_split=2,
@@ -199,6 +202,7 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
                  min_impurity_decrease=0.,
                  ccp_alpha=0.0):
         super().__init__(
+            criterion=criterion,
             splitter=splitter,
             max_depth=max_depth,
             min_samples_split=min_samples_split,
@@ -209,12 +213,10 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
             random_state=random_state,
             min_impurity_decrease=min_impurity_decrease,
             ccp_alpha=ccp_alpha)
-
         self.cu = cu
         self.co = co
-        self.criterion = "NewsvendorCriterion"
 
-    def fit(self, X, y, sample_weight=None, check_input=True):
+    def fit(self, X, y, sample_weight=None, check_input=True, X_idx_sorted=None):
         """Build a newsvendor decision tree regressor from the training set (X, y).
 
         Method is based on [1] and was adapted to enable usage of the newsvendor criterion
@@ -232,6 +234,15 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
             Sample weights. If None, then samples are equally weighted. Splits
             that would create child nodes with net zero or negative weight are
             ignored while searching for a split in each node.
+        check_input : bool, default=True
+            Allow to bypass several input checking.
+            Don't use this parameter unless you know what you do.
+        X_idx_sorted : array-like of shape (n_samples, n_features), \
+            default=None
+            The indexes of the sorted training input samples. If many tree
+            are grown on the same dataset, this allows the ordering to be
+            cached between trees. If None, the data will be sorted here.
+            Don't use this parameter unless you know what to do.
         Returns
         -------
         self : NewsvendorDecisionTreeRegressor
@@ -262,7 +273,6 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
 
         if issparse(X):
             X.sort_indices()
-
             if X.indices.dtype != np.intc or X.indptr.dtype != np.intc:
                 raise ValueError("No support for np.int64 index based "
                                  "sparse matrices")
@@ -284,7 +294,7 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
             y = np.ascontiguousarray(y, dtype=DOUBLE)
 
         # Check parameters
-        cu, co = check_cu_co(self.cu, self.co, self.n_outputs_)
+        self.cu_, self.co_ = check_cu_co(self.cu, self.co, self.n_outputs_)
 
         max_depth = (np.iinfo(np.int32).max if self.max_depth is None
                      else self.max_depth)
@@ -398,7 +408,7 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
                              "or equal to 0")
 
         # Build tree
-        criterion = NewsvendorCriterion(self.n_outputs_, n_samples, cu, co)
+        criterion = NewsvendorCriterion(self.n_outputs_, n_samples, self.cu_, self.co_)
 
         SPLITTERS = SPARSE_SPLITTERS if issparse(X) else DENSE_SPLITTERS
 
@@ -437,3 +447,7 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
         self._prune_tree()
 
         return self
+
+    def score(self, X, y, sample_weight=None):
+        y_pred = self.predict(X)
+        return calc_avg_costs(y, y_pred, self.cu_, self.co_)

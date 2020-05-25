@@ -1,6 +1,7 @@
 from sklearn.ensemble._forest import ForestRegressor
 from .DecisionTreeNewsvendor import DecisionTreeNewsvendor
 
+
 class RandomForestNewsvendor(ForestRegressor):
     """A random forest regressor for a newsvendor problem.
 
@@ -181,9 +182,11 @@ class RandomForestNewsvendor(ForestRegressor):
     >>> calc_avg_costs(Y_test, y_pred, cu, co)
     71.24
     """
+
     def __init__(self,
-                 cu = None,
-                 co = None,
+                 criterion="NewsvendorCriterion",
+                 cu=None,
+                 co=None,
                  n_estimators=100, *,
                  max_depth=None,
                  min_samples_split=2,
@@ -203,7 +206,7 @@ class RandomForestNewsvendor(ForestRegressor):
         super().__init__(
             base_estimator=DecisionTreeNewsvendor(),
             n_estimators=n_estimators,
-            estimator_params=("cu", "co", "max_depth", "min_samples_split",
+            estimator_params=("criterion", "cu", "co", "max_depth", "min_samples_split",
                               "min_samples_leaf", "min_weight_fraction_leaf",
                               "max_features", "max_leaf_nodes",
                               "min_impurity_decrease",
@@ -215,7 +218,7 @@ class RandomForestNewsvendor(ForestRegressor):
             verbose=verbose,
             warm_start=warm_start,
             max_samples=max_samples)
-        self.criterion = "NewsvendorCriterion"
+        self.criterion = criterion
         self.cu = cu
         self.co = co
         self.max_depth = max_depth

@@ -3,6 +3,8 @@ from .EmpiricalRiskMinimizationNewsvendor import EmpiricalRiskMinimizationNewsve
 from .DeepLearningNewsvendor import DeepLearningNewsvendor
 from .RandomForestNewsvendor import RandomForestNewsvendor
 from .DecisionTreeNewsvendor import DecisionTreeNewsvendor
+from .LightGradientBoostingNewsvendor import LightGradientBoostingNewsvendor
 
 __all__ = ["EmpiricalRiskMinimizationNewsvendor", "KernelOptimizationNewsvendor",
-           "DeepLearningNewsvendor", "RandomForestNewsvendor", "DecisionTreeNewsvendor"]
+           "DeepLearningNewsvendor", "RandomForestNewsvendor", "DecisionTreeNewsvendor",
+           "LightGradientBoostingNewsvendor"]
