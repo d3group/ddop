@@ -1,4 +1,4 @@
-from criterion import NewsvendorCriterion
+from ..utils.criterion import NewsvendorCriterion
 from ..utils.validation import check_cu_co
 from ..metrics.costs import calc_avg_costs
 
@@ -140,6 +140,10 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
         The number of features when ``fit`` is performed.
     n_outputs_ : int
         The number of outputs when ``fit`` is performed.
+    cu_ : ndarray, shape (n_outputs,)
+        Validated underage costs.
+    co_ : ndarray, shape (n_outputs,)
+        Validated overage costs.
     tree_ : Tree
         The underlying Tree object.
 
@@ -182,9 +186,8 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
     >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25)
     >>> mdl = DecisionTreeNewsvendor(max_depth=5, cu=cu, co=co, random_state=0)
     >>> mdl.fit(X_train, Y_train)
-    >>> y_pred = mdl.predict(X_test)
-    >>> calc_avg_costs(Y_test, y_pred, cu, co)
-    65.80
+    >>> mdl.score(X_test, Y_test)
+    [76.85307018]
     """
 
     def __init__(self, *,
@@ -265,11 +268,7 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
         check_X_params = dict(dtype=DTYPE, accept_sparse="csc")
         check_y_params = dict(ensure_2d=False, dtype=None)
 
-        if y is None:
-            raise ValueError("y cannot be None")
-
-        X = check_array(X, **check_X_params)
-        y = check_array(y, **check_y_params)
+        X, y = self._validate_data(X, y,validate_separately=(check_X_params,check_y_params))
 
         if issparse(X):
             X.sort_indices()
@@ -451,3 +450,5 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
     def score(self, X, y, sample_weight=None):
         y_pred = self.predict(X)
         return calc_avg_costs(y, y_pred, self.cu_, self.co_)
+
+

@@ -25,6 +25,10 @@ class EmpiricalRiskMinimizationNewsvendor(BaseNewsvendor):
         The number of features when ``fit`` is performed.
     n_outputs_ : int
         The number of outputs.
+    cu_ : ndarray, shape (n_outputs,)
+        Validated underage costs.
+    co_ : ndarray, shape (n_outputs,)
+        Validated overage costs.
     feature_weights_: array of shape (n_outputs, n_features)
         The calculated feature weights
 
@@ -45,8 +49,8 @@ class EmpiricalRiskMinimizationNewsvendor(BaseNewsvendor):
     >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25)
     >>> mdl = EmpiricalRiskMinimizationNewsvendor(cu=15, co=10)
     >>> mdl.fit(X_train, Y_train)
-    >>> mdl.score(X_test, y_test)
-    48.85
+    >>> mdl.score(X_test, Y_test)
+    [65.05263158]
     """
 
     def __init__(self, cu, co):
@@ -102,8 +106,8 @@ class EmpiricalRiskMinimizationNewsvendor(BaseNewsvendor):
             nvAlgo += (sum([self.cu_[k] * u[i] for i in n]) + sum([self.co_[k] * o[i] for i in n])) / len(n)
 
             for i in n:
-                nvAlgo += u[i] >= y[i] - q[0] - sum([q[j] * X[i, j] for j in p if j != 0])
-                nvAlgo += o[i] >= q[0] + sum([q[j] * X[i, j] for j in p if j != 0]) - y[i]
+                nvAlgo += u[i] >= y[i,k] - q[0] - sum([q[j] * X[i, j] for j in p if j != 0])
+                nvAlgo += o[i] >= q[0] + sum([q[j] * X[i, j] for j in p if j != 0]) - y[i,k]
             nvAlgo.solve()
 
             feature_weights_yk = []

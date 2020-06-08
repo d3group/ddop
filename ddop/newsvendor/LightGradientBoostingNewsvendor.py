@@ -94,6 +94,10 @@ class LightGradientBoostingNewsvendor(BaseNewsvendor):
         The collection of fitted estimators used for predictions
     n_features_ : int
         The number of features of fitted model.
+    cu_ : ndarray, shape (n_outputs,)
+        Validated underage costs.
+    co_ : ndarray, shape (n_outputs,)
+        Validated overage costs.
     best_score_ : dict or None
         The best score of fitted model.
     best_iteration_ : int or None
@@ -108,6 +112,21 @@ class LightGradientBoostingNewsvendor(BaseNewsvendor):
         The feature importances (the higher, the more important the feature).
     feature_name_ : array of shape = [n_features]
         The names of features.
+
+    Examples
+    --------
+    >>> from ddop.datasets.load_datasets import load_data
+    >>> from ddop.newsvendor import LightGradientBoostingNewsvendor
+    >>> from sklearn.model_selection import train_test_split
+    >>> data = load_data("yaz_steak.csv")
+    >>> X = data.iloc[:,0:24]
+    >>> Y = data.iloc[:,24]
+    >>> cu,co = 15,10
+    >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25)
+    >>> mdl = LightGradientBoostingNewsvendor(cu,co)
+    >>> mdl.fit(X_train, Y_train)
+    >>> mdl.score(X_test, Y_test)
+    [67.9802508]
     """
 
     def __init__(self, cu, co, boosting_type='gbdt', num_leaves=31, max_depth=-1,

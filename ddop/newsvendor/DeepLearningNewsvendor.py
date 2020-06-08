@@ -1,4 +1,5 @@
 from .base import BaseNewsvendor
+from ..utils.validation import check_cu_co
 from keras.models import Sequential
 from keras.layers import Dense
 import keras.backend as K
@@ -50,6 +51,10 @@ class DeepLearningNewsvendor(BaseNewsvendor):
         The number of features when ``fit`` is performed.
     n_outputs_ : int
         The number of outputs.
+    cu_ : ndarray, shape (n_outputs,)
+        Validated underage costs.
+    co_ : ndarray, shape (n_outputs,)
+        Validated overage costs.
 
     References
     ----------
@@ -68,8 +73,8 @@ class DeepLearningNewsvendor(BaseNewsvendor):
     >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25)
     >>> mdl = DeepLearningNewsvendor(cu, co)
     >>> mdl.fit(X_train, Y_train)
-    >>> mdl.score(X_test, y_test)
-    52.97
+    >>> mdl.score(X_test, Y_test)
+    [64.62898917]
     """
 
     def __init__(self, cu, co, hidden_layers='auto', neurons=[100],
@@ -113,7 +118,7 @@ class DeepLearningNewsvendor(BaseNewsvendor):
             model.add(Dense(n_outputs))
             model.build((None, n_features))
 
-        model.compile(loss=self.__nv_loss(self.cu, self.co), optimizer=self.optimizer)
+        model.compile(loss=self.__nv_loss(self.cu_, self.co_), optimizer=self.optimizer)
 
         return model
 
@@ -144,6 +149,9 @@ class DeepLearningNewsvendor(BaseNewsvendor):
         # Determine output settings
         self.n_features_ = X.shape[1]
         self.n_outputs_ = y.shape[1]
+
+        # Check and format under- and overage costs
+        self.cu_, self.co_ = check_cu_co(self.cu, self.co, self.n_outputs_)
 
         model = self.__create_model()
         model.fit(X, y, epochs=self.epochs, verbose=self.verbose)

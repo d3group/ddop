@@ -1,3 +1,4 @@
+from ..utils.validation import check_cu_co
 from sklearn.utils.validation import check_consistent_length
 from sklearn.utils.validation import check_array
 import numpy as np
@@ -61,6 +62,7 @@ def calc_costs(y_true, y_pred, cu, co):
     y_true, y_pred = _check_newsvendor_targets(y_true, y_pred)
     y_diff = y_pred - y_true
     func = np.vectorize(_multiply_cost_weights)
+    cu, co = check_cu_co(cu, co, y_true.shape[1])
     costs = func(y_diff, cu, co)
     return costs
 
@@ -83,6 +85,7 @@ def calc_total_costs(y_true, y_pred, cu, co):
     y_true, y_pred = _check_newsvendor_targets(y_true, y_pred)
     y_diff = y_pred - y_true
     func = np.vectorize(_multiply_cost_weights)
+    cu, co = check_cu_co(cu, co, y_true.shape[1])
     costs = func(y_diff, cu, co)
     total_costs = np.sum(costs, axis=0)
     return total_costs
@@ -106,6 +109,7 @@ def calc_avg_costs(y_true, y_pred, cu, co):
     y_true, y_pred = _check_newsvendor_targets(y_true, y_pred)
     y_diff = y_pred - y_true
     func = np.vectorize(_multiply_cost_weights)
+    cu, co = check_cu_co(cu, co, y_true.shape[1])
     costs = func(y_diff, cu, co)
     total_costs = np.sum(costs, axis=0)
     avg_costs = total_costs / costs.shape[0]

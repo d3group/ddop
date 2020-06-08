@@ -32,7 +32,7 @@ class KernelOptimizationNewsvendor(BaseNewsvendor):
         The number of outputs
     X_ : array of shape (n_samples, n_features)
         The historic X-data
-    Y_ : array of shape (n_samples, n_outputs)
+    y_ : array of shape (n_samples, n_outputs)
         The historic y-data
     cu_ : ndarray, shape (n_outputs,)
         Validated underage costs.
@@ -56,8 +56,8 @@ class KernelOptimizationNewsvendor(BaseNewsvendor):
     >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25, random_state=1)
     >>> mdl = KernelOptimizationNewsvendor(cu, co)
     >>> mdl.fit(X_train, Y_train)
-    >>> mdl.score(X_test,y_test)
-    9.29
+    >>> mdl.score(X_test,Y_test)
+    [80.86842105]
     """
 
     def __init__(self, cu, co, kernel_type="uniform", kernel_bandwidth=1):
@@ -69,7 +69,8 @@ class KernelOptimizationNewsvendor(BaseNewsvendor):
             co=co)
 
     def fit(self, X, y):
-        """ Set the data needed for the Kernel Optimization estimator
+        """ Fit the estimator and save the historic X- and y-data needed
+        for the prediction method
 
         Parameters
         ----------
@@ -88,6 +89,7 @@ class KernelOptimizationNewsvendor(BaseNewsvendor):
         if y.ndim == 1:
             y = np.reshape(y, (-1, 1))
 
+        # Historic data for predict method
         self.X_ = X
         self.y_ = y
 

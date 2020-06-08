@@ -1,5 +1,12 @@
-from sklearn.ensemble._forest import ForestRegressor
+from ..utils.validation import check_cu_co
+from ..metrics.costs import calc_avg_costs
 from .DecisionTreeNewsvendor import DecisionTreeNewsvendor
+from sklearn.utils.validation import check_is_fitted
+from sklearn.ensemble._forest import ForestRegressor
+from sklearn.tree import _tree
+import numpy as np
+
+DTYPE = _tree.DTYPE
 
 
 class RandomForestNewsvendor(ForestRegressor):
@@ -126,6 +133,14 @@ class RandomForestNewsvendor(ForestRegressor):
         Warning: impurity-based feature importances can be misleading for
         high cardinality features (many unique values). See
         :func:`sklearn.inspection.permutation_importance` as an alternative.
+    X_ : array of shape (n_samples, n_features)
+        The historic X-data
+    y_ : array of shape (n_samples, n_outputs)
+        The historic y-data
+    cu_ : ndarray, shape (n_outputs,)
+        Validated underage costs.
+    co_ : ndarray, shape (n_outputs,)
+        Validated overage costs.
     n_features_ : int
         The number of features when ``fit`` is performed.
     n_outputs_ : int
@@ -165,6 +180,8 @@ class RandomForestNewsvendor(ForestRegressor):
             Available at SSRN 3256643 (2019)
     .. [4]  scikit-learn, ForestRegressor,
             <https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/ensemble/_forest.py>
+    .. [5] N. Meinshausen, "Quantile regression forests." Journal of Machine Learning
+           Research 7.Jun (2006): 983-999.
      Examples
     --------
     >>> from ddop.datasets.load_datasets import load_data
@@ -178,9 +195,8 @@ class RandomForestNewsvendor(ForestRegressor):
     >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25)
     >>> mdl = RandomForestNewsvendor(max_depth=5, cu=cu, co=co, random_state=0)
     >>> mdl.fit(X_train, Y_train)
-    >>> y_pred = mdl.predict(X_test)
-    >>> calc_avg_costs(Y_test, y_pred, cu, co)
-    71.24
+    >>> score(X_test, Y_test)
+    [76.68421053]
     """
 
     def __init__(self,
@@ -229,3 +245,122 @@ class RandomForestNewsvendor(ForestRegressor):
         self.max_leaf_nodes = max_leaf_nodes
         self.min_impurity_decrease = min_impurity_decrease
         self.ccp_alpha = ccp_alpha
+
+    def fit(self, X, y, sample_weight=None):
+        """
+        Build a forest of trees from the training set (X, y),
+        and save the historic X- and y-data needed for the prediction method
+
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_features)
+            The training input samples.
+        y : array-like of shape (n_samples, n_features)
+            The target values.
+        sample_weight : array-like of shape (n_samples,), default=None
+            Sample weights. If None, then samples are equally weighted. Splits
+            that would create child nodes with net zero or negative weight are
+            ignored while searching for a split in each node.
+
+        Returns
+        ----------
+        self : RandomForestNewsvendor
+            Fitted estimator
+        """
+
+        super().fit(X, y, sample_weight)
+
+        check_X_params = dict(dtype=DTYPE, accept_sparse="csc")
+        check_y_params = dict(ensure_2d=False, dtype=None)
+
+        X, y = self._validate_data(X, y,
+                                   validate_separately=(check_X_params,
+                                                        check_y_params))
+        if y.ndim == 1:
+            y = np.reshape(y, (-1, 1))
+
+        # Historic data for predict method
+        self.X_ = X
+        self.y_ = y
+
+        # Check and format under- and overage costs
+        self.cu_, self.co_ = check_cu_co(self.cu, self.co, self.n_outputs_)
+
+        return self
+
+    def predict(self, X):
+        """Predict value for X.
+
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_features)
+            The input samples to predict.
+
+        Returns
+        ----------
+        y : array-like of shape (n_samples, n_outputs)
+            The predicted values
+        """
+        check_is_fitted(self)
+        X_hist = self.X_
+        y_hist = self.y_
+        X_leaf_indices = self.apply(X)
+        X_hist_leaf_indices = self.apply(X_hist)
+        pred = []
+        for xi in X_leaf_indices:
+            N_theta_t = np.array([sum(xi == xi_hist) for xi_hist in X_hist_leaf_indices])
+            sample_weights = N_theta_t / sum(N_theta_t)
+            pred_xi = []
+            for i in range(self.n_outputs_):
+                data = np.c_[sample_weights, y_hist[:, i]]
+                data = data[np.argsort(data[:, 1])]
+                sum_wi = 0
+                for row in data:
+                    sum_wi = sum_wi + row[0]
+                    if sum_wi >= self.cu_[i] / (self.cu_[i] + self.co_[i]):
+                        pred_xi.append(row[1])
+                        break
+            pred.append(pred_xi)
+        return np.asarray(pred)
+
+    def quantil_predict(self, X):
+        """Predict value for X.
+
+        Note: Compared to the method 'predict', which predicts the value of X  using
+        a sample weight approach [3], this method formulates the prediction as
+        a quantile regression problem [5]. The result of both methods is the same
+
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_features)
+            The input samples to predict.
+
+        Returns
+        ----------
+        y : array-like of shape (n_samples, n_outputs)
+            The predicted values
+        """
+        check_is_fitted(self)
+        X_hist = self.X_
+        y_hist = self.y_
+        X_leaf_indices = self.apply(X)
+        X_hist_leaf_indices = self.apply(X_hist)
+        pred = []
+        for xi in X_leaf_indices:
+            cnt = np.array([sum(xi == xi_hist) for xi_hist in X_hist_leaf_indices])
+            d = np.zeros(sum(cnt))
+            pred_xi = []
+            for k in range(self.n_outputs_):
+                i = 0
+                for j in range(cnt.size):
+                    d[i:cnt[j] + i] = y_hist[j,k]
+                    i = i + cnt[j]
+                pred_xi.append(np.quantile(d,self.cu_[k]/(self.cu_[k]+self.co_[k]), interpolation='higher'))
+            pred.append(pred_xi)
+        return np.array(pred)
+
+    def score(self, X, y, sample_weight=None):
+        y_pred = self.predict(X)
+        return calc_avg_costs(y, y_pred, self.cu_, self.co_)
+
+
