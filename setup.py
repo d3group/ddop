@@ -24,7 +24,7 @@ def get_extensions():
 
 setup(
     name='ddop',
-    version='v0.4.2',
+    version='v0.4.3',
     url='',
     license='MIT',
     author='Andreas Philippi',

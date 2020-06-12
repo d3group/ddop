@@ -175,7 +175,8 @@ class DeepLearningNewsvendor(BaseNewsvendor):
             raise ValueError("neurons must be > 0, got %s." %
                              self.neurons)
 
-        if self.hidden_layers == "custom" and np.any(np.array(activations) not in ACTIVATIONS):
+        if self.hidden_layers == "custom" and \
+                np.any(np.array([activation not in ACTIVATIONS for activation in activations])):
             raise ValueError("Invalid activation function in activations. Supported are %s but got %s"
                              % (list(ACTIVATIONS), activations))
 
