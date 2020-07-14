@@ -4,9 +4,10 @@ from ..utils.kernels import Kernel
 import numpy as np
 from sklearn.utils.validation import check_is_fitted, check_array
 from scipy.spatial import distance_matrix
+from .base import DataDrivenMixin
 
 
-class KernelOptimizationNewsvendor(BaseNewsvendor):
+class KernelOptimizationNewsvendor(BaseNewsvendor, DataDrivenMixin):
     """A Kernel Optimization Newsvendor estimator
 
     Implements the Kernel Optimization Method described in [1]
@@ -38,6 +39,8 @@ class KernelOptimizationNewsvendor(BaseNewsvendor):
         Validated underage costs.
     co_ : ndarray, shape (n_outputs,)
         Validated overage costs.
+    kernel_ : Kernel
+        The Kernel used for prediction
 
     References
     ----------
@@ -60,10 +63,9 @@ class KernelOptimizationNewsvendor(BaseNewsvendor):
     [80.86842105]
     """
 
-    def __init__(self, cu, co, kernel_type="uniform", kernel_bandwidth=1):
+    def __init__(self, cu, co, kernel_type="gaussian", kernel_bandwidth=1):
         self.kernel_type = kernel_type
         self.kernel_bandwidth = kernel_bandwidth
-        self.kernel = Kernel(self.kernel_type, self.kernel_bandwidth)
         super().__init__(
             cu=cu,
             co=co)
@@ -99,6 +101,9 @@ class KernelOptimizationNewsvendor(BaseNewsvendor):
 
         # Check and format under- and overage costs
         self.cu_, self.co_ = check_cu_co(self.cu, self.co, self.n_outputs_)
+
+        # Generate Kernel
+        self.kernel_ = Kernel(self.kernel_type, self.kernel_bandwidth)
 
         return self
 
@@ -139,7 +144,7 @@ class KernelOptimizationNewsvendor(BaseNewsvendor):
             pred_yk = []
             for row in X:
                 distances = distance_matrix(X_hist, [row]).ravel()
-                distances_kernel_weighted = np.array([self.kernel.get_kernel_output(x) for x in distances])
+                distances_kernel_weighted = np.array([self.kernel_.get_kernel_output(x) for x in distances])
                 K_sum_total = np.sum(distances_kernel_weighted)
                 K_sum = 0
                 last_value = 0

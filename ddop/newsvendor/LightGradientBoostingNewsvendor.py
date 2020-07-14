@@ -1,4 +1,4 @@
-from .base import BaseNewsvendor
+from .base import BaseNewsvendor, DataDrivenMixin
 from ..utils.validation import check_cu_co
 import numpy as np
 from joblib import Parallel, delayed
@@ -29,7 +29,7 @@ def _nv_eval_metric(cu, co):
     return custom_eval_metric
 
 
-class LightGradientBoostingNewsvendor(BaseNewsvendor):
+class LightGradientBoostingNewsvendor(BaseNewsvendor, DataDrivenMixin):
     """Construct a gradient boosting model.
     Parameters
     ----------
@@ -55,9 +55,16 @@ class LightGradientBoostingNewsvendor(BaseNewsvendor):
         Note, that this will ignore the ``learning_rate`` argument in training.
     n_estimators : int, optional (default=100)
         Number of boosted trees to fit.
+    early_stopping_rounds : int or None, optional (default=None)
+        Activates early stopping. The model will train until the validation score stops improving.
+        Validation score needs to improve at least every ``early_stopping_rounds`` round(s)
+        to continue training.
+        Requires at least one validation data and one metric.
+        If there's more than one, will check all of them. But the training data is ignored anyway.
+        To check only the first metric, set the ``first_metric_only`` parameter to ``True``
+        in additional parameters ``**kwargs`` of the model constructor.
     subsample_for_bin : int, optional (default=200000)
         Number of samples for constructing bins.
-        Default: 'regression' for LGBMRegressor, 'binary' or 'multiclass' for LGBMClassifier, 'lambdarank' for LGBMRanker.
     min_split_gain : float, optional (default=0.)
         Minimum loss reduction required to make a further partition on a leaf node of the tree.
     min_child_weight : float, optional (default=1e-3)
@@ -98,20 +105,6 @@ class LightGradientBoostingNewsvendor(BaseNewsvendor):
         Validated underage costs.
     co_ : ndarray, shape (n_outputs,)
         Validated overage costs.
-    best_score_ : dict or None
-        The best score of fitted model.
-    best_iteration_ : int or None
-        The best iteration of fitted model if ``early_stopping_rounds`` has been specified.
-    objective_ : string or callable
-        The concrete objective used while fitting this model.
-    booster_ : Booster
-        The underlying Booster of this model.
-    evals_result_ : dict or None
-        The evaluation results if ``early_stopping_rounds`` has been specified.
-    feature_importances_ : array of shape = [n_features]
-        The feature importances (the higher, the more important the feature).
-    feature_name_ : array of shape = [n_features]
-        The names of features.
 
     Examples
     --------
@@ -129,17 +122,34 @@ class LightGradientBoostingNewsvendor(BaseNewsvendor):
     [67.9802508]
     """
 
-    def __init__(self, cu, co, boosting_type='gbdt', num_leaves=31, max_depth=-1,
-                 learning_rate=0.1, n_estimators=100, subsample_for_bin=200000,
-                 min_split_gain=0., min_child_weight=1e-3, min_child_samples=20,
-                 subsample=1., subsample_freq=0, colsample_bytree=1.,
-                 reg_alpha=0., reg_lambda=0., random_state=None,
-                 n_jobs=-1, silent=True, importance_type='split'):
+    def __init__(self,
+                 cu,
+                 co,
+                 boosting_type='gbdt',
+                 num_leaves=31,
+                 max_depth=-1,
+                 learning_rate=0.1,
+                 n_estimators=100,
+                 early_stopping_rounds=None,
+                 subsample_for_bin=200000,
+                 min_split_gain=0.,
+                 min_child_weight=1e-3,
+                 min_child_samples=20,
+                 subsample=1.,
+                 subsample_freq=0,
+                 colsample_bytree=1.,
+                 reg_alpha=0.,
+                 reg_lambda=0.,
+                 random_state=None,
+                 n_jobs=-1,
+                 silent=True,
+                 importance_type='split'):
         self.boosting_type = boosting_type
         self.num_leaves = num_leaves
         self.max_depth = max_depth
         self.learning_rate = learning_rate
         self.n_estimators = n_estimators
+        self.early_stopping_rounds = early_stopping_rounds
         self.subsample_for_bin = subsample_for_bin
         self.min_split_gain = min_split_gain
         self.min_child_weight = min_child_weight
@@ -160,40 +170,36 @@ class LightGradientBoostingNewsvendor(BaseNewsvendor):
     def _create_estimator(self, cu, co):
         """Create LGBMRegressor with a newsvendor-like objective function"""
         objective = _create_objective(cu, co)
-        estimator = LGBMRegressor(boosting_type=self.boosting_type, num_leaves=self.num_leaves,
-                                  max_depth=self.max_depth, learning_rate=self.learning_rate,
-                                  n_estimators=self.n_estimators, subsample_for_bin=self.subsample_for_bin,
-                                  objective=objective, min_split_gain=self.min_split_gain,
-                                  min_child_weight=self.min_child_weight, min_child_samples=self.min_child_samples,
-                                  subsample=self.subsample, subsample_freq=self.subsample_freq,
-                                  colsample_bytree=self.colsample_bytree, reg_alpha=self.reg_alpha,
-                                  reg_lambda=self.reg_lambda, random_state=self.random_state,
-                                  n_jobs=self.n_jobs, silent=self.silent, importance_type=self.importance_type)
+        estimator = LGBMRegressor(boosting_type=self.boosting_type,
+                                  num_leaves=self.num_leaves,
+                                  max_depth=self.max_depth,
+                                  learning_rate=self.learning_rate,
+                                  n_estimators=self.n_estimators,
+                                  subsample_for_bin=self.subsample_for_bin,
+                                  objective=objective,
+                                  min_split_gain=self.min_split_gain,
+                                  min_child_weight=self.min_child_weight,
+                                  min_child_samples=self.min_child_samples,
+                                  subsample=self.subsample,
+                                  subsample_freq=self.subsample_freq,
+                                  colsample_bytree=self.colsample_bytree,
+                                  reg_alpha=self.reg_alpha,
+                                  reg_lambda=self.reg_lambda,
+                                  random_state=self.random_state,
+                                  n_jobs=self.n_jobs,
+                                  silent=self.silent,
+                                  importance_type=self.importance_type)
         return estimator
 
-    def _fit_estimator(self, X, y, cu, co,
-                       sample_weight, init_score,
-                       eval_set, eval_names, eval_sample_weight,
-                       eval_init_score, early_stopping_rounds,
-                       verbose, feature_name, categorical_feature,
-                       callbacks):
+    def _get_fitted_estimator(self, X, y, sample_weight, cu, co,):
         """fit estimator with a newsvendor evaluation metric"""
         estimator = self._create_estimator(cu, co)
         eval_metric = _nv_eval_metric(cu, co)
-        estimator.fit(X=X, y=y, sample_weight=sample_weight, init_score=init_score,
-                      eval_set=eval_set, eval_names=eval_names, eval_sample_weight=eval_sample_weight,
-                      eval_init_score=eval_init_score, eval_metric=eval_metric,
-                      early_stopping_rounds=early_stopping_rounds, verbose=verbose, feature_name=feature_name,
-                      categorical_feature=categorical_feature, callbacks=callbacks)
+        estimator.fit(X=X, y=y, sample_weight=sample_weight, eval_metric=eval_metric)
         return estimator
 
-    def fit(self, X, y,
-            sample_weight=None, init_score=None,
-            eval_set=None, eval_names=None, eval_sample_weight=None,
-            eval_init_score=None, early_stopping_rounds=None, verbose=True,
-            feature_name='auto', categorical_feature='auto',
-            callbacks=None):
-        """Build a LightGradientBoostingNewsvendor from the training set (X, y).
+    def fit(self, X, y, sample_weight=None):
+        """Fit model with training set (X, y).
         Fit a separate model for each output variable.
 
         Parameters
@@ -204,47 +210,7 @@ class LightGradientBoostingNewsvendor(BaseNewsvendor):
             The target values.
         sample_weight : array-like of shape = [n_samples] or None, optional (default=None)
             Weights of training data.
-        init_score : array-like of shape = [n_samples] or None, optional (default=None)
-            Init score of training data.
-        eval_set : list or None, optional (default=None)
-            A list of (X, y) tuple pairs to use as validation sets.
-        eval_names : list of strings or None, optional (default=None)
-            Names of eval_set.
-        eval_sample_weight : list of arrays or None, optional (default=None)
-            Weights of eval data.
-        eval_init_score : list of arrays or None, optional (default=None)
-            Init score of eval data.
-        early_stopping_rounds : int or None, optional (default=None)
-            Activates early stopping. The model will train until the validation score stops improving.
-            Validation score needs to improve at least every ``early_stopping_rounds`` round(s)
-            to continue training.
-            Requires at least one validation data and one metric.
-            If there's more than one, will check all of them. But the training data is ignored anyway.
-            To check only the first metric, set the ``first_metric_only`` parameter to ``True``
-            in additional parameters ``**kwargs`` of the model constructor.
-        verbose : bool or int, optional (default=True)
-            Requires at least one evaluation data.
-            If True, the eval metric on the eval set is printed at each boosting stage.
-            If int, the eval metric on the eval set is printed at every ``verbose`` boosting stage.
-            The last boosting stage or the boosting stage found by using ``early_stopping_rounds`` is also printed.
-            .. rubric:: Example
-            With ``verbose`` = 4 and at least one item in ``eval_set``,
-            an evaluation metric is printed every 4 (instead of 1) boosting stages.
-        feature_name : list of strings or 'auto', optional (default='auto')
-            Feature names.
-            If 'auto' and data is pandas DataFrame, data columns names are used.
-        categorical_feature : list of strings or int, or 'auto', optional (default='auto')
-            Categorical features.
-            If list of int, interpreted as indices.
-            If list of strings, interpreted as feature names (need to specify ``feature_name`` as well).
-            If 'auto' and data is pandas DataFrame, pandas unordered categorical columns are used.
-            All values in categorical features should be less than int32 max value (2147483647).
-            Large values could be memory consuming. Consider using consecutive integers starting from zero.
-            All negative values in categorical features will be treated as missing values.
-            The output cannot be monotonically constrained with respect to a categorical feature.
-        callbacks : list of callback functions or None, optional (default=None)
-            List of callback functions that are applied at each iteration.
-            See Callbacks in Python API for more information.
+
         Returns
         -------
         self : LightGradientBoostingNewsvendor
@@ -261,14 +227,11 @@ class LightGradientBoostingNewsvendor(BaseNewsvendor):
         # Check and format under- and overage costs
         self.cu_, self.co_ = check_cu_co(self.cu, self.co, self.n_outputs_)
 
+        # Create list of fitted estimators.
         self.estimators_ = Parallel(n_jobs=self.n_jobs)(
-            delayed(self._fit_estimator)(
-                X=X, y=y[:, i], cu=self.cu_[i], co=self.co_[i], sample_weight=sample_weight,
-                init_score=init_score, eval_set=eval_set, eval_names=eval_names,
-                eval_sample_weight=eval_sample_weight, eval_init_score=eval_init_score,
-                early_stopping_rounds=early_stopping_rounds, verbose=verbose, feature_name=feature_name,
-                categorical_feature=categorical_feature, callbacks=callbacks)
+            delayed(self._get_fitted_estimator)(X, y[:, i], sample_weight, self.cu_[i], self.co_[i])
             for i in range(self.n_outputs_))
+
         return self
 
     def predict(self, X):

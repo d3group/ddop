@@ -1,4 +1,4 @@
-from .base import BaseNewsvendor
+from .base import BaseNewsvendor, DataDrivenMixin
 from ..utils.validation import check_cu_co
 from keras.models import Sequential
 from keras.layers import Dense
@@ -10,7 +10,7 @@ ACTIVATIONS = ['elu', 'selu', 'linear', 'tanh', 'relu', 'softmax', 'softsign', '
                'sigmoid', 'hard_sigmoid', 'exponential']
 
 
-class DeepLearningNewsvendor(BaseNewsvendor):
+class DeepLearningNewsvendor(BaseNewsvendor, DataDrivenMixin):
     """A newsvendor estimator based on Deep Learning
 
     Parameters
@@ -89,7 +89,7 @@ class DeepLearningNewsvendor(BaseNewsvendor):
             cu=cu,
             co=co)
 
-    def __nv_loss(self, cu, co):
+    def _nv_loss(self, cu, co):
         """Create a newsvendor loss function with the given under- and overage costs"""
         def customized_loss(y_true, y_pred):
             self.tensor_ = y_true
@@ -118,7 +118,7 @@ class DeepLearningNewsvendor(BaseNewsvendor):
             model.add(Dense(n_outputs))
             model.build((None, n_features))
 
-        model.compile(loss=self.__nv_loss(self.cu_, self.co_), optimizer=self.optimizer)
+        model.compile(loss=self._nv_loss(self.cu_, self.co_), optimizer=self.optimizer)
 
         return model
 

@@ -279,7 +279,7 @@ class RandomForestNewsvendor(ForestRegressor):
         if y.ndim == 1:
             y = np.reshape(y, (-1, 1))
 
-        # Historic data for predict method
+        # Training data
         self.X_ = X
         self.y_ = y
 
@@ -301,18 +301,20 @@ class RandomForestNewsvendor(ForestRegressor):
         y : array-like of shape (n_samples, n_outputs)
             The predicted values
         """
+
         check_is_fitted(self)
-        X_hist = self.X_
-        y_hist = self.y_
+        X_train = self.X_
+        y_train = self.y_
         X_leaf_indices = self.apply(X)
-        X_hist_leaf_indices = self.apply(X_hist)
+        X_train_leaf_indices = self.apply(X_train)
         pred = []
         for xi in X_leaf_indices:
-            N_theta_t = np.array([sum(xi == xi_hist) for xi_hist in X_hist_leaf_indices])
-            sample_weights = N_theta_t / sum(N_theta_t)
+            cnt_same_leafs = np.sum(xi == X_train_leaf_indices, axis=1)
+            sample_weights = cnt_same_leafs / sum(cnt_same_leafs)
+
             pred_xi = []
             for i in range(self.n_outputs_):
-                data = np.c_[sample_weights, y_hist[:, i]]
+                data = np.c_[sample_weights, y_train[:, i]]
                 data = data[np.argsort(data[:, 1])]
                 sum_wi = 0
                 for row in data:
@@ -321,43 +323,8 @@ class RandomForestNewsvendor(ForestRegressor):
                         pred_xi.append(row[1])
                         break
             pred.append(pred_xi)
+
         return np.asarray(pred)
-
-    def quantil_predict(self, X):
-        """Predict value for X.
-
-        Note: Compared to the method 'predict', which predicts the value of X  using
-        a sample weight approach [3], this method formulates the prediction as
-        a quantile regression problem [5]. The result of both methods is the same
-
-        Parameters
-        ----------
-        X : array-like of shape (n_samples, n_features)
-            The input samples to predict.
-
-        Returns
-        ----------
-        y : array-like of shape (n_samples, n_outputs)
-            The predicted values
-        """
-        check_is_fitted(self)
-        X_hist = self.X_
-        y_hist = self.y_
-        X_leaf_indices = self.apply(X)
-        X_hist_leaf_indices = self.apply(X_hist)
-        pred = []
-        for xi in X_leaf_indices:
-            cnt = np.array([sum(xi == xi_hist) for xi_hist in X_hist_leaf_indices])
-            d = np.zeros(sum(cnt))
-            pred_xi = []
-            for k in range(self.n_outputs_):
-                i = 0
-                for j in range(cnt.size):
-                    d[i:cnt[j] + i] = y_hist[j,k]
-                    i = i + cnt[j]
-                pred_xi.append(np.quantile(d,self.cu_[k]/(self.cu_[k]+self.co_[k]), interpolation='higher'))
-            pred.append(pred_xi)
-        return np.array(pred)
 
     def score(self, X, y, sample_weight=None):
         y_pred = self.predict(X)

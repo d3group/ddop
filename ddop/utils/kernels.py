@@ -6,23 +6,23 @@ class Kernel:
         self.kernel_type = kernel_type
         self.kernel_bandwidth = kernel_bandwidth
 
-    def __uniform_kernel(self, u):
+    def _uniform_kernel(self, u):
         if (u / self.kernel_bandwidth) <= 1:
             k_w = 0.5 / self.kernel_bandwidth
         else:
             k_w = 0
         return k_w
 
-    def __gaussian_kernel(self, u):
+    def _gaussian_kernel(self, u):
         k_w = 1 / math.sqrt(2 * math.pi) * math.pow(math.e, -0.5 * math.pow(u / self.kernel_bandwidth, 2))
-        return k_w
+        return k_w/self.kernel_bandwidth
 
     def get_kernel_output(self, u):
         if self.kernel_type == "uniform":
-            return self.__uniform_kernel(u)
+            return self._uniform_kernel(u)
 
         elif self.kernel_type == "gaussian":
-            return self.__gaussian_kernel(u)
+            return self._gaussian_kernel(u)
 
         else:
             raise ValueError("Kernel type must be one of ‘uniform’, ‘gaussian’")

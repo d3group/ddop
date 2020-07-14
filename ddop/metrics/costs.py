@@ -64,7 +64,7 @@ def calc_costs(y_true, y_pred, cu, co):
     func = np.vectorize(_multiply_cost_weights)
     cu, co = check_cu_co(cu, co, y_true.shape[1])
     costs = func(y_diff, cu, co)
-    return costs
+    return -costs
 
 
 def calc_total_costs(y_true, y_pred, cu, co):
@@ -82,11 +82,7 @@ def calc_total_costs(y_true, y_pred, cu, co):
         -------
         total_costs : float
         """
-    y_true, y_pred = _check_newsvendor_targets(y_true, y_pred)
-    y_diff = y_pred - y_true
-    func = np.vectorize(_multiply_cost_weights)
-    cu, co = check_cu_co(cu, co, y_true.shape[1])
-    costs = func(y_diff, cu, co)
+    costs = calc_costs(y_true, y_pred, cu, co)
     total_costs = np.sum(costs, axis=0)
     return total_costs
 
@@ -106,11 +102,6 @@ def calc_avg_costs(y_true, y_pred, cu, co):
         -------
         avg_costs : float
         """
-    y_true, y_pred = _check_newsvendor_targets(y_true, y_pred)
-    y_diff = y_pred - y_true
-    func = np.vectorize(_multiply_cost_weights)
-    cu, co = check_cu_co(cu, co, y_true.shape[1])
-    costs = func(y_diff, cu, co)
-    total_costs = np.sum(costs, axis=0)
-    avg_costs = total_costs / costs.shape[0]
+    total_costs = calc_total_costs(y_true, y_pred, cu, co)
+    avg_costs = total_costs / y_true.shape[0]
     return avg_costs

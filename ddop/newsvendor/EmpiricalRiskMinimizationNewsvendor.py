@@ -2,10 +2,10 @@ import pulp
 from ..utils.validation import check_cu_co
 import numpy as np
 from sklearn.utils.validation import check_array, check_is_fitted
-from .base import BaseNewsvendor
+from .base import BaseNewsvendor, DataDrivenMixin
 
 
-class EmpiricalRiskMinimizationNewsvendor(BaseNewsvendor):
+class EmpiricalRiskMinimizationNewsvendor(BaseNewsvendor, DataDrivenMixin):
     """A Empirical Risk Minimization Newsvendor estimator
 
     Implements the Empirical Risk Minimization Method described in [1]
@@ -95,7 +95,7 @@ class EmpiricalRiskMinimizationNewsvendor(BaseNewsvendor):
         # Define and solve LpProblem for each target variable
         # Then safe the calculated feature weights
         for k in range(self.n_outputs_):
-            nvAlgo = pulp.LpProblem(sense=pulp.LpMinimize)
+            opt_model = pulp.LpProblem(sense=pulp.LpMinimize)
             n = np.arange(n_samples)
             p = np.arange(n_features)
 
@@ -103,12 +103,16 @@ class EmpiricalRiskMinimizationNewsvendor(BaseNewsvendor):
             u = pulp.LpVariable.dicts('u', n, lowBound=0)
             o = pulp.LpVariable.dicts('o', n, lowBound=0)
 
-            nvAlgo += (sum([self.cu_[k] * u[i] for i in n]) + sum([self.co_[k] * o[i] for i in n])) / len(n)
+            overage = pulp.LpAffineExpression([(u[i], self.cu_[k]) for i in n])
+            underage = pulp.LpAffineExpression([(o[i], self.co_[k]) for i in n])
+
+            objective = (underage + overage)/len(n)
+            opt_model.setObjective(objective)
 
             for i in n:
-                nvAlgo += u[i] >= y[i,k] - q[0] - sum([q[j] * X[i, j] for j in p if j != 0])
-                nvAlgo += o[i] >= q[0] + sum([q[j] * X[i, j] for j in p if j != 0]) - y[i,k]
-            nvAlgo.solve()
+                opt_model += u[i] >= y[i,k] - q[0] - sum([q[j] * X[i, j] for j in p if j != 0])
+                opt_model += o[i] >= q[0] + sum([q[j] * X[i, j] for j in p if j != 0]) - y[i,k]
+            opt_model.solve()
 
             feature_weights_yk = []
             for feature in q:
@@ -152,14 +156,11 @@ class EmpiricalRiskMinimizationNewsvendor(BaseNewsvendor):
         n_samples = X.shape[0]
         X = np.c_[np.ones(n_samples), X]
 
-        if self.n_outputs_ == 1:
-            pred = X.dot(self.feature_weights_[0])
-            pred = np.reshape(pred, (-1, 1))
-        else:
-            pred = []
-            for weights in self.feature_weights_:
-                pred.append(X.dot(weights))
-            pred = np.array(pred).T
+        pred = []
+        for weights in self.feature_weights_:
+            pred.append(X.dot(weights))
+
+        pred = np.array(pred).T
 
         return pred
 

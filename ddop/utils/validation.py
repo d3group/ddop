@@ -28,7 +28,7 @@ def check_cu_co(cu, co, n_outputs):
     .. [1] scikit-learn, _check_sample-weight(),
            <https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/utils/validation.py>
     """
-    costs = [[cu,"cu"], [co,"co"]]
+    costs = [[cu, "cu"], [co, "co"]]
     costs_validated = []
     for c in costs:
         if c[0] is None:
@@ -41,12 +41,23 @@ def check_cu_co(cu, co, n_outputs):
                 order="C"
             )
             if cost.ndim != 1:
-                raise ValueError(c[1],"must be 1D array or scalar")
+                raise ValueError(c[1], "must be 1D array or scalar")
 
             if cost.shape != (n_outputs,):
                 raise ValueError("{}.shape == {}, expected {}!"
-                                .format(c[1], cost.shape, (n_outputs,)))
+                                 .format(c[1], cost.shape, (n_outputs,)))
         costs_validated.append(cost)
     cu = costs_validated[0]
     co = costs_validated[1]
     return cu, co
+
+
+def formate_hyperparameter(value, name, n_outputs):
+    # make sure value is an array of shape (n_outputs,)
+    if not isinstance(value, (list, tuple, np.ndarray)):
+        value = np.full((n_outputs,), value)
+    value = np.array(value)
+
+    if value.ndim != 1:
+        raise ValueError("%s must be 1D array or scalar" % (name))
+    return value
