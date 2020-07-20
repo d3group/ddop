@@ -1,0 +1,261 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ddop.newsvendor: Newsvendor decision making &mdash; ddom-kit  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> ddom-kit
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ddom-kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>: Newsvendor decision making</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/modules/newsvendor.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ddop-newsvendor-newsvendor-decision-making">
+<span id="newsvendor-ref"></span><h1><a class="reference internal" href="#module-ddop.newsvendor" title="ddop.newsvendor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code></a>: Newsvendor decision making<a class="headerlink" href="#ddop-newsvendor-newsvendor-decision-making" title="Permalink to this headline">¶</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code> module contains different newsvendor approaches for
+decision making.</p>
+<span class="target" id="module-ddop.newsvendor"></span><div class="section" id="empirical-risk-minimization">
+<h2>Empirical Risk Minimization<a class="headerlink" href="#empirical-risk-minimization" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="auto_generated/ddop.newsvendor.DeepLearningNewsvendor.html#ddop.newsvendor.DeepLearningNewsvendor" title="ddop.newsvendor.DeepLearningNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DeepLearningNewsvendor</span></code></a>(cu, co[, …])</p></td>
+<td><p>A newsvendor based on deep learning</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="auto_generated/ddop.newsvendor.LightGradientBoostingNewsvendor.html#ddop.newsvendor.LightGradientBoostingNewsvendor" title="ddop.newsvendor.LightGradientBoostingNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LightGradientBoostingNewsvendor</span></code></a>(cu, co[, …])</p></td>
+<td><p>A newsvendor based on light gradient boosting.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="auto_generated/ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.html#ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor" title="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EmpiricalRiskMinimizationNewsvendor</span></code></a>(cu, co)</p></td>
+<td><p>A Empirical Risk Minimization Newsvendor estimator</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="auto_generated/ddop.newsvendor.DecisionTreeNewsvendor.html#ddop.newsvendor.DecisionTreeNewsvendor" title="ddop.newsvendor.DecisionTreeNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DecisionTreeNewsvendor</span></code></a>(*[, criterion, cu, …])</p></td>
+<td><p>A Decision Tree Newsvendor estimator</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="weighted-optimization">
+<h2>Weighted Optimization<a class="headerlink" href="#weighted-optimization" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="auto_generated/ddop.newsvendor.WeightedNewsvendor.EqualWeightedNewsvendor.html#ddop.newsvendor.WeightedNewsvendor.EqualWeightedNewsvendor" title="ddop.newsvendor.WeightedNewsvendor.EqualWeightedNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EqualWeightedNewsvendor</span></code></a>(cu, co)</p></td>
+<td><p>A equal weighted SAA newsvendor</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="auto_generated/ddop.newsvendor.WeightedNewsvendor.RandomForestWeightedNewsvendor.html#ddop.newsvendor.WeightedNewsvendor.RandomForestWeightedNewsvendor" title="ddop.newsvendor.WeightedNewsvendor.RandomForestWeightedNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RandomForestWeightedNewsvendor</span></code></a>(cu, co[, …])</p></td>
+<td><p>A random forest weighted SAA newsvendor</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="auto_generated/ddop.newsvendor.WeightedNewsvendor.KNeighborsWeightedNewsvendor.html#ddop.newsvendor.WeightedNewsvendor.KNeighborsWeightedNewsvendor" title="ddop.newsvendor.WeightedNewsvendor.KNeighborsWeightedNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KNeighborsWeightedNewsvendor</span></code></a>(cu, co[, …])</p></td>
+<td><p>A k-nearest-neighbor weighted SAA newsvendor</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="parametric">
+<h2>Parametric<a class="headerlink" href="#parametric" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="auto_generated/ddop.newsvendor.HoltWintersNewsvendor.html#ddop.newsvendor.HoltWintersNewsvendor" title="ddop.newsvendor.HoltWintersNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HoltWintersNewsvendor</span></code></a>([cu, co, trend, …])</p></td>
+<td><p>A newsvendor model based on Holt-Winters’ exponential smoothing forecaster</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Andreas Philippi
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

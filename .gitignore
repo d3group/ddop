@@ -5,8 +5,8 @@ dist/
 *.egg-info/
 
 # Shinx documentation
-docs/_build/
-docs/modules/auto_generated/
+docsrc/_build/
+docssrc/modules/auto_generated/
 
 *.c
 *.pyd
