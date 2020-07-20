@@ -11,7 +11,7 @@ ACTIVATIONS = ['elu', 'selu', 'linear', 'tanh', 'relu', 'softmax', 'softsign', '
 
 
 class DeepLearningNewsvendor(BaseNewsvendor, DataDrivenMixin):
-    """A newsvendor estimator based on Deep Learning
+    """A newsvendor based on deep learning
 
     Parameters
     ----------
@@ -45,8 +45,8 @@ class DeepLearningNewsvendor(BaseNewsvendor, DataDrivenMixin):
 
     Attributes
     ----------
-    model_ : tensorflow.python.keras.engine.sequential.Sequential
-        Sequential model from keras used for this estimator
+    model_ : tensorflow.keras.Sequential
+        The underlying model
     n_features_ : int
         The number of features when ``fit`` is performed.
     n_outputs_ : int
@@ -98,7 +98,7 @@ class DeepLearningNewsvendor(BaseNewsvendor, DataDrivenMixin):
 
         return customized_loss
 
-    def __create_model(self):
+    def _create_model(self):
         hidden_layers = self.hidden_layers
         neurons = self.neurons
         activations = self.activations
@@ -153,7 +153,7 @@ class DeepLearningNewsvendor(BaseNewsvendor, DataDrivenMixin):
         # Check and format under- and overage costs
         self.cu_, self.co_ = check_cu_co(self.cu, self.co, self.n_outputs_)
 
-        model = self.__create_model()
+        model = self._create_model()
         model.fit(X, y, epochs=self.epochs, verbose=self.verbose)
         self.model_ = model
         return self
@@ -193,7 +193,7 @@ class DeepLearningNewsvendor(BaseNewsvendor, DataDrivenMixin):
                              self.verbose)
 
     def predict(self, X):
-        """Predict value for X.
+        """Predict values for X.
 
         Parameters
         ----------

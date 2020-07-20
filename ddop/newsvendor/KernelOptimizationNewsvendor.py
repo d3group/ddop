@@ -91,7 +91,7 @@ class KernelOptimizationNewsvendor(BaseNewsvendor, DataDrivenMixin):
         if y.ndim == 1:
             y = np.reshape(y, (-1, 1))
 
-        # Historic data for predict method
+        # Training data
         self.X_ = X
         self.y_ = y
 

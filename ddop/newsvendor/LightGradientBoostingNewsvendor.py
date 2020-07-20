@@ -30,7 +30,8 @@ def _nv_eval_metric(cu, co):
 
 
 class LightGradientBoostingNewsvendor(BaseNewsvendor, DataDrivenMixin):
-    """Construct a gradient boosting model.
+    """A newsvendor based on light gradient boosting.
+
     Parameters
     ----------
     cu : {array-like of shape (n_outputs,), Number or None}, default=None
@@ -200,7 +201,6 @@ class LightGradientBoostingNewsvendor(BaseNewsvendor, DataDrivenMixin):
 
     def fit(self, X, y, sample_weight=None):
         """Fit model with training set (X, y).
-        Fit a separate model for each output variable.
 
         Parameters
         ----------
@@ -215,6 +215,10 @@ class LightGradientBoostingNewsvendor(BaseNewsvendor, DataDrivenMixin):
         -------
         self : LightGradientBoostingNewsvendor
             Fitted estimator.
+
+        Notes
+        -------
+        For multi-output, fit a separate model for each output variable.
         """
 
         X, y = self._validate_data(X, y, multi_output=True, accept_sparse=True)
@@ -235,7 +239,7 @@ class LightGradientBoostingNewsvendor(BaseNewsvendor, DataDrivenMixin):
         return self
 
     def predict(self, X):
-        """Predict value for X using a model trained for each target variable.
+        """Predict values for X.
 
         Parameters
         ----------
@@ -247,7 +251,7 @@ class LightGradientBoostingNewsvendor(BaseNewsvendor, DataDrivenMixin):
         y : array-like of shape (n_samples, n_outputs)
             The predicted values.
 
-        Note
+        Notes
         ----
         For multi-output, targets are predicted across multiple predictors.
         """

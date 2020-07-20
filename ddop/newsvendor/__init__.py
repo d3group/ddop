@@ -5,9 +5,10 @@ from .RandomForestNewsvendor import RandomForestNewsvendor
 from .DecisionTreeNewsvendor import DecisionTreeNewsvendor
 from .LightGradientBoostingNewsvendor import LightGradientBoostingNewsvendor
 from .HoltWintersNewsvendor import HoltWintersNewsvendor
-from .WeightedNewsvendor import RandomForestWeightedNewsvendor, KNeighborsWeightedNewsvendor
+from .WeightedNewsvendor import RandomForestWeightedNewsvendor, \
+    KNeighborsWeightedNewsvendor, EqualWeightedNewsvendor
 
 __all__ = ["EmpiricalRiskMinimizationNewsvendor", "KernelOptimizationNewsvendor",
            "DeepLearningNewsvendor", "RandomForestNewsvendor", "DecisionTreeNewsvendor",
            "LightGradientBoostingNewsvendor", "HoltWintersNewsvendor", "RandomForestWeightedNewsvendor",
-           "KNeighborsWeightedNewsvendor"]
+           "KNeighborsWeightedNewsvendor", "EqualWeightedNewsvendor"]

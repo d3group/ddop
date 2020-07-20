@@ -1,8 +1,7 @@
 from scipy.stats import norm
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 from .base import BaseNewsvendor, ClassicMixin
-from ..utils.validation import check_cu_co, check_string_hyperparameter, formate_hyperparameter
-from ..metrics.costs import calc_avg_costs
+from ..utils.validation import check_cu_co, formate_hyperparameter
 from sklearn.utils.validation import check_array
 from sklearn.metrics import mean_absolute_error
 import numpy as np
@@ -10,7 +9,7 @@ import numpy as np
 
 class HoltWintersNewsvendor(BaseNewsvendor, ClassicMixin):
     """
-    A newsvendor model based on Holt-Winters' exponential smoothing
+    A newsvendor model based on Holt-Winters' exponential smoothing forecaster
 
     The next order quantity q is calculatad by:
 
@@ -77,22 +76,22 @@ class HoltWintersNewsvendor(BaseNewsvendor, ClassicMixin):
 
     References
     ----------
-    .. [1] ...
+    .. [1] Hyndman, Rob J., and George Athanasopoulos. Forecasting: principles
+        and practice. OTexts, 2014.
 
     Examples
     --------
     >>> from ddop.datasets.load_datasets import load_data
-    >>> from ddop.newsvendor import DecisionTreeNewsvendor
-    >>> from ddop.metrics.costs import calc_avg_costs
+    >>> from ddop.newsvendor import HoltWintersNewsvendor
     >>> from sklearn.model_selection import train_test_split
     >>> data = load_data("yaz_steak.csv")
     >>> Y = data.iloc[:,24]
     >>> cu,co = 15,10
     >>> Y_train, Y_test = train_test_split(Y, test_size=0.25, shuffle=False, random_state=1)
-    >>> mdl = benchmarkNewsvendor(cu, co, 'add', False, 'add',7)
+    >>> mdl = HoltWintersNewsvendor(cu, co, 'add', False, 'add',7)
     >>> mdl.fit(Y_train)
     >>> mdl.score(Y_test)
-    [76.85307018]
+    TODO: Add result
     """
 
     def __init__(
@@ -131,6 +130,20 @@ class HoltWintersNewsvendor(BaseNewsvendor, ClassicMixin):
             co=co)
 
     def fit(self, y, X=None):
+        """Fit the model to the training data y.
+
+        Parameters
+        ----------
+        y : array-like of shape (n_samples, n_outputs)
+            The target values.
+        X : array-like of shape (n_samples, n_features), optional (default=None)
+            Exogenous variables are ignored
+
+        Returns
+        ----------
+        self : HoltWintersNewsvendor
+            Fitted estimator
+        """
 
         y = check_array(y, ensure_2d=False)
 
@@ -182,8 +195,20 @@ class HoltWintersNewsvendor(BaseNewsvendor, ClassicMixin):
 
         return self
 
-    def predict(self, steps):
-        forecasts = np.array([forecaster.forecast(steps) for forecaster in self.forecasters_]).T
+    def predict(self, n=1):
+        """Predict n time-steps
+
+        Parameters
+        ----------
+        n : int, default=1
+            The number of steps to predict ahead
+
+        Returns
+        ----------
+        y : array-like of shape (n, n_outputs)
+            The predicted values
+        """
+        forecasts = np.array([forecaster.forecast(n) for forecaster in self.forecasters_]).T
         pred = forecasts+self.safety_buffer_
         return pred
 

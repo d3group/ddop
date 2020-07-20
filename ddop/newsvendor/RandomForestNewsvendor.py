@@ -193,16 +193,16 @@ class RandomForestNewsvendor(ForestRegressor):
     >>> Y = data.iloc[:,24]
     >>> cu,co = 15,10
     >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25)
-    >>> mdl = RandomForestNewsvendor(max_depth=5, cu=cu, co=co, random_state=0)
+    >>> mdl = RandomForestNewsvendor(cu, co, max_depth=5, random_state=0)
     >>> mdl.fit(X_train, Y_train)
     >>> score(X_test, Y_test)
     [76.68421053]
     """
 
     def __init__(self,
-                 criterion="NewsvendorCriterion",
                  cu=None,
                  co=None,
+                 criterion="NewsvendorCriterion",
                  n_estimators=100, *,
                  max_depth=None,
                  min_samples_split=2,
