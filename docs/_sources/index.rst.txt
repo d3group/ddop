@@ -3,8 +3,12 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to ddom-kit's documentation!
-====================================
+.. include:: ../README.rst
+
+Navigation
+----------
+
+Frome here, you can navigate to:
 
 .. toctree::
    :maxdepth: 1
