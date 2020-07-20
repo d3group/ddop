@@ -6,7 +6,7 @@ dist/
 
 # Shinx documentation
 docsrc/_build/
-docssrc/modules/auto_generated/
+docsrc/modules/auto_generated/
 
 *.c
 *.pyd
