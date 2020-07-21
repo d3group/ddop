@@ -32,10 +32,10 @@ class EmpiricalRiskMinimizationNewsvendor(BaseNewsvendor, DataDrivenMixin):
     feature_weights_: array of shape (n_outputs, n_features)
         The calculated feature weights
 
-     References
+    References
     ----------
-    .. [1] Gah-Yi Ban, Cynthia Rudin, "The Big Data Newsvendor: Practical Insights from
-    Machine Learning", 2018.
+    .. [1] Gah-Yi Ban, Cynthia Rudin, "The Big Data Newsvendor: Practical Insights
+        from Machine Learning", 2018.
 
     Examples
     --------

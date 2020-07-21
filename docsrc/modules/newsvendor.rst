@@ -14,39 +14,40 @@ decision making.
 Empirical Risk Minimization
 ----------------------------
 
-.. currentmodule:: ddop.newsvendor
+.. currentmodule:: ddop
 
 .. autosummary::
     :toctree: auto_generated/
     :template: class.rst
 
-    DeepLearningNewsvendor
-    LightGradientBoostingNewsvendor
-    EmpiricalRiskMinimizationNewsvendor
-    DecisionTreeNewsvendor
+    newsvendor.DeepLearningNewsvendor.
+    newsvendor.LightGradientBoostingNewsvendor
+    newsvendor.EmpiricalRiskMinimizationNewsvendor
+    newsvendor.DecisionTreeNewsvendor
+
 
 Weighted Optimization
 ----------------------
 
-.. currentmodule:: ddop.newsvendor.WeightedNewsvendor
+.. currentmodule:: ddop
 
 .. autosummary::
     :toctree: auto_generated/
     :template: class.rst
 
-    EqualWeightedNewsvendor
-    RandomForestWeightedNewsvendor
-    KNeighborsWeightedNewsvendor
+    newsvendor.EqualWeightedNewsvendor
+    newsvendor.RandomForestWeightedNewsvendor
+    newsvendor.KNeighborsWeightedNewsvendor
 
 
 Parametric
 -----------
 
-.. currentmodule:: ddop.newsvendor
+.. currentmodule:: ddop
 
 .. autosummary::
     :toctree: auto_generated/
     :template: class.rst
 
-    HoltWintersNewsvendor
+    newsvendor.HoltWintersNewsvendor
 

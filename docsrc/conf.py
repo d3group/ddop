@@ -32,10 +32,14 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
     'sphinx.ext.intersphinx',
+    'sphinx.ext.napoleon',
     'sphinx.ext.autosectionlabel',
-    'sphinx.ext.githubpages',
-    'sphinx.ext.napoleon'
+    'sphinx.ext.githubpages'
 ]
+
+# this is needed for some reason...
+# see https://github.com/numpy/numpydoc/issues/69
+numpydoc_class_members_toctree = False
 
 autodoc_mock_imports = ["keras","statsmodels"]
 
@@ -49,6 +53,16 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # generate autosummary even if no references
 autosummary_generate = True
+
+autodoc_default_options = {
+    'members': True,
+    'inherited-members': True,
+    'special-members': '__init__',
+    'undoc-members': True,
+}
+
+# If true, '()' will be appended to :func: etc. cross-reference text.
+# add_function_parentheses = False
 
 # -- Options for HTML output -------------------------------------------------
 

@@ -259,15 +259,128 @@ If ‘gain’, result contains total gains of splits which use the feature.</p><
 <span class="go">[67.9802508]</span>
 </pre></div>
 </div>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(cu, co[, boosting_type, …])</p></td>
+<td><p>Initialize self.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X, y[, sample_weight])</p></td>
+<td><p>Fit model with training set (X, y).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</p></td>
+<td><p>Get parameters for this estimator.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code>(X)</p></td>
+<td><p>Predict values for X.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code>(X, y)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</p></td>
+<td><p>Set the parameters of this estimator.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py method">
 <dt id="ddop.newsvendor.LightGradientBoostingNewsvendor.__init__">
 <code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cu</span></em>, <em class="sig-param"><span class="n">co</span></em>, <em class="sig-param"><span class="n">boosting_type</span><span class="o">=</span><span class="default_value">'gbdt'</span></em>, <em class="sig-param"><span class="n">num_leaves</span><span class="o">=</span><span class="default_value">31</span></em>, <em class="sig-param"><span class="n">max_depth</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">learning_rate</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">n_estimators</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">early_stopping_rounds</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">subsample_for_bin</span><span class="o">=</span><span class="default_value">200000</span></em>, <em class="sig-param"><span class="n">min_split_gain</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">min_child_weight</span><span class="o">=</span><span class="default_value">0.001</span></em>, <em class="sig-param"><span class="n">min_child_samples</span><span class="o">=</span><span class="default_value">20</span></em>, <em class="sig-param"><span class="n">subsample</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">subsample_freq</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">colsample_bytree</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">reg_alpha</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">reg_lambda</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_jobs</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">silent</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">importance_type</span><span class="o">=</span><span class="default_value">'split'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.LightGradientBoostingNewsvendor.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt id="ddop.newsvendor.LightGradientBoostingNewsvendor.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.LightGradientBoostingNewsvendor.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit model with training set (X, y).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>array-like</em><em> or </em><em>sparse matrix of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The training input samples.</p></li>
+<li><p><strong>y</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_outputs</em><em>)</em>) – The target values.</p></li>
+<li><p><strong>sample_weight</strong> (<em>array-like of shape =</em><em> [</em><em>n_samples</em><em>] or </em><em>None</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Weights of training data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>self</strong> – Fitted estimator.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ddop.newsvendor.LightGradientBoostingNewsvendor" title="ddop.newsvendor.LightGradientBoostingNewsvendor">LightGradientBoostingNewsvendor</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>For multi-output, fit a separate model for each output variable.</p>
 </dd></dl>
 
-<div class="clearer"></div></div>
+<dl class="py method">
+<dt id="ddop.newsvendor.LightGradientBoostingNewsvendor.get_params">
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.LightGradientBoostingNewsvendor.get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get parameters for this estimator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>deep</strong> (<em>bool</em><em>, </em><em>default=True</em>) – If True, will return the parameters for this estimator and
+contained subobjects that are estimators.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>params</strong> – Parameter names mapped to their values.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>mapping of string to any</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ddop.newsvendor.LightGradientBoostingNewsvendor.predict">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.LightGradientBoostingNewsvendor.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predict values for X.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>array-like</em><em> or </em><em>sparse matrix of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The input samples to predict.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – The predicted values.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array-like of shape (n_samples, n_outputs)</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>For multi-output, targets are predicted across multiple predictors.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ddop.newsvendor.LightGradientBoostingNewsvendor.score">
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.LightGradientBoostingNewsvendor.score" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="ddop.newsvendor.LightGradientBoostingNewsvendor.set_params">
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.LightGradientBoostingNewsvendor.set_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the parameters of this estimator.</p>
+<p>The method works on simple estimators as well as on nested objects
+(such as pipelines). The latter have parameters of the form
+<code class="docutils literal notranslate"><span class="pre">&lt;component&gt;__&lt;parameter&gt;</span></code> so that it’s possible to update each
+component of a nested object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**params</strong> (<em>dict</em>) – Estimator parameters.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>self</strong> – Estimator instance.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 
 
            </div>

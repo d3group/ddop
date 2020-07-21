@@ -6,11 +6,16 @@
 .. autoclass:: LightGradientBoostingNewsvendor
 
    
-   .. automethod:: __init__
+    
+   .. rubric:: Methods
+
+   .. autosummary::
    
-
-.. include:: ddop.newsvendor.LightGradientBoostingNewsvendor.examples
-
-.. raw:: html
-
-    <div class="clearer"></div>
+      ~LightGradientBoostingNewsvendor.__init__
+      ~LightGradientBoostingNewsvendor.fit
+      ~LightGradientBoostingNewsvendor.get_params
+      ~LightGradientBoostingNewsvendor.predict
+      ~LightGradientBoostingNewsvendor.score
+      ~LightGradientBoostingNewsvendor.set_params
+   
+   

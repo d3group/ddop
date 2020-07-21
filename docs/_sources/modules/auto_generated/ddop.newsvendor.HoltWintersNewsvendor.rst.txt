@@ -6,11 +6,16 @@
 .. autoclass:: HoltWintersNewsvendor
 
    
-   .. automethod:: __init__
+    
+   .. rubric:: Methods
+
+   .. autosummary::
    
-
-.. include:: ddop.newsvendor.HoltWintersNewsvendor.examples
-
-.. raw:: html
-
-    <div class="clearer"></div>
+      ~HoltWintersNewsvendor.__init__
+      ~HoltWintersNewsvendor.fit
+      ~HoltWintersNewsvendor.get_params
+      ~HoltWintersNewsvendor.predict
+      ~HoltWintersNewsvendor.score
+      ~HoltWintersNewsvendor.set_params
+   
+   
