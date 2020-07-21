@@ -1,0 +1,21 @@
+:mod:`ddop.newsvendor`.EqualWeightedNewsvendor
+=====================================================
+
+.. currentmodule:: ddop.newsvendor
+
+.. autoclass:: EqualWeightedNewsvendor
+
+   
+    
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~EqualWeightedNewsvendor.__init__
+      ~EqualWeightedNewsvendor.fit
+      ~EqualWeightedNewsvendor.get_params
+      ~EqualWeightedNewsvendor.predict
+      ~EqualWeightedNewsvendor.score
+      ~EqualWeightedNewsvendor.set_params
+   
+   

@@ -1,0 +1,21 @@
+:mod:`ddop.newsvendor`.KNeighborsWeightedNewsvendor
+==========================================================
+
+.. currentmodule:: ddop.newsvendor
+
+.. autoclass:: KNeighborsWeightedNewsvendor
+
+   
+    
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~KNeighborsWeightedNewsvendor.__init__
+      ~KNeighborsWeightedNewsvendor.fit
+      ~KNeighborsWeightedNewsvendor.get_params
+      ~KNeighborsWeightedNewsvendor.predict
+      ~KNeighborsWeightedNewsvendor.score
+      ~KNeighborsWeightedNewsvendor.set_params
+   
+   
