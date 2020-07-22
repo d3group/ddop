@@ -20,7 +20,7 @@ Empirical Risk Minimization
     :toctree: auto_generated/
     :template: class.rst
 
-    newsvendor.DeepLearningNewsvendor.
+    newsvendor.DeepLearningNewsvendor
     newsvendor.LightGradientBoostingNewsvendor
     newsvendor.EmpiricalRiskMinimizationNewsvendor
     newsvendor.DecisionTreeNewsvendor

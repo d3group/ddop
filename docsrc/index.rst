@@ -14,4 +14,5 @@ Frome here, you can navigate to:
    :maxdepth: 1
 
    api_reference
+   e_learning
    installation

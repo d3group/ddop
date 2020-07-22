@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to ddom-kit’s documentation! &mdash; ddom-kit  documentation</title>
+  <title>Welcome to ddom-kit! &mdash; ddom-kit  documentation</title>
   
 
   
@@ -83,6 +83,7 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="e_learning.html">E-Learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 </ul>
 
@@ -130,7 +131,7 @@
     
       <li><a href="#" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Welcome to ddom-kit’s documentation!</li>
+      <li>Welcome to ddom-kit!</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -149,16 +150,59 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="welcome-to-ddom-kits-documentation">
-<h1>Welcome to ddom-kit’s documentation!<a class="headerlink" href="#welcome-to-ddom-kits-documentation" title="Permalink to this headline">¶</a></h1>
-<p>ddom-kit is a Python machine learning toolbox for data-driven operations management. Currently supported are
-different approaches for newsvendor decision making.</p>
+  <div class="section" id="welcome-to-ddom-kit">
+<h1>Welcome to ddom-kit!<a class="headerlink" href="#welcome-to-ddom-kit" title="Permalink to this headline">¶</a></h1>
+<a class="reference internal image-reference" href="_images/logo.png"><img alt="_images/logo.png" src="_images/logo.png" style="width: 300px;" /></a>
+<p>ddom-kit is a Python toolkit for data-driven operations management. The goal of ddom-kit is to provide access to
+a variety of algorithms for decision making. Thus, one can run and compare the available approaches with only a few
+lines of code. Moreover ddom-kit’s interface allows to easily adapt an algorithm for one task to another.</p>
+<p>Currently supported are different algorithms for newsvendor decision making.</p>
+<hr class="docutils" />
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>ddom-kit is available via PyPI using:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install ddop
+</pre></div>
+</div>
+<p>The package is actively being developed and some features may
+not be stable yet.</p>
+</div>
+<div class="section" id="quickstart">
+<h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="newsvendor-decision-making">
+<h3>Newsvendor decision making<a class="headerlink" href="#newsvendor-decision-making" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ddop.datasets.load_datasets</span> <span class="kn">import</span> <span class="n">load_data</span>
+<span class="kn">from</span> <span class="nn">ddop.newsvendor</span> <span class="kn">import</span> <span class="n">EmpiricalRiskMinimizationNewsvendor</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;yaz_steak.csv&quot;</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">24</span><span class="p">]</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">24</span><span class="p">]</span>
+<span class="n">cu</span><span class="p">,</span><span class="n">co</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span><span class="mi">10</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">Y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">mdl</span> <span class="o">=</span> <span class="n">EmpiricalRiskMinimizationNewsvendor</span><span class="p">(</span><span class="n">cu</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">co</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">mdl</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+<span class="n">mdl</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">Y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For more details, check out our <a class="reference external" href="https://andreasphilippi.github.io/ddom-kit/e_learning.html">E-Learning</a>.</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Read the <a class="reference external" href="https://andreasphilippi.github.io/ddom-kit/api_reference.html">API reference</a> for detailed class and function information.</p></li>
+<li><p>Check out our <a class="reference external" href="https://andreasphilippi.github.io/ddom-kit/e_learning.html">E-Learning</a>.</p></li>
+</ul>
+</div>
+<hr class="docutils" />
 <div class="section" id="navigation">
 <h2>Navigation<a class="headerlink" href="#navigation" title="Permalink to this headline">¶</a></h2>
 <p>Frome here, you can navigate to:</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="e_learning.html">E-Learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 </ul>
 </div>

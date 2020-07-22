@@ -1,0 +1,21 @@
+:mod:`ddop.newsvendor`.DeepLearningNewsvendor
+====================================================
+
+.. currentmodule:: ddop.newsvendor
+
+.. autoclass:: DeepLearningNewsvendor
+
+   
+    
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~DeepLearningNewsvendor.__init__
+      ~DeepLearningNewsvendor.fit
+      ~DeepLearningNewsvendor.get_params
+      ~DeepLearningNewsvendor.predict
+      ~DeepLearningNewsvendor.score
+      ~DeepLearningNewsvendor.set_params
+   
+   
