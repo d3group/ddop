@@ -1,4 +1,4 @@
-:mod:`ddop.newsvendor`.EmpiricalRiskMinimizationNewsvendor
+﻿:mod:`ddop.newsvendor`.EmpiricalRiskMinimizationNewsvendor
 =================================================================
 
 .. currentmodule:: ddop.newsvendor

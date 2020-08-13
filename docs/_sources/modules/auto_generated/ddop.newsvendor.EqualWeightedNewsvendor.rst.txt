@@ -1,4 +1,4 @@
-:mod:`ddop.newsvendor`.EqualWeightedNewsvendor
+﻿:mod:`ddop.newsvendor`.EqualWeightedNewsvendor
 =====================================================
 
 .. currentmodule:: ddop.newsvendor

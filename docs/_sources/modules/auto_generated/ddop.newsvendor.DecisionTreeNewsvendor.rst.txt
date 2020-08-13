@@ -1,4 +1,4 @@
-:mod:`ddop.newsvendor`.DecisionTreeNewsvendor
+﻿:mod:`ddop.newsvendor`.DecisionTreeNewsvendor
 ====================================================
 
 .. currentmodule:: ddop.newsvendor

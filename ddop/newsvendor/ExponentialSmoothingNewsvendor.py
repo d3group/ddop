@@ -3,24 +3,14 @@ from statsmodels.tsa.holtwinters import ExponentialSmoothing
 from .base import BaseNewsvendor, ClassicMixin
 from ..utils.validation import check_cu_co, formate_hyperparameter
 from sklearn.utils.validation import check_array
+from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error
 import numpy as np
 
 
-class HoltWintersNewsvendor(BaseNewsvendor, ClassicMixin):
+class ExponentialSmoothingNewsvendor(BaseNewsvendor, ClassicMixin):
     """
-    A newsvendor model based on Holt-Winters' exponential smoothing forecaster
-
-    The next order quantity q is calculatad by:
-
-    q = f + MAE*1.25*z(alpha), where
-
-    - f is the forecast for the demand in the next period,
-    calculated by Holt-Winters' exponential smoothing,
-    - MAE is the Mean Squared Error between the true demand of y_train and the
-    values fitted by the Exponential Smoothing model,
-    - z(.) is the inverse of standard normal distribution,
-    - alpha is the service level calculated by cu/(cu+co)
+    A SEO newsvendor model with exponential smoothing as underlying forecaster
 
     Parameters
     ----------
@@ -82,13 +72,13 @@ class HoltWintersNewsvendor(BaseNewsvendor, ClassicMixin):
     Examples
     --------
     >>> from ddop.datasets.load_datasets import load_data
-    >>> from ddop.newsvendor import HoltWintersNewsvendor
+    >>> from ddop.newsvendor import ExponentialSmoothingNewsvendor
     >>> from sklearn.model_selection import train_test_split
     >>> data = load_data("yaz_steak.csv")
     >>> Y = data.iloc[:,24]
     >>> cu,co = 15,10
     >>> Y_train, Y_test = train_test_split(Y, test_size=0.25, shuffle=False, random_state=1)
-    >>> mdl = HoltWintersNewsvendor(cu, co, 'add', False, 'add',7)
+    >>> mdl = ExponentialSmoothingNewsvendor(cu, co, 'add', False, 'add',7)
     >>> mdl.fit(Y_train)
     >>> mdl.score(Y_test)
     TODO: Add result
@@ -186,21 +176,30 @@ class HoltWintersNewsvendor(BaseNewsvendor, ClassicMixin):
             remove_bias=self.remove_bias[i],
             use_basinhopping=self.use_basinhopping[i]) for i in range(self.n_outputs_)]
 
+        error = np.array([y[:, i] - fitted_forecasters[i].fittedvalues for i in range(self.n_outputs_)])
+        error_mean = error.mean(axis=1)
+        error_std = error.std(axis=1)
+
         mae = np.array([mean_absolute_error(y[:, i], fitted_forecasters[i].fittedvalues)
                         for i in range(self.n_outputs_)])
-        z_alpha = np.array([norm.ppf(self.cu_[i]/(self.co_[i]+self.cu_[i])) for i in range(self.n_outputs_)])
 
-        self.safety_buffer_ = mae*1.25*z_alpha
+        self.safety_buffer_mae = np.array(
+            [1.25 * mae[i] * norm.ppf(self.cu_[i] / (self.co_[i] + self.cu_[i])) for i in range(self.n_outputs_)])
+
+        self.safety_buffer_ = np.array(
+            [norm(error_mean[i], error_std[i]).ppf(self.cu_[i] / (self.co_[i] + self.cu_[i])) for i in
+             range(self.n_outputs_)])
+
         self.forecasters_ = fitted_forecasters
 
         return self
 
-    def predict(self, n=1):
+    def predict(self, n_steps=1):
         """Predict n time-steps
 
         Parameters
         ----------
-        n : int, default=1
+        n_steps : int, default=1
             The number of steps to predict ahead
 
         Returns
@@ -208,9 +207,8 @@ class HoltWintersNewsvendor(BaseNewsvendor, ClassicMixin):
         y : array-like of shape (n, n_outputs)
             The predicted values
         """
-        forecasts = np.array([forecaster.forecast(n) for forecaster in self.forecasters_]).T
-        pred = forecasts+self.safety_buffer_
+
+        forecasts = np.array([forecaster.forecast(n_steps) for forecaster in self.forecasters_]).T
+        pred = forecasts + self.safety_buffer_
+
         return pred
-
-
-

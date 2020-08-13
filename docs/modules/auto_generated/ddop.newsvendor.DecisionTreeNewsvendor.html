@@ -30,6 +30,9 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -149,7 +152,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="ddop-newsvendor-decisiontreenewsvendor">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="ddop-newsvendor-decisiontreenewsvendor">
 <h1><a class="reference internal" href="../newsvendor.html#module-ddop.newsvendor" title="ddop.newsvendor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code></a>.DecisionTreeNewsvendor<a class="headerlink" href="#ddop-newsvendor-decisiontreenewsvendor" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="ddop.newsvendor.DecisionTreeNewsvendor">
@@ -162,19 +189,19 @@ is used to build the tree.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>criterion</strong> (<em>{&quot;newsvendor&quot;}</em><em>, </em><em>default=&quot;newsvendor&quot;</em>) – The function to measure the quality of a split. Supported is only
+<li><p><strong>criterion</strong> (<code class="docutils literal notranslate"><span class="pre">{&quot;newsvendor&quot;}</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">&quot;newsvendor&quot;</span></code>) – The function to measure the quality of a split. Supported is only
 “newsvendor”, which minimizes the Loss-function described in [5]</p></li>
-<li><p><strong>cu</strong> (<em>{array-like of shape</em><em> (</em><em>n_outputs</em><em>,</em><em>)</em><em>, </em><em>Number</em><em> or </em><em>None}</em><em>, </em><em>default=None</em>) – The underage costs per unit. If None, then underage costs are one
+<li><p><strong>cu</strong> (<code class="docutils literal notranslate"><span class="pre">{array-like</span> <span class="pre">of</span> <span class="pre">shape</span> <span class="pre">(n_outputs,),</span> <span class="pre">Number</span> <span class="pre">or</span> <span class="pre">None}</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – The underage costs per unit. If None, then underage costs are one
 for each target variable</p></li>
-<li><p><strong>co</strong> (<em>{array-like of shape</em><em> (</em><em>n_outputs</em><em>,</em><em>)</em><em>, </em><em>Number</em><em> or </em><em>None}</em><em>, </em><em>default=None</em>) – The overage costs per unit. If None, then overage costs are one
+<li><p><strong>co</strong> (<code class="docutils literal notranslate"><span class="pre">{array-like</span> <span class="pre">of</span> <span class="pre">shape</span> <span class="pre">(n_outputs,),</span> <span class="pre">Number</span> <span class="pre">or</span> <span class="pre">None}</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – The overage costs per unit. If None, then overage costs are one
 for each target variable</p></li>
-<li><p><strong>splitter</strong> (<em>{&quot;best&quot;</em><em>, </em><em>&quot;random&quot;}</em><em>, </em><em>default=&quot;best&quot;</em>) – The strategy used to choose the split at each node. Supported
+<li><p><strong>splitter</strong> (<code class="docutils literal notranslate"><span class="pre">{&quot;best&quot;,</span> <span class="pre">&quot;random&quot;}</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">&quot;best&quot;</span></code>) – The strategy used to choose the split at each node. Supported
 strategies are “best” to choose the best split and “random” to choose
 the best random split.</p></li>
-<li><p><strong>max_depth</strong> (<em>int</em><em>, </em><em>default=None</em>) – The maximum depth of the tree. If None, then nodes are expanded until
+<li><p><strong>max_depth</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – The maximum depth of the tree. If None, then nodes are expanded until
 all leaves are pure or until all leaves contain less than
 min_samples_split samples.</p></li>
-<li><p><strong>min_samples_split</strong> (<em>int</em><em> or </em><em>float</em><em>, </em><em>default=2</em>) – <p>The minimum number of samples required to split an internal node:
+<li><p><strong>min_samples_split</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">2</span></code>) – <p>The minimum number of samples required to split an internal node:
 - If int, then consider <cite>min_samples_split</cite> as the minimum number.
 - If float, then <cite>min_samples_split</cite> is a fraction and</p>
 <blockquote>
@@ -182,7 +209,7 @@ min_samples_split samples.</p></li>
 number of samples for each split.</p>
 </div></blockquote>
 </p></li>
-<li><p><strong>min_samples_leaf</strong> (<em>int</em><em> or </em><em>float</em><em>, </em><em>default=1</em>) – <p>The minimum number of samples required to be at a leaf node.
+<li><p><strong>min_samples_leaf</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">1</span></code>) – <p>The minimum number of samples required to be at a leaf node.
 A split point at any depth will only be considered if it leaves at
 least <code class="docutils literal notranslate"><span class="pre">min_samples_leaf</span></code> training samples in each of the left and
 right branches.  This may have the effect of smoothing the model,
@@ -194,10 +221,10 @@ especially in regression.
 number of samples for each node.</p>
 </div></blockquote>
 </p></li>
-<li><p><strong>min_weight_fraction_leaf</strong> (<em>float</em><em>, </em><em>default=0.0</em>) – The minimum weighted fraction of the sum total of weights (of all
+<li><p><strong>min_weight_fraction_leaf</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">0.0</span></code>) – The minimum weighted fraction of the sum total of weights (of all
 the input samples) required to be at a leaf node. Samples have
 equal weight when sample_weight is not provided.</p></li>
-<li><p><strong>max_features</strong> (<em>int</em><em>, </em><em>float</em><em> or </em><em>{&quot;auto&quot;</em><em>, </em><em>&quot;sqrt&quot;</em><em>, </em><em>&quot;log2&quot;}</em><em>, </em><em>default=None</em>) – <p>The number of features to consider when looking for the best split:
+<li><p><strong>max_features</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">{&quot;auto&quot;,</span> <span class="pre">&quot;sqrt&quot;,</span> <span class="pre">&quot;log2&quot;}</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – <p>The number of features to consider when looking for the best split:
 - If int, then consider <cite>max_features</cite> features at each split.
 - If float, then <cite>max_features</cite> is a fraction and</p>
 <blockquote>
@@ -214,7 +241,7 @@ split.</p>
 valid partition of the node samples is found, even if it requires to
 effectively inspect more than <code class="docutils literal notranslate"><span class="pre">max_features</span></code> features.</p>
 </p></li>
-<li><p><strong>random_state</strong> (<em>int</em><em>, </em><em>RandomState instance</em><em>, </em><em>default=None</em>) – Controls the randomness of the estimator. The features are always
+<li><p><strong>random_state</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">RandomState</span> <span class="pre">instance</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – Controls the randomness of the estimator. The features are always
 randomly permuted at each split, even if <code class="docutils literal notranslate"><span class="pre">splitter</span></code> is set to
 <code class="docutils literal notranslate"><span class="pre">&quot;best&quot;</span></code>. When <code class="docutils literal notranslate"><span class="pre">max_features</span> <span class="pre">&lt;</span> <span class="pre">n_features</span></code>, the algorithm will
 select <code class="docutils literal notranslate"><span class="pre">max_features</span></code> at random at each split before finding the best
@@ -223,10 +250,10 @@ runs, even if <code class="docutils literal notranslate"><span class="pre">max_f
 improvement of the criterion is identical for several splits and one
 split has to be selected at random. To obtain a deterministic behaviour
 during fitting, <code class="docutils literal notranslate"><span class="pre">random_state</span></code> has to be fixed to an integer.</p></li>
-<li><p><strong>max_leaf_nodes</strong> (<em>int</em><em>, </em><em>default=None</em>) – Grow a tree with <code class="docutils literal notranslate"><span class="pre">max_leaf_nodes</span></code> in best-first fashion.
+<li><p><strong>max_leaf_nodes</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – Grow a tree with <code class="docutils literal notranslate"><span class="pre">max_leaf_nodes</span></code> in best-first fashion.
 Best nodes are defined as relative reduction in impurity.
 If None then unlimited number of leaf nodes.</p></li>
-<li><p><strong>min_impurity_decrease</strong> (<em>float</em><em>, </em><em>default=0.0</em>) – <p>A node will be split if this split induces a decrease of the impurity
+<li><p><strong>min_impurity_decrease</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">0.0</span></code>) – <p>A node will be split if this split induces a decrease of the impurity
 greater than or equal to this value.
 The weighted impurity decrease equation is the following:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">N_t</span> <span class="o">/</span> <span class="n">N</span> <span class="o">*</span> <span class="p">(</span><span class="n">impurity</span> <span class="o">-</span> <span class="n">N_t_R</span> <span class="o">/</span> <span class="n">N_t</span> <span class="o">*</span> <span class="n">right_impurity</span>
@@ -239,7 +266,7 @@ left child, and <code class="docutils literal notranslate"><span class="pre">N_t
 <code class="docutils literal notranslate"><span class="pre">N</span></code>, <code class="docutils literal notranslate"><span class="pre">N_t</span></code>, <code class="docutils literal notranslate"><span class="pre">N_t_R</span></code> and <code class="docutils literal notranslate"><span class="pre">N_t_L</span></code> all refer to the weighted sum,
 if <code class="docutils literal notranslate"><span class="pre">sample_weight</span></code> is passed.</p>
 </p></li>
-<li><p><strong>ccp_alpha</strong> (<em>non-negative float</em><em>, </em><em>default=0.0</em>) – Complexity parameter used for Minimal Cost-Complexity Pruning. The
+<li><p><strong>ccp_alpha</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">non-negative</span> <span class="pre">float</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">0.0</span></code>) – Complexity parameter used for Minimal Cost-Complexity Pruning. The
 subtree with the largest cost complexity that is smaller than
 <code class="docutils literal notranslate"><span class="pre">ccp_alpha</span></code> will be chosen. By default, no pruning is performed.</p></li>
 </ul>
@@ -257,7 +284,7 @@ Warning: impurity-based feature importances can be misleading for
 high cardinality features (many unique values).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ndarray of shape (n_features,)</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_features,)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -268,7 +295,7 @@ high cardinality features (many unique values).</p>
 <dd><p>The inferred value of max_features.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -279,7 +306,7 @@ high cardinality features (many unique values).</p>
 <dd><p>The number of features when <code class="docutils literal notranslate"><span class="pre">fit</span></code> is performed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -290,7 +317,7 @@ high cardinality features (many unique values).</p>
 <dd><p>The number of outputs when <code class="docutils literal notranslate"><span class="pre">fit</span></code> is performed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -301,7 +328,7 @@ high cardinality features (many unique values).</p>
 <dd><p>Validated underage costs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ndarray, shape (n_outputs,)</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_outputs,)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -312,7 +339,7 @@ high cardinality features (many unique values).</p>
 <dd><p>Validated overage costs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ndarray, shape (n_outputs,)</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_outputs,)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -323,7 +350,7 @@ high cardinality features (many unique values).</p>
 <dd><p>The underlying Tree object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>Tree</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Tree</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -438,10 +465,10 @@ Analyzing Two Concepts to Get From Data to Decisions”,</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>{array-like</em><em>, </em><em>sparse matrix} of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The input samples. Internally, it will be converted to
+<li><p><strong>X</strong> (<code class="docutils literal notranslate"><span class="pre">{array-like,</span> <span class="pre">sparse</span> <span class="pre">matrix}</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>) – The input samples. Internally, it will be converted to
 <code class="docutils literal notranslate"><span class="pre">dtype=np.float32</span></code> and if a sparse matrix is provided
 to a sparse <code class="docutils literal notranslate"><span class="pre">csr_matrix</span></code>.</p></li>
-<li><p><strong>check_input</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Allow to bypass several input checking.
+<li><p><strong>check_input</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>) – Allow to bypass several input checking.
 Don’t use this parameter unless you know what you do.</p></li>
 </ul>
 </dd>
@@ -452,7 +479,7 @@ ends up in. Leaves are numbered within
 numbering.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>array-like of shape (n_samples,)</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples,)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -471,11 +498,11 @@ process.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>{array-like</em><em>, </em><em>sparse matrix} of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The training input samples. Internally, it will be converted to
+<li><p><strong>X</strong> (<code class="docutils literal notranslate"><span class="pre">{array-like,</span> <span class="pre">sparse</span> <span class="pre">matrix}</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>) – The training input samples. Internally, it will be converted to
 <code class="docutils literal notranslate"><span class="pre">dtype=np.float32</span></code> and if a sparse matrix is provided
 to a sparse <code class="docutils literal notranslate"><span class="pre">csc_matrix</span></code>.</p></li>
-<li><p><strong>y</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>,</em><em>) or </em><em>(</em><em>n_samples</em><em>, </em><em>n_outputs</em><em>)</em>) – The target values (class labels) as integers or strings.</p></li>
-<li><p><strong>sample_weight</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>,</em><em>)</em><em>, </em><em>default=None</em>) – Sample weights. If None, then samples are equally weighted. Splits
+<li><p><strong>y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples,)</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_outputs)</span></code>) – The target values (class labels) as integers or strings.</p></li>
+<li><p><strong>sample_weight</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples,)</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – Sample weights. If None, then samples are equally weighted. Splits
 that would create child nodes with net zero or negative weight are
 ignored while searching for a split in each node. Splits are also
 ignored if they would result in any single class carrying a
@@ -509,10 +536,10 @@ corresponding alpha value in <code class="docutils literal notranslate"><span cl
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>{array-like</em><em>, </em><em>sparse matrix} of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The input samples. Internally, it will be converted to
+<li><p><strong>X</strong> (<code class="docutils literal notranslate"><span class="pre">{array-like,</span> <span class="pre">sparse</span> <span class="pre">matrix}</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>) – The input samples. Internally, it will be converted to
 <code class="docutils literal notranslate"><span class="pre">dtype=np.float32</span></code> and if a sparse matrix is provided
 to a sparse <code class="docutils literal notranslate"><span class="pre">csr_matrix</span></code>.</p></li>
-<li><p><strong>check_input</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Allow to bypass several input checking.
+<li><p><strong>check_input</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>) – Allow to bypass several input checking.
 Don’t use this parameter unless you know what you do.</p></li>
 </ul>
 </dd>
@@ -521,7 +548,7 @@ Don’t use this parameter unless you know what you do.</p></li>
 indicates that the samples goes through the nodes.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>sparse matrix of shape (n_samples, n_nodes)</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">sparse</span> <span class="pre">matrix</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_nodes)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -542,7 +569,7 @@ high cardinality features (many unique values). See
 (Gini importance).</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>ndarray of shape (n_features,)</p>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_features,)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -555,17 +582,17 @@ high cardinality features (many unique values). See
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>{array-like</em><em>, </em><em>sparse matrix} of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The training input samples. Internally, it will be converted to
+<li><p><strong>X</strong> (<code class="docutils literal notranslate"><span class="pre">{array-like,</span> <span class="pre">sparse</span> <span class="pre">matrix}</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>) – The training input samples. Internally, it will be converted to
 <code class="docutils literal notranslate"><span class="pre">dtype=np.float32</span></code> and if a sparse matrix is provided
 to a sparse <code class="docutils literal notranslate"><span class="pre">csc_matrix</span></code>.</p></li>
-<li><p><strong>y</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>,</em><em>) or </em><em>(</em><em>n_samples</em><em>, </em><em>n_outputs</em><em>)</em>) – The target values (real numbers). Use <code class="docutils literal notranslate"><span class="pre">dtype=np.float64</span></code> and
+<li><p><strong>y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples,)</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_outputs)</span></code>) – The target values (real numbers). Use <code class="docutils literal notranslate"><span class="pre">dtype=np.float64</span></code> and
 <code class="docutils literal notranslate"><span class="pre">order='C'</span></code> for maximum efficiency.</p></li>
-<li><p><strong>sample_weight</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>,</em><em>)</em><em>, </em><em>default=None</em>) – Sample weights. If None, then samples are equally weighted. Splits
+<li><p><strong>sample_weight</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples,)</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – Sample weights. If None, then samples are equally weighted. Splits
 that would create child nodes with net zero or negative weight are
 ignored while searching for a split in each node.</p></li>
-<li><p><strong>check_input</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Allow to bypass several input checking.
+<li><p><strong>check_input</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>) – Allow to bypass several input checking.
 Don’t use this parameter unless you know what you do.</p></li>
-<li><p><strong>X_idx_sorted</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em><em>,             </em><em>default=None</em>) – The indexes of the sorted training input samples. If many tree
+<li><p><strong>X_idx_sorted</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>,             default=None) – The indexes of the sorted training input samples. If many tree
 are grown on the same dataset, this allows the ordering to be
 cached between trees. If None, the data will be sorted here.
 Don’t use this parameter unless you know what to do.</p></li>
@@ -575,7 +602,7 @@ Don’t use this parameter unless you know what to do.</p></li>
 <dd class="field-even"><p><strong>self</strong> – Fitted estimator.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>NewsvendorDecisionTreeRegressor</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">NewsvendorDecisionTreeRegressor</span></code></p>
 </dd>
 </dl>
 <p class="rubric">References</p>
@@ -596,7 +623,7 @@ and any leaf.</p>
 <dd class="field-odd"><p><strong>self.tree_.max_depth</strong> – The maximum depth of the tree.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>int</p>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -610,7 +637,7 @@ and any leaf.</p>
 <dd class="field-odd"><p><strong>self.tree_.n_leaves</strong> – Number of leaves.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p>int</p>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -621,14 +648,14 @@ and any leaf.</p>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>deep</strong> (<em>bool</em><em>, </em><em>default=True</em>) – If True, will return the parameters for this estimator and
+<dd class="field-odd"><p><strong>deep</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>) – If True, will return the parameters for this estimator and
 contained subobjects that are estimators.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>params</strong> – Parameter names mapped to their values.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>mapping of string to any</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">mapping</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code> to <code class="xref py py-class docutils literal notranslate"><span class="pre">any</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -648,10 +675,10 @@ returned.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>{array-like</em><em>, </em><em>sparse matrix} of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The input samples. Internally, it will be converted to
+<li><p><strong>X</strong> (<code class="docutils literal notranslate"><span class="pre">{array-like,</span> <span class="pre">sparse</span> <span class="pre">matrix}</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>) – The input samples. Internally, it will be converted to
 <code class="docutils literal notranslate"><span class="pre">dtype=np.float32</span></code> and if a sparse matrix is provided
 to a sparse <code class="docutils literal notranslate"><span class="pre">csr_matrix</span></code>.</p></li>
-<li><p><strong>check_input</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Allow to bypass several input checking.
+<li><p><strong>check_input</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>) – Allow to bypass several input checking.
 Don’t use this parameter unless you know what you do.</p></li>
 </ul>
 </dd>
@@ -659,7 +686,7 @@ Don’t use this parameter unless you know what you do.</p></li>
 <dd class="field-even"><p><strong>y</strong> – The predicted classes, or the predict values.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>array-like of shape (n_samples,) or (n_samples, n_outputs)</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples,)</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_outputs)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -678,20 +705,20 @@ would get a R^2 score of 0.0.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – Test samples. For some estimators this may be a
+<li><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>) – Test samples. For some estimators this may be a
 precomputed kernel matrix or a list of generic objects instead,
 shape = (n_samples, n_samples_fitted),
 where n_samples_fitted is the number of
 samples used in the fitting for the estimator.</p></li>
-<li><p><strong>y</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>,</em><em>) or </em><em>(</em><em>n_samples</em><em>, </em><em>n_outputs</em><em>)</em>) – True values for X.</p></li>
-<li><p><strong>sample_weight</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>,</em><em>)</em><em>, </em><em>default=None</em>) – Sample weights.</p></li>
+<li><p><strong>y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples,)</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_outputs)</span></code>) – True values for X.</p></li>
+<li><p><strong>sample_weight</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples,)</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – Sample weights.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>score</strong> – R^2 of self.predict(X) wrt. y.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>float</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -713,13 +740,13 @@ regressors (except for
 component of a nested object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>**params</strong> (<em>dict</em>) – Estimator parameters.</p>
+<dd class="field-odd"><p><strong>**params</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) – Estimator parameters.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>self</strong> – Estimator instance.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>object</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 </dd>
 </dl>
 </dd></dl>

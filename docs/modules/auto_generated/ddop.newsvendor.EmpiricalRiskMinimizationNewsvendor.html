@@ -30,6 +30,9 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -149,7 +152,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="ddop-newsvendor-empiricalriskminimizationnewsvendor">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="ddop-newsvendor-empiricalriskminimizationnewsvendor">
 <h1><a class="reference internal" href="../newsvendor.html#module-ddop.newsvendor" title="ddop.newsvendor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code></a>.EmpiricalRiskMinimizationNewsvendor<a class="headerlink" href="#ddop-newsvendor-empiricalriskminimizationnewsvendor" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor">
@@ -159,9 +186,9 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cu</strong> (<em>{array-like of shape</em><em> (</em><em>n_outputs</em><em>,</em><em>)</em><em>, </em><em>Number</em><em> or </em><em>None}</em><em>, </em><em>default=None</em>) – The underage costs per unit. If None, then underage costs are one
+<li><p><strong>cu</strong> (<code class="docutils literal notranslate"><span class="pre">{array-like</span> <span class="pre">of</span> <span class="pre">shape</span> <span class="pre">(n_outputs,),</span> <span class="pre">Number</span> <span class="pre">or</span> <span class="pre">None}</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – The underage costs per unit. If None, then underage costs are one
 for each target variable</p></li>
-<li><p><strong>co</strong> (<em>{array-like of shape</em><em> (</em><em>n_outputs</em><em>,</em><em>)</em><em>, </em><em>Number</em><em> or </em><em>None}</em><em>, </em><em>default=None</em>) – The overage costs per unit. If None, then overage costs are one
+<li><p><strong>co</strong> (<code class="docutils literal notranslate"><span class="pre">{array-like</span> <span class="pre">of</span> <span class="pre">shape</span> <span class="pre">(n_outputs,),</span> <span class="pre">Number</span> <span class="pre">or</span> <span class="pre">None}</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – The overage costs per unit. If None, then overage costs are one
 for each target variable</p></li>
 </ul>
 </dd>
@@ -172,7 +199,7 @@ for each target variable</p></li>
 <dd><p>The number of features when <code class="docutils literal notranslate"><span class="pre">fit</span></code> is performed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -183,7 +210,7 @@ for each target variable</p></li>
 <dd><p>The number of outputs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -194,7 +221,7 @@ for each target variable</p></li>
 <dd><p>Validated underage costs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ndarray, shape (n_outputs,)</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_outputs,)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -205,7 +232,7 @@ for each target variable</p></li>
 <dd><p>Validated overage costs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ndarray, shape (n_outputs,)</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_outputs,)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -216,7 +243,7 @@ for each target variable</p></li>
 <dd><p>The calculated feature weights</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>array of shape (n_outputs, n_features)</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_outputs</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -283,15 +310,15 @@ from Machine Learning”, 2018.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The training input samples.</p></li>
-<li><p><strong>y</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_outputs</em><em>)</em>) – The target values.</p></li>
+<li><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>) – The training input samples.</p></li>
+<li><p><strong>y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_outputs)</span></code>) – The target values.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>self</strong> – Fitted estimator</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor" title="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor">EmpiricalRiskMinimizationNewsvendor</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor" title="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmpiricalRiskMinimizationNewsvendor</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -302,14 +329,14 @@ from Machine Learning”, 2018.</p>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>deep</strong> (<em>bool</em><em>, </em><em>default=True</em>) – If True, will return the parameters for this estimator and
+<dd class="field-odd"><p><strong>deep</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>) – If True, will return the parameters for this estimator and
 contained subobjects that are estimators.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>params</strong> – Parameter names mapped to their values.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>mapping of string to any</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">mapping</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code> to <code class="xref py py-class docutils literal notranslate"><span class="pre">any</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -320,13 +347,13 @@ contained subobjects that are estimators.</p>
 <dd><p>Predict value for X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The input samples to predict.</p>
+<dd class="field-odd"><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>) – The input samples to predict.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>y</strong> – The predicted values</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>array-like of shape (n_samples, n_outputs)</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_outputs)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -346,13 +373,13 @@ contained subobjects that are estimators.</p>
 component of a nested object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>**params</strong> (<em>dict</em>) – Estimator parameters.</p>
+<dd class="field-odd"><p><strong>**params</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) – Estimator parameters.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>self</strong> – Estimator instance.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>object</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 </dd>
 </dl>
 </dd></dl>

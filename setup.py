@@ -2,7 +2,7 @@ from setuptools import Extension, setup, find_packages
 import warnings
 
 
-with open('README.md') as f:
+with open('README.rst') as f:
     README = f.read()
 
 
@@ -24,19 +24,19 @@ def get_extensions():
 
 setup(
     name='ddop',
-    version='v0.4.5',
+    version='v0.4.6',
     url='',
     license='MIT',
     author='Andreas Philippi',
     author_email='',
     description='Package for data-driven operations management',
-    long_description=README,
+    #long_description=README,
     include_package_data=True,
     packages=find_packages(),
     package_data={"ddop.utils": ["criterion.pyx"]},
     python_requires=">=3.6",
     install_requires=['Cython', 'scikit-learn>=0.23.0', 'pandas', 'PuLP==2.0',
-                      'tensorflow>=2.1.0', 'Keras>=2.3.1',
+                      'tensorflow>=2.1.0', 'Keras>=2.3.1', 'statsmodels',
                       'numpy>=1.18.2', 'scipy>=1.4.1', 'lightgbm>=2.3.1'],
     ext_modules=get_extensions(),
 )

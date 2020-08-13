@@ -30,6 +30,9 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -149,7 +152,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="ddop-newsvendor-kneighborsweightednewsvendor">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="ddop-newsvendor-kneighborsweightednewsvendor">
 <h1><a class="reference internal" href="../newsvendor.html#module-ddop.newsvendor" title="ddop.newsvendor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code></a>.KNeighborsWeightedNewsvendor<a class="headerlink" href="#ddop-newsvendor-kneighborsweightednewsvendor" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="ddop.newsvendor.KNeighborsWeightedNewsvendor">
@@ -158,14 +185,14 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cu</strong> (<em>{array-like of shape</em><em> (</em><em>n_outputs</em><em>,</em><em>)</em><em>, </em><em>Number</em><em> or </em><em>None}</em><em>, </em><em>default=None</em>) – The underage costs per unit. If None, then underage costs are one
+<li><p><strong>cu</strong> (<code class="docutils literal notranslate"><span class="pre">{array-like</span> <span class="pre">of</span> <span class="pre">shape</span> <span class="pre">(n_outputs,),</span> <span class="pre">Number</span> <span class="pre">or</span> <span class="pre">None}</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – The underage costs per unit. If None, then underage costs are one
 for each target variable</p></li>
-<li><p><strong>co</strong> (<em>{array-like of shape</em><em> (</em><em>n_outputs</em><em>,</em><em>)</em><em>, </em><em>Number</em><em> or </em><em>None}</em><em>, </em><em>default=None</em>) – The overage costs per unit. If None, then overage costs are one
+<li><p><strong>co</strong> (<code class="docutils literal notranslate"><span class="pre">{array-like</span> <span class="pre">of</span> <span class="pre">shape</span> <span class="pre">(n_outputs,),</span> <span class="pre">Number</span> <span class="pre">or</span> <span class="pre">None}</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – The overage costs per unit. If None, then overage costs are one
 for each target variable</p></li>
-<li><p><strong>n_neighbors</strong> (<em>int</em><em>, </em><em>default=5</em>) – Number of neighbors to use by default for <code class="xref py py-meth docutils literal notranslate"><span class="pre">kneighbors()</span></code> queries.</p></li>
-<li><p><strong>radius</strong> (<em>float</em><em>, </em><em>default=1.0</em>) – Range of parameter space to use by default for <code class="xref py py-meth docutils literal notranslate"><span class="pre">radius_neighbors()</span></code>
+<li><p><strong>n_neighbors</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">5</span></code>) – Number of neighbors to use by default for <code class="xref py py-meth docutils literal notranslate"><span class="pre">kneighbors()</span></code> queries.</p></li>
+<li><p><strong>radius</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">1.0</span></code>) – Range of parameter space to use by default for <code class="xref py py-meth docutils literal notranslate"><span class="pre">radius_neighbors()</span></code>
 queries.</p></li>
-<li><p><strong>algorithm</strong> (<em>{'auto'</em><em>, </em><em>'ball_tree'</em><em>, </em><em>'kd_tree'</em><em>, </em><em>'brute'}</em><em>, </em><em>default='auto'</em>) – <p>Algorithm used to compute the nearest neighbors:
+<li><p><strong>algorithm</strong> (<code class="docutils literal notranslate"><span class="pre">{'auto',</span> <span class="pre">'ball_tree',</span> <span class="pre">'kd_tree',</span> <span class="pre">'brute'}</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">'auto'</span></code>) – <p>Algorithm used to compute the nearest neighbors:
 - ‘ball_tree’ will use <code class="xref py py-class docutils literal notranslate"><span class="pre">BallTree</span></code>
 - ‘kd_tree’ will use <code class="xref py py-class docutils literal notranslate"><span class="pre">KDTree</span></code>
 - ‘brute’ will use a brute-force search.
@@ -176,23 +203,23 @@ queries.</p></li>
 <p>Note: fitting on sparse input will override the setting of
 this parameter, using brute force.</p>
 </p></li>
-<li><p><strong>leaf_size</strong> (<em>int</em><em>, </em><em>default=30</em>) – Leaf size passed to BallTree or KDTree.  This can affect the
+<li><p><strong>leaf_size</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">30</span></code>) – Leaf size passed to BallTree or KDTree.  This can affect the
 speed of the construction and query, as well as the memory
 required to store the tree.  The optimal value depends on the
 nature of the problem.</p></li>
-<li><p><strong>metric</strong> (<em>str</em><em> or </em><em>callable</em><em>, </em><em>default='minkowski'</em>) – the distance metric to use for the tree.  The default metric is
+<li><p><strong>metric</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">callable</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">'minkowski'</span></code>) – the distance metric to use for the tree.  The default metric is
 minkowski, and with p=2 is equivalent to the standard Euclidean
 metric. See the documentation of <code class="xref py py-class docutils literal notranslate"><span class="pre">DistanceMetric</span></code> for a
 list of available metrics.
 If metric is “precomputed”, X is assumed to be a distance matrix and
 must be square during fit. X may be a <span class="xref std std-term">sparse graph</span>,
 in which case only “nonzero” elements may be considered neighbors.</p></li>
-<li><p><strong>p</strong> (<em>int</em><em>, </em><em>default=2</em>) – Parameter for the Minkowski metric from
+<li><p><strong>p</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">2</span></code>) – Parameter for the Minkowski metric from
 sklearn.metrics.pairwise.pairwise_distances. When p = 1, this is
 equivalent to using manhattan_distance (l1), and euclidean_distance
 (l2) for p = 2. For arbitrary p, minkowski_distance (l_p) is used.</p></li>
-<li><p><strong>metric_params</strong> (<em>dict</em><em>, </em><em>default=None</em>) – Additional keyword arguments for the metric function.</p></li>
-<li><p><strong>n_jobs</strong> (<em>int</em><em>, </em><em>default=None</em>) – The number of parallel jobs to run for neighbors search.
+<li><p><strong>metric_params</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – Additional keyword arguments for the metric function.</p></li>
+<li><p><strong>n_jobs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – The number of parallel jobs to run for neighbors search.
 <code class="docutils literal notranslate"><span class="pre">None</span></code> means 1 unless in a <code class="xref py py-obj docutils literal notranslate"><span class="pre">joblib.parallel_backend</span></code> context.
 <code class="docutils literal notranslate"><span class="pre">-1</span></code> means using all processors.</p></li>
 </ul>
@@ -204,7 +231,7 @@ equivalent to using manhattan_distance (l1), and euclidean_distance
 <dd><p>The X training data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>array of shape (n_samples, n_features)</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -215,7 +242,7 @@ equivalent to using manhattan_distance (l1), and euclidean_distance
 <dd><p>The y training data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>array of shape (n_samples, n_outputs)</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_outputs)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -226,7 +253,7 @@ equivalent to using manhattan_distance (l1), and euclidean_distance
 <dd><p>Validated underage costs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ndarray, shape (n_outputs,)</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_outputs,)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -237,7 +264,7 @@ equivalent to using manhattan_distance (l1), and euclidean_distance
 <dd><p>Validated overage costs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ndarray, shape (n_outputs,)</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_outputs,)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -248,7 +275,7 @@ equivalent to using manhattan_distance (l1), and euclidean_distance
 <dd><p>The number of features when <code class="docutils literal notranslate"><span class="pre">fit</span></code> is performed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -259,7 +286,7 @@ equivalent to using manhattan_distance (l1), and euclidean_distance
 <dd><p>The number of outputs when <code class="docutils literal notranslate"><span class="pre">fit</span></code> is performed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -270,7 +297,7 @@ equivalent to using manhattan_distance (l1), and euclidean_distance
 <dd><p>The number of samples when <code class="docutils literal notranslate"><span class="pre">fit</span></code> is performed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -281,7 +308,7 @@ equivalent to using manhattan_distance (l1), and euclidean_distance
 <dd><p>The underlying model used to calculate the sample weights</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>NearestNeighbors</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">NearestNeighbors</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -356,15 +383,15 @@ arXiv preprint arXiv:1402.5481 (2014).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The training input samples.</p></li>
-<li><p><strong>y</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The target values.</p></li>
+<li><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>) – The training input samples.</p></li>
+<li><p><strong>y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>) – The target values.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>self</strong> – Fitted estimator</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#ddop.newsvendor.KNeighborsWeightedNewsvendor" title="ddop.newsvendor.KNeighborsWeightedNewsvendor">KNeighborsWeightedNewsvendor</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#ddop.newsvendor.KNeighborsWeightedNewsvendor" title="ddop.newsvendor.KNeighborsWeightedNewsvendor"><code class="xref py py-class docutils literal notranslate"><span class="pre">KNeighborsWeightedNewsvendor</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -375,14 +402,14 @@ arXiv preprint arXiv:1402.5481 (2014).</p>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>deep</strong> (<em>bool</em><em>, </em><em>default=True</em>) – If True, will return the parameters for this estimator and
+<dd class="field-odd"><p><strong>deep</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>) – If True, will return the parameters for this estimator and
 contained subobjects that are estimators.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>params</strong> – Parameter names mapped to their values.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>mapping of string to any</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">mapping</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code> to <code class="xref py py-class docutils literal notranslate"><span class="pre">any</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -393,13 +420,13 @@ contained subobjects that are estimators.</p>
 <dd><p>Predict value for X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The input samples to predict.</p>
+<dd class="field-odd"><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>) – The input samples to predict.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>y</strong> – The predicted values</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>array-like of shape (n_samples, n_outputs)</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_outputs)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -419,13 +446,13 @@ contained subobjects that are estimators.</p>
 component of a nested object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>**params</strong> (<em>dict</em>) – Estimator parameters.</p>
+<dd class="field-odd"><p><strong>**params</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) – Estimator parameters.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>self</strong> – Estimator instance.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>object</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 </dd>
 </dl>
 </dd></dl>

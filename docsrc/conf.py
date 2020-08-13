@@ -33,8 +33,10 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.intersphinx',
     'sphinx.ext.napoleon',
+    'sphinx.ext.mathjax',
     'sphinx.ext.autosectionlabel',
-    'sphinx.ext.githubpages'
+    'sphinx.ext.githubpages',
+    'nbsphinx'
 ]
 
 # this is needed for some reason...
@@ -45,6 +47,12 @@ autodoc_mock_imports = ["keras","statsmodels"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
+
+# The suffix(es) of source filenames.
+# You can specify multiple suffix as a list of string:
+source_suffix = [
+    '.rst', '.ipynb'
+]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -61,8 +69,8 @@ autodoc_default_options = {
     'undoc-members': True,
 }
 
-# If true, '()' will be appended to :func: etc. cross-reference text.
-# add_function_parentheses = False
+# -- Extension configuration -------------------------------------------------
+
 
 # -- Options for HTML output -------------------------------------------------
 

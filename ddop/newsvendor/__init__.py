@@ -4,11 +4,11 @@ from .DeepLearningNewsvendor import DeepLearningNewsvendor
 from .RandomForestNewsvendor import RandomForestNewsvendor
 from .DecisionTreeNewsvendor import DecisionTreeNewsvendor
 from .LightGradientBoostingNewsvendor import LightGradientBoostingNewsvendor
-from .HoltWintersNewsvendor import HoltWintersNewsvendor
 from .WeightedNewsvendor import RandomForestWeightedNewsvendor, \
     KNeighborsWeightedNewsvendor, EqualWeightedNewsvendor
+from .ExponentialSmoothingNewsvendor import ExponentialSmoothingNewsvendor
 
 __all__ = ["EmpiricalRiskMinimizationNewsvendor", "KernelOptimizationNewsvendor",
            "DeepLearningNewsvendor", "RandomForestNewsvendor", "DecisionTreeNewsvendor",
-           "LightGradientBoostingNewsvendor", "HoltWintersNewsvendor", "RandomForestWeightedNewsvendor",
-           "KNeighborsWeightedNewsvendor", "EqualWeightedNewsvendor"]
+           "LightGradientBoostingNewsvendor", "RandomForestWeightedNewsvendor",
+           "KNeighborsWeightedNewsvendor", "EqualWeightedNewsvendor", "ExponentialSmoothingNewsvendor"]

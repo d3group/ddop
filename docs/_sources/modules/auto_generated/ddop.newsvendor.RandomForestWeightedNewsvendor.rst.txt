@@ -1,4 +1,4 @@
-:mod:`ddop.newsvendor`.RandomForestWeightedNewsvendor
+﻿:mod:`ddop.newsvendor`.RandomForestWeightedNewsvendor
 ============================================================
 
 .. currentmodule:: ddop.newsvendor

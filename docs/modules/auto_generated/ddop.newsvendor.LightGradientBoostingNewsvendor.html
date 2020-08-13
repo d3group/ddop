@@ -30,6 +30,9 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -149,7 +152,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="ddop-newsvendor-lightgradientboostingnewsvendor">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="ddop-newsvendor-lightgradientboostingnewsvendor">
 <h1><a class="reference internal" href="../newsvendor.html#module-ddop.newsvendor" title="ddop.newsvendor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code></a>.LightGradientBoostingNewsvendor<a class="headerlink" href="#ddop-newsvendor-lightgradientboostingnewsvendor" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="ddop.newsvendor.LightGradientBoostingNewsvendor">
@@ -158,44 +185,44 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cu</strong> (<em>{array-like of shape</em><em> (</em><em>n_outputs</em><em>,</em><em>)</em><em>, </em><em>Number</em><em> or </em><em>None}</em><em>, </em><em>default=None</em>) – The underage costs per unit. If None, then underage costs are one
+<li><p><strong>cu</strong> (<code class="docutils literal notranslate"><span class="pre">{array-like</span> <span class="pre">of</span> <span class="pre">shape</span> <span class="pre">(n_outputs,),</span> <span class="pre">Number</span> <span class="pre">or</span> <span class="pre">None}</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – The underage costs per unit. If None, then underage costs are one
 for each target variable</p></li>
-<li><p><strong>co</strong> (<em>{array-like of shape</em><em> (</em><em>n_outputs</em><em>,</em><em>)</em><em>, </em><em>Number</em><em> or </em><em>None}</em><em>, </em><em>default=None</em>) – The overage costs per unit. If None, then overage costs are one
+<li><p><strong>co</strong> (<code class="docutils literal notranslate"><span class="pre">{array-like</span> <span class="pre">of</span> <span class="pre">shape</span> <span class="pre">(n_outputs,),</span> <span class="pre">Number</span> <span class="pre">or</span> <span class="pre">None}</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – The overage costs per unit. If None, then overage costs are one
 for each target variable</p></li>
-<li><p><strong>boosting_type</strong> (<em>string</em><em>, </em><em>optional</em><em> (</em><em>default='gbdt'</em><em>)</em>) – ‘gbdt’, traditional Gradient Boosting Decision Tree.
+<li><p><strong>boosting_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">(default=``</span></code>’gbdt’<a href="#id1"><span class="problematic" id="id2">``</span></a><code class="xref py py-class docutils literal notranslate"><span class="pre">)</span></code>) – ‘gbdt’, traditional Gradient Boosting Decision Tree.
 ‘dart’, Dropouts meet Multiple Additive Regression Trees.
 ‘goss’, Gradient-based One-Side Sampling.
 ‘rf’, Random Forest.</p></li>
-<li><p><strong>num_leaves</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=31</em><em>)</em>) – Maximum tree leaves for base learners.</p></li>
-<li><p><strong>max_depth</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=-1</em><em>)</em>) – Maximum tree depth for base learners, &lt;=0 means no limit.</p></li>
-<li><p><strong>learning_rate</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>default=0.1</em><em>)</em>) – Boosting learning rate.
+<li><p><strong>num_leaves</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">(default=31)</span></code>) – Maximum tree leaves for base learners.</p></li>
+<li><p><strong>max_depth</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">(default=-1)</span></code>) – Maximum tree depth for base learners, &lt;=0 means no limit.</p></li>
+<li><p><strong>learning_rate</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">(default=0.1)</span></code>) – Boosting learning rate.
 You can use <code class="docutils literal notranslate"><span class="pre">callbacks</span></code> parameter of <code class="docutils literal notranslate"><span class="pre">fit</span></code> method to shrink/adapt learning rate
 in training using <code class="docutils literal notranslate"><span class="pre">reset_parameter</span></code> callback.
 Note, that this will ignore the <code class="docutils literal notranslate"><span class="pre">learning_rate</span></code> argument in training.</p></li>
-<li><p><strong>n_estimators</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=100</em><em>)</em>) – Number of boosted trees to fit.</p></li>
-<li><p><strong>early_stopping_rounds</strong> (<em>int</em><em> or </em><em>None</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Activates early stopping. The model will train until the validation score stops improving.
+<li><p><strong>n_estimators</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">(default=100)</span></code>) – Number of boosted trees to fit.</p></li>
+<li><p><strong>early_stopping_rounds</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">(default=None)</span></code>) – Activates early stopping. The model will train until the validation score stops improving.
 Validation score needs to improve at least every <code class="docutils literal notranslate"><span class="pre">early_stopping_rounds</span></code> round(s)
 to continue training.
 Requires at least one validation data and one metric.
 If there’s more than one, will check all of them. But the training data is ignored anyway.
 To check only the first metric, set the <code class="docutils literal notranslate"><span class="pre">first_metric_only</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">True</span></code>
 in additional parameters <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code> of the model constructor.</p></li>
-<li><p><strong>subsample_for_bin</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=200000</em><em>)</em>) – Number of samples for constructing bins.</p></li>
-<li><p><strong>min_split_gain</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>default=0.</em><em>)</em>) – Minimum loss reduction required to make a further partition on a leaf node of the tree.</p></li>
-<li><p><strong>min_child_weight</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>default=1e-3</em><em>)</em>) – Minimum sum of instance weight (hessian) needed in a child (leaf).</p></li>
-<li><p><strong>min_child_samples</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=20</em><em>)</em>) – Minimum number of data needed in a child (leaf).</p></li>
-<li><p><strong>subsample</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>default=1.</em><em>)</em>) – Subsample ratio of the training instance.</p></li>
-<li><p><strong>subsample_freq</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=0</em><em>)</em>) – Frequence of subsample, &lt;=0 means no enable.</p></li>
-<li><p><strong>colsample_bytree</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>default=1.</em><em>)</em>) – Subsample ratio of columns when constructing each tree.</p></li>
-<li><p><strong>reg_alpha</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>default=0.</em><em>)</em>) – L1 regularization term on weights.</p></li>
-<li><p><strong>reg_lambda</strong> (<em>float</em><em>, </em><em>optional</em><em> (</em><em>default=0.</em><em>)</em>) – L2 regularization term on weights.</p></li>
-<li><p><strong>random_state</strong> (<em>int</em><em>, </em><em>RandomState object</em><em> or </em><em>None</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Random number seed.
+<li><p><strong>subsample_for_bin</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">(default=200000)</span></code>) – Number of samples for constructing bins.</p></li>
+<li><p><strong>min_split_gain</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">(default=0.)</span></code>) – Minimum loss reduction required to make a further partition on a leaf node of the tree.</p></li>
+<li><p><strong>min_child_weight</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">(default=1e-3)</span></code>) – Minimum sum of instance weight (hessian) needed in a child (leaf).</p></li>
+<li><p><strong>min_child_samples</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">(default=20)</span></code>) – Minimum number of data needed in a child (leaf).</p></li>
+<li><p><strong>subsample</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">(default=1.)</span></code>) – Subsample ratio of the training instance.</p></li>
+<li><p><strong>subsample_freq</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">(default=0)</span></code>) – Frequence of subsample, &lt;=0 means no enable.</p></li>
+<li><p><strong>colsample_bytree</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">(default=1.)</span></code>) – Subsample ratio of columns when constructing each tree.</p></li>
+<li><p><strong>reg_alpha</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">(default=0.)</span></code>) – L1 regularization term on weights.</p></li>
+<li><p><strong>reg_lambda</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">(default=0.)</span></code>) – L2 regularization term on weights.</p></li>
+<li><p><strong>random_state</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">RandomState</span> <span class="pre">object</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">(default=None)</span></code>) – Random number seed.
 If int, this number is used to seed the C++ code.
 If RandomState object (numpy), a random integer is picked based on its state to seed the C++ code.
 If None, default seeds in C++ code are used.</p></li>
-<li><p><strong>n_jobs</strong> (<em>int</em><em>, </em><em>optional</em><em> (</em><em>default=-1</em><em>)</em>) – Number of parallel threads.</p></li>
-<li><p><strong>silent</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – Whether to print messages while running boosting.</p></li>
-<li><p><strong>importance_type</strong> (<em>string</em><em>, </em><em>optional</em><em> (</em><em>default='split'</em><em>)</em>) – The type of feature importance to be filled into <code class="docutils literal notranslate"><span class="pre">feature_importances_</span></code>.
+<li><p><strong>n_jobs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">(default=-1)</span></code>) – Number of parallel threads.</p></li>
+<li><p><strong>silent</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">(default=True)</span></code>) – Whether to print messages while running boosting.</p></li>
+<li><p><strong>importance_type</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">(default=``</span></code>’split’<a href="#id3"><span class="problematic" id="id4">``</span></a><code class="xref py py-class docutils literal notranslate"><span class="pre">)</span></code>) – The type of feature importance to be filled into <code class="docutils literal notranslate"><span class="pre">feature_importances_</span></code>.
 If ‘split’, result contains numbers of times the feature is used in a model.
 If ‘gain’, result contains total gains of splits which use the feature.</p></li>
 </ul>
@@ -207,7 +234,7 @@ If ‘gain’, result contains total gains of splits which use the feature.</p><
 <dd><p>The collection of fitted estimators used for predictions</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>list of <code class="docutils literal notranslate"><span class="pre">n_output</span></code> LightGradientBoostingNewsvendor</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> of <code class="docutils literal notranslate"><span class="pre">n_output</span></code> LightGradientBoostingNewsvendor</p>
 </dd>
 </dl>
 </dd></dl>
@@ -218,7 +245,7 @@ If ‘gain’, result contains total gains of splits which use the feature.</p><
 <dd><p>The number of features of fitted model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>int</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -229,7 +256,7 @@ If ‘gain’, result contains total gains of splits which use the feature.</p><
 <dd><p>Validated underage costs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ndarray, shape (n_outputs,)</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_outputs,)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -240,7 +267,7 @@ If ‘gain’, result contains total gains of splits which use the feature.</p><
 <dd><p>Validated overage costs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ndarray, shape (n_outputs,)</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_outputs,)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -300,16 +327,16 @@ If ‘gain’, result contains total gains of splits which use the feature.</p><
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<em>array-like</em><em> or </em><em>sparse matrix of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The training input samples.</p></li>
-<li><p><strong>y</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_outputs</em><em>)</em>) – The target values.</p></li>
-<li><p><strong>sample_weight</strong> (<em>array-like of shape =</em><em> [</em><em>n_samples</em><em>] or </em><em>None</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Weights of training data.</p></li>
+<li><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">sparse</span> <span class="pre">matrix</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>) – The training input samples.</p></li>
+<li><p><strong>y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_outputs)</span></code>) – The target values.</p></li>
+<li><p><strong>sample_weight</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">=</span> <span class="pre">[n_samples]</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">optional</span> <span class="pre">(default=None)</span></code>) – Weights of training data.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>self</strong> – Fitted estimator.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#ddop.newsvendor.LightGradientBoostingNewsvendor" title="ddop.newsvendor.LightGradientBoostingNewsvendor">LightGradientBoostingNewsvendor</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#ddop.newsvendor.LightGradientBoostingNewsvendor" title="ddop.newsvendor.LightGradientBoostingNewsvendor"><code class="xref py py-class docutils literal notranslate"><span class="pre">LightGradientBoostingNewsvendor</span></code></a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -322,14 +349,14 @@ If ‘gain’, result contains total gains of splits which use the feature.</p><
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>deep</strong> (<em>bool</em><em>, </em><em>default=True</em>) – If True, will return the parameters for this estimator and
+<dd class="field-odd"><p><strong>deep</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>) – If True, will return the parameters for this estimator and
 contained subobjects that are estimators.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>params</strong> – Parameter names mapped to their values.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>mapping of string to any</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">mapping</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code> to <code class="xref py py-class docutils literal notranslate"><span class="pre">any</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -340,13 +367,13 @@ contained subobjects that are estimators.</p>
 <dd><p>Predict values for X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<em>array-like</em><em> or </em><em>sparse matrix of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The input samples to predict.</p>
+<dd class="field-odd"><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">sparse</span> <span class="pre">matrix</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>) – The input samples to predict.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>y</strong> – The predicted values.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>array-like of shape (n_samples, n_outputs)</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_outputs)</span></code></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -368,13 +395,13 @@ contained subobjects that are estimators.</p>
 component of a nested object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>**params</strong> (<em>dict</em>) – Estimator parameters.</p>
+<dd class="field-odd"><p><strong>**params</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) – Estimator parameters.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>self</strong> – Estimator instance.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>object</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 </dd>
 </dl>
 </dd></dl>

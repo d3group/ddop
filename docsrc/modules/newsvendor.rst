@@ -49,5 +49,5 @@ Parametric
     :toctree: auto_generated/
     :template: class.rst
 
-    newsvendor.HoltWintersNewsvendor
+    newsvendor.ExponentialSmoothingNewsvendor
 

@@ -1,0 +1,21 @@
+﻿:mod:`ddop.newsvendor`.ExponentialSmoothingNewsvendor
+============================================================
+
+.. currentmodule:: ddop.newsvendor
+
+.. autoclass:: ExponentialSmoothingNewsvendor
+
+   
+    
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ExponentialSmoothingNewsvendor.__init__
+      ~ExponentialSmoothingNewsvendor.fit
+      ~ExponentialSmoothingNewsvendor.get_params
+      ~ExponentialSmoothingNewsvendor.predict
+      ~ExponentialSmoothingNewsvendor.score
+      ~ExponentialSmoothingNewsvendor.set_params
+   
+   

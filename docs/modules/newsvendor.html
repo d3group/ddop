@@ -30,6 +30,9 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -149,7 +152,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="ddop-newsvendor-newsvendor-decision-making">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="ddop-newsvendor-newsvendor-decision-making">
 <span id="newsvendor-ref"></span><h1><a class="reference internal" href="#module-ddop.newsvendor" title="ddop.newsvendor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code></a>: Newsvendor decision making<a class="headerlink" href="#ddop-newsvendor-newsvendor-decision-making" title="Permalink to this headline">¶</a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code> module contains different newsvendor approaches for
 decision making.</p>
@@ -204,8 +231,8 @@ decision making.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="auto_generated/ddop.newsvendor.HoltWintersNewsvendor.html#ddop.newsvendor.HoltWintersNewsvendor" title="ddop.newsvendor.HoltWintersNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.HoltWintersNewsvendor</span></code></a>([cu, co, …])</p></td>
-<td><p>A newsvendor model based on Holt-Winters’ exponential smoothing forecaster</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="auto_generated/ddop.newsvendor.ExponentialSmoothingNewsvendor.html#ddop.newsvendor.ExponentialSmoothingNewsvendor" title="ddop.newsvendor.ExponentialSmoothingNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.ExponentialSmoothingNewsvendor</span></code></a>([…])</p></td>
+<td><p>A SEO newsvendor model with exponential smoothing as underlying forecaster</p></td>
 </tr>
 </tbody>
 </table>
