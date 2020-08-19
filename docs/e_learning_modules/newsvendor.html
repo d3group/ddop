@@ -249,7 +249,8 @@ stock. The final order decision is then the sum of both the forecast generated b
 <p>Even though SEO is a standard and widely adopted approach in practice, it has a major Drawback: By first estimating
 the demand and then optimizing the inventory decision, the estimation error may amplify in the optimization step, which
 in turn will lead to suboptimal inventory decisions. One approach that can tackle this issue is Joint Estimation and
-Optimization (JEO). In contrast to the two step approach of SEO, JEO directly prescribe decisions from data.</p>
+Optimization (JEO). In contrast to the two step approach of SEO, JEO directly prescribe decisions from data by
+combining machine learning and optimization.</p>
 <div class="section" id="classical-jeo-approach-saa">
 <h3>Classical JEO approach (SAA)<a class="headerlink" href="#classical-jeo-approach-saa" title="Permalink to this headline">¶</a></h3>
 <p>The classical JEO approach, also referred to as Sample Average Approximation (SAA), estimates optimal decisions
@@ -261,6 +262,11 @@ optimal decision can be obtained by solving the following optimization problem:<
 </div>
 <div class="section" id="feature-driven-jeo-approach">
 <h3>Feature driven JEO approach<a class="headerlink" href="#feature-driven-jeo-approach" title="Permalink to this headline">¶</a></h3>
+<p>In contrast to the classical JEO approach, the feature driven approach aims to improve inventory decisions by taking
+into account demand features in addition to the historical demand itself. Hence, given the dataset
+<span class="math notranslate nohighlight">\(S_n=[(x_1,d_1),...,(x_n,d_n)]\)</span>, where  <span class="math notranslate nohighlight">\(x_i\)</span> is a feature vector and <span class="math notranslate nohighlight">\(d_i\)</span> the
+corresponding demand value, the goal is to find a function <span class="math notranslate nohighlight">\(q(x)\)</span> that directly maps from feature vector <span class="math notranslate nohighlight">\(x\)</span>
+to a decision <span class="math notranslate nohighlight">\(q\)</span></p>
 <ul class="simple">
 <li><p>weighted SAA</p></li>
 <li><p>Empirical Risk Minimization</p></li>

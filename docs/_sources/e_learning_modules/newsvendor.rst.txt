@@ -67,8 +67,10 @@ Joint Estimation and Optimization (JEO)
 Even though SEO is a standard and widely adopted approach in practice, it has a major Drawback: By first estimating
 the demand and then optimizing the inventory decision, the estimation error may amplify in the optimization step, which
 in turn will lead to suboptimal inventory decisions. One approach that can tackle this issue is Joint Estimation and
-Optimization (JEO). In contrast to the two step approach of SEO, JEO directly prescribe decisions from data.
+Optimization (JEO). In contrast to the two step approach of SEO, JEO directly prescribe decisions from data by
+combining machine learning and optimization.
 
+.. Classical JEO approach (SAA):
 
 Classical JEO approach (SAA)
 ----------------------------
@@ -83,6 +85,11 @@ optimal decision can be obtained by solving the following optimization problem:
 
 Feature driven JEO approach
 ---------------------------
+In contrast to the classical JEO approach, the feature driven approach aims to improve inventory decisions by taking
+into account demand features in addition to the historical demand itself. Hence, given the dataset
+:math:`S_n=[(x_1,d_1),...,(x_n,d_n)]`, where  :math:`x_i` is a feature vector and :math:`d_i` the
+corresponding demand value, the goal is to find a function :math:`q(x)` that directly maps from feature vector :math:`x`
+to a decision :math:`q`
 
 * weighted SAA
 * Empirical Risk Minimization
