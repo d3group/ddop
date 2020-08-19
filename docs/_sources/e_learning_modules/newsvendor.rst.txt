@@ -11,7 +11,7 @@ order quantity that minimizes the sum of the expected costs mentioned above.
 Given this background, the optimal order quantity for the newsvendor problem can be formulated as follows:
 
 .. math::
-    \min_{q\ge 0} = E_D[cu(D-q)^+ + cu(q-D)^+],
+    \min_{q\ge 0} = E_D[cu(D-q)^+ + co(q-D)^+],
     \label{nv} \tag{1}
 
 where :math:`D` is the random future demand, :math:`q` is the order qunatity, :math:`cu` and :math:`co` are the
@@ -64,7 +64,25 @@ If you want to deep dive into SEO check out the tutorial below.
 
 Joint Estimation and Optimization (JEO)
 =======================================
-In Progress
+Even though SEO is a standard and widely adopted approach in practice, it has a major Drawback: By first estimating
+the demand and then optimizing the inventory decision, the estimation error may amplify in the optimization step, which
+in turn will lead to suboptimal inventory decisions. One approach that can tackle this issue is Joint Estimation and
+Optimization (JEO). In contrast to the two step approach of SEO, JEO directly prescribe decisions from data.
+
+
+Classical JEO approach (SAA)
+----------------------------
+The classical JEO approach, also referred to as Sample Average Approximation (SAA), estimates optimal decisions
+only based on historical demand data by substituting the true expectation with a sample average expectation.
+To be more specific, if one has access to N historical demand observations :math:`d(n)=[d_1,...,d_n]`, then the
+optimal decision can be obtained by solving the following optimization problem:
+
+.. math::
+    \min_{q\ge 0} = \sum_{n=1}^N cu(d_n-q)^+ + co(q-D)^+]
+
+
+Feature driven JEO approach
+---------------------------
 
 * SAA
 * weighted SAA

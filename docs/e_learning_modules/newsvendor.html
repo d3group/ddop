@@ -93,7 +93,11 @@
 <li class="toctree-l4"><a class="reference internal" href="notebooks/SEO.html">Separate Estimation and Optimization</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#joint-estimation-and-optimization-jeo">Joint Estimation and Optimization (JEO)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#joint-estimation-and-optimization-jeo">Joint Estimation and Optimization (JEO)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#classical-jeo-approach-saa">Classical JEO approach (SAA)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#feature-driven-jeo-approach">Feature driven JEO approach</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -199,7 +203,7 @@ of demand that cannot be satisfied incurs underage costs of <span class="math no
 order quantity that minimizes the sum of the expected costs mentioned above.</p>
 <p>Given this background, the optimal order quantity for the newsvendor problem can be formulated as follows:</p>
 <div class="math notranslate nohighlight">
-\[\min_{q\ge 0} = E_D[cu(D-q)^+ + cu(q-D)^+],
+\[\min_{q\ge 0} = E_D[cu(D-q)^+ + co(q-D)^+],
 \label{nv} \tag{1}\]</div>
 <p>where <span class="math notranslate nohighlight">\(D\)</span> is the random future demand, <span class="math notranslate nohighlight">\(q\)</span> is the order qunatity, <span class="math notranslate nohighlight">\(cu\)</span> and <span class="math notranslate nohighlight">\(co\)</span> are the
 per-unit under- and overage costs and <span class="math notranslate nohighlight">\((\cdot)^+ := \max\{0,\cdot\}\)</span>. If the demand distribution is known,
@@ -242,12 +246,27 @@ stock. The final order decision is then the sum of both the forecast generated b
 </div>
 <div class="section" id="joint-estimation-and-optimization-jeo">
 <h2>Joint Estimation and Optimization (JEO)<a class="headerlink" href="#joint-estimation-and-optimization-jeo" title="Permalink to this headline">¶</a></h2>
-<p>In Progress</p>
+<p>Even though SEO is a standard and widely adopted approach in practice, it has a major Drawback: By first estimating
+the demand and then optimizing the inventory decision, the estimation error may amplify in the optimization step, which
+in turn will lead to suboptimal inventory decisions. One approach that can tackle this issue is Joint Estimation and
+Optimization (JEO). In contrast to the two step approach of SEO, JEO directly prescribe decisions from data.</p>
+<div class="section" id="classical-jeo-approach-saa">
+<h3>Classical JEO approach (SAA)<a class="headerlink" href="#classical-jeo-approach-saa" title="Permalink to this headline">¶</a></h3>
+<p>The classical JEO approach, also referred to as Sample Average Approximation (SAA), estimates optimal decisions
+only based on historical demand data by substituting the true expectation with a sample average expectation.
+To be more specific, if one has access to N historical demand observations <span class="math notranslate nohighlight">\(d(n)=[d_1,...,d_n]\)</span>, then the
+optimal decision can be obtained by solving the following optimization problem:</p>
+<div class="math notranslate nohighlight">
+\[\min_{q\ge 0} = \sum_{n=1}^N cu(d_n-q)^+ + co(q-D)^+]\]</div>
+</div>
+<div class="section" id="feature-driven-jeo-approach">
+<h3>Feature driven JEO approach<a class="headerlink" href="#feature-driven-jeo-approach" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>SAA</p></li>
 <li><p>weighted SAA</p></li>
 <li><p>Empirical Risk Minimization</p></li>
 </ul>
+</div>
 </div>
 </div>
 

@@ -25,7 +25,7 @@ class DataDrivenMixin:
 class ClassicMixin:
     def score(self, y, X=None):
 
-        y = check_array(y,ensure_2d=False)
+        y = check_array(y, ensure_2d=False)
 
         if y.ndim == 1:
             y = np.reshape(y, (-1, 1))
