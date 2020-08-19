@@ -257,12 +257,11 @@ only based on historical demand data by substituting the true expectation with a
 To be more specific, if one has access to N historical demand observations <span class="math notranslate nohighlight">\(d(n)=[d_1,...,d_n]\)</span>, then the
 optimal decision can be obtained by solving the following optimization problem:</p>
 <div class="math notranslate nohighlight">
-\[\min_{q\ge 0} = \sum_{n=1}^N cu(d_n-q)^+ + co(q-D)^+]\]</div>
+\[\min_{q\ge 0} = \sum_{i=1}^N cu(d_i-q)^+ + co(q-d_i)^+]\]</div>
 </div>
 <div class="section" id="feature-driven-jeo-approach">
 <h3>Feature driven JEO approach<a class="headerlink" href="#feature-driven-jeo-approach" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p>SAA</p></li>
 <li><p>weighted SAA</p></li>
 <li><p>Empirical Risk Minimization</p></li>
 </ul>

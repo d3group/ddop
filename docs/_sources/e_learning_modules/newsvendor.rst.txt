@@ -78,13 +78,12 @@ To be more specific, if one has access to N historical demand observations :math
 optimal decision can be obtained by solving the following optimization problem:
 
 .. math::
-    \min_{q\ge 0} = \sum_{n=1}^N cu(d_n-q)^+ + co(q-D)^+]
+    \min_{q\ge 0} = \sum_{i=1}^N cu(d_i-q)^+ + co(q-d_i)^+]
 
 
 Feature driven JEO approach
 ---------------------------
 
-* SAA
 * weighted SAA
 * Empirical Risk Minimization
 
