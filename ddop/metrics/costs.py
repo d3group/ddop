@@ -9,7 +9,9 @@ def _check_newsvendor_targets(y_true, y_pred):
     Parameters
     ----------
     y_true : array-like
+        The true values
     y_pred : array-like
+        The predicted values
 
     Returns
     -------
@@ -49,7 +51,9 @@ def calc_costs(y_true, y_pred, cu, co):
         and the given underage and overage costs.
         ----------
         y_true : array-like
+            The true values
         y_pred : array-like
+            The predicted vales
         cu : int or float
             the underage costs per unit.
         co : int or float
@@ -72,7 +76,9 @@ def calc_total_costs(y_true, y_pred, cu, co):
         and the given underage and overage costs.
         ----------
         y_true : array-like
+            The true values
         y_pred : array-like
+            The predicted vales
         cu : int or float
             the underage costs per unit.
         co : int or float
@@ -92,7 +98,9 @@ def calc_avg_costs(y_true, y_pred, cu, co):
         and the given underage and overage costs.
         ----------
         y_true : array-like
+            The true values
         y_pred : array-like
+            The predicted vales
         cu : int or float
             the underage costs per unit.
         co : int or float

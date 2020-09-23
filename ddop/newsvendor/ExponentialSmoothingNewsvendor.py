@@ -71,17 +71,15 @@ class ExponentialSmoothingNewsvendor(BaseNewsvendor, ClassicMixin):
 
     Examples
     --------
-    >>> from ddop.datasets.load_datasets import load_data
+    >>> from ddop.datasets import load_yaz
     >>> from ddop.newsvendor import ExponentialSmoothingNewsvendor
     >>> from sklearn.model_selection import train_test_split
-    >>> data = load_data("yaz_steak.csv")
-    >>> Y = data.iloc[:,24]
-    >>> cu,co = 15,10
-    >>> Y_train, Y_test = train_test_split(Y, test_size=0.25, shuffle=False, random_state=1)
+    >>> X, Y = load_yaz(include_prod=['STEAK'],return_X_y=True)
+    >>> Y_train, Y_test = train_test_split(Y, test_size=0.25, shuffle=False, random_state=0)
     >>> mdl = ExponentialSmoothingNewsvendor(cu, co, 'add', False, 'add',7)
     >>> mdl.fit(Y_train)
     >>> mdl.score(Y_test)
-    TODO: Add result
+    TODO: ADD SCORE
     """
 
     def __init__(

@@ -39,18 +39,16 @@ class EmpiricalRiskMinimizationNewsvendor(BaseNewsvendor, DataDrivenMixin):
 
     Examples
     --------
-    >>> from ddop.datasets.load_datasets import load_data
+    >>> from ddop.datasets import load_yaz
     >>> from ddop.newsvendor import EmpiricalRiskMinimizationNewsvendor
     >>> from sklearn.model_selection import train_test_split
-    >>> data = load_data("yaz_steak.csv")
-    >>> X = data.iloc[:,0:24]
-    >>> Y = data.iloc[:,24]
+    >>> X, Y = load_yaz(include_prod=['STEAK'],return_X_y=True)
     >>> cu,co = 15,10
-    >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25)
+    >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25, shuffle=False, random_state=0)
     >>> mdl = EmpiricalRiskMinimizationNewsvendor(cu=15, co=10)
     >>> mdl.fit(X_train, Y_train)
     >>> mdl.score(X_test, Y_test)
-    [65.05263158]
+    TODO: ADD SCORE
     """
 
     def __init__(self, cu, co):

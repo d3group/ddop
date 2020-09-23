@@ -23,6 +23,7 @@ class BaseWeightedNewsvendor(BaseNewsvendor, DataDrivenMixin, ABC):
         self.co = co
 
     def fit(self, X, y):
+        """ Fit the estimator from the training set (X,y)"""
 
         self._get_fitted_model(X, y)
 
@@ -140,14 +141,12 @@ class EqualWeightedNewsvendor(BaseWeightedNewsvendor):
 
     Examples
     --------
-    >>> from ddop.datasets.load_datasets import load_data
+    >>> from ddop.datasets import load_yaz
     >>> from ddop.newsvendor import EqualWeightedNewsvendor
     >>> from sklearn.model_selection import train_test_split
-    >>> data = load_data("yaz_steak.csv")
-    >>> X = data.iloc[:,0:24]
-    >>> Y = data.iloc[:,24]
+    >>> X, Y = load_yaz(include_prod=['STEAK'],return_X_y=True)
     >>> cu,co = 15,10
-    >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25)
+    >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25, shuffle=False, random_state=0)
     >>> mdl = EqualWeightedNewsvendor(cu, co)
     >>> mdl.fit(X_train, Y_train)
     >>> score(X_test, Y_test)
@@ -345,14 +344,12 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
 
     Examples
     --------
-    >>> from ddop.datasets.load_datasets import load_data
+    >>> from ddop.datasets import load_yaz
     >>> from ddop.newsvendor import RandomForestWeightedNewsvendor
     >>> from sklearn.model_selection import train_test_split
-    >>> data = load_data("yaz_steak.csv")
-    >>> X = data.iloc[:,0:24]
-    >>> Y = data.iloc[:,24]
+    >>> X, Y = load_yaz(include_prod=['STEAK'],return_X_y=True)
     >>> cu,co = 15,10
-    >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25)
+    >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25, shuffle=False, random_state=0)
     >>> mdl = RandomForestWeightedNewsvendor(cu, co, random_state=0)
     >>> mdl.fit(X_train, Y_train)
     >>> score(X_test, Y_test)
@@ -429,7 +426,6 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
         n = np.sum(sample_leaf_indices == self.train_leaf_indices_, axis=0)
         treeWeights = (sample_leaf_indices == self.train_leaf_indices_) / n
         weights = np.sum(treeWeights, axis=1) / self.n_estimators
-        print(weights.shape)
         return weights
 
     def fit(self, X, y):
@@ -535,14 +531,12 @@ class KNeighborsWeightedNewsvendor(BaseWeightedNewsvendor):
 
     Examples
     --------
-    >>> from ddop.datasets.load_datasets import load_data
+    >>> from ddop.datasets import load_yaz
     >>> from ddop.newsvendor import KNeighborsWeightedNewsvendor
     >>> from sklearn.model_selection import train_test_split
-    >>> data = load_data("yaz_steak.csv")
-    >>> X = data.iloc[:,0:24]
-    >>> Y = data.iloc[:,24]
+    >>> X, Y = load_yaz(include_prod=['STEAK'],return_X_y=True)
     >>> cu,co = 15,10
-    >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25)
+    >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25, shuffle=False, random_state=0)
     >>> mdl = KNeighborsWeightedNewsvendor(cu, co, random_state=0)
     >>> mdl.fit(X_train, Y_train)
     >>> score(X_test, Y_test)

@@ -44,9 +44,6 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
 
     Parameters
     ----------
-    criterion : {"newsvendor"}, default="newsvendor"
-        The function to measure the quality of a split. Supported is only
-        "newsvendor", which minimizes the Loss-function described in [5]
     cu : {array-like of shape (n_outputs,), Number or None}, default=None
        The underage costs per unit. If None, then underage costs are one
        for each target variable
@@ -175,23 +172,19 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
 
     Examples
     --------
-    >>> from ddop.datasets.load_datasets import load_data
+    >>> from ddop.datasets import load_yaz
     >>> from ddop.newsvendor import DecisionTreeNewsvendor
-    >>> from ddop.metrics.costs import calc_avg_costs
     >>> from sklearn.model_selection import train_test_split
-    >>> data = load_data("yaz_steak.csv")
-    >>> X = data.iloc[:,0:24]
-    >>> Y = data.iloc[:,24]
+    >>> X, Y = load_yaz(include_prod=['STEAK'],return_X_y=True)
     >>> cu,co = 15,10
-    >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25)
+    >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25, shuffle=False, random_state=0)
     >>> mdl = DecisionTreeNewsvendor(max_depth=5, cu=cu, co=co, random_state=0)
     >>> mdl.fit(X_train, Y_train)
     >>> mdl.score(X_test, Y_test)
-    [76.85307018]
+    TODO: ADD SCORE
     """
 
-    def __init__(self, *,
-                 criterion="NewsvendorCriterion",
+    def __init__(self,
                  cu=None,
                  co=None,
                  splitter="best",
@@ -205,7 +198,7 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
                  min_impurity_decrease=0.,
                  ccp_alpha=0.0):
         super().__init__(
-            criterion=criterion,
+            criterion="NewsvendorCriterion",
             splitter=splitter,
             max_depth=max_depth,
             min_samples_split=min_samples_split,
@@ -448,6 +441,23 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
         return self
 
     def score(self, X, y, sample_weight=None):
+        """
+        Return the average costs of the prediction
+
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_features)
+            The input samples to predict.
+        y : array-like of shape (n_samples, n_outputs)
+            The true values for x.
+        sample_weight: array-like of shape (n_samples)
+            Sample weights
+
+        Returns
+        -------
+         score: float
+            The average costs
+        """
         y_pred = self.predict(X)
         return calc_avg_costs(y, y_pred, self.cu_, self.co_)
 

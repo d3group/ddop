@@ -17,6 +17,22 @@ class BaseNewsvendor(BaseEstimator, ABC):
 
 class DataDrivenMixin:
     def score(self, X, y):
+        """
+        Return the average costs of the prediction
+
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_features)
+            The input samples to predict.
+        y : array-like of shape (n_samples, n_outputs)
+            The true values for x.
+
+        Returns
+        -------
+         score: float
+            The average costs
+        """
+
         y_pred = self.predict(X)
         score = calc_avg_costs(y, y_pred, self.cu_, self.co_)
         return score
@@ -24,6 +40,21 @@ class DataDrivenMixin:
 
 class ClassicMixin:
     def score(self, y, X=None):
+        """
+        Return the average costs of the prediction
+
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_features)
+            Exogenous variables are ignored
+        y : array-like of shape (n_samples, n_outputs)
+            The true values.
+
+        Returns
+        -------
+         score: float
+            The average costs
+        """
 
         y = check_array(y, ensure_2d=False)
 
