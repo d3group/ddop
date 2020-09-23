@@ -15,4 +15,3 @@ Frome here, you can navigate to:
 
    api_reference
    e_learning
-   installation
