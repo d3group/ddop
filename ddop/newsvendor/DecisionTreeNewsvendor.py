@@ -458,6 +458,7 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
          score: float
             The average costs
         """
+
         y_pred = self.predict(X)
         return calc_avg_costs(y, y_pred, self.cu_, self.co_)
 

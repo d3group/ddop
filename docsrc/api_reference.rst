@@ -11,7 +11,7 @@ API Reference
 .. _newsvendor_ref:
 
 :mod:`ddop.newsvendor`: Newsvendor decision making
-========================================================
+===================================================
 
 The ``ddop.newsvendor`` module contains different newsvendor approaches for
 decision making.
@@ -56,6 +56,28 @@ Parametric
     :template: class.rst
 
     newsvendor.ExponentialSmoothingNewsvendor
+
+
+.. _metrics_ref:
+
+:mod:`ddop.metrics`: Evaluation metrics
+========================================
+
+The ``ddop.metrics`` module contains different evaluation metrics
+
+.. automodule:: ddop.metrics
+    :no-members:
+    :no-inherited-members:
+
+
+.. currentmodule:: ddop.metrics
+
+.. autosummary::
+    :toctree: modules/auto_generated/
+
+    calc_costs
+    calc_total_costs
+    calc_avg_costs
 
 
 .. _datasets_ref:

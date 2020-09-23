@@ -6,6 +6,7 @@ import numpy as np
 
 def _check_newsvendor_targets(y_true, y_pred):
     """Check that y_true and y_pred belong to the same newsvendor task
+
     Parameters
     ----------
     y_true : array-like
@@ -49,6 +50,8 @@ def _multiply_cost_weights(x, cu, co):
 def calc_costs(y_true, y_pred, cu, co):
     """ Compute pairwise costs based on the the difference between y_true and y_pred
         and the given underage and overage costs.
+
+        Parameters
         ----------
         y_true : array-like
             The true values
@@ -61,7 +64,7 @@ def calc_costs(y_true, y_pred, cu, co):
 
         Returns
         -------
-        costs : array of floating point values, one for each individual target.
+        costs : array of floating point values.
         """
     y_true, y_pred = _check_newsvendor_targets(y_true, y_pred)
     y_diff = y_pred - y_true
@@ -74,6 +77,8 @@ def calc_costs(y_true, y_pred, cu, co):
 def calc_total_costs(y_true, y_pred, cu, co):
     """ Compute total costs based on the the difference between y_true and y_pred
         and the given underage and overage costs.
+
+        Parameters
         ----------
         y_true : array-like
             The true values
@@ -86,7 +91,7 @@ def calc_total_costs(y_true, y_pred, cu, co):
 
         Returns
         -------
-        total_costs : float
+        total_costs :  array of floating point values.
         """
     costs = calc_costs(y_true, y_pred, cu, co)
     total_costs = np.sum(costs, axis=0)
@@ -96,6 +101,8 @@ def calc_total_costs(y_true, y_pred, cu, co):
 def calc_avg_costs(y_true, y_pred, cu, co):
     """ Compute average costs based on the the difference between y_true and y_pred
         and the given underage and overage costs.
+
+        Parameters
         ----------
         y_true : array-like
             The true values
@@ -108,7 +115,7 @@ def calc_avg_costs(y_true, y_pred, cu, co):
 
         Returns
         -------
-        avg_costs : float
+        avg_costs :  array of floating point values.
         """
     total_costs = calc_total_costs(y_true, y_pred, cu, co)
     avg_costs = total_costs / y_true.shape[0]
