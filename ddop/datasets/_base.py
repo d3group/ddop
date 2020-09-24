@@ -42,7 +42,7 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, encode_da
 
         Note: The dataset also includes 194 weather and demand lag features as well as a column for the demand date.
         By default, those features are not included when loading the data. You can include them
-        by setting the parameter ``include_lag``/``include_date`` to ``True``.
+        by setting the parameter `include_lag`/`include_date` to `True`.
 
     Parameters
     ----------
@@ -55,6 +55,9 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, encode_da
         Whether to include the demand date
     encode_date_features : bool, default=False
         Whether to one hot encode column WEEKDAY, MONTH, YEAR
+    categorical_to_continuous : bool, default=False
+        Whether to convert categorical columns (WEEKDAY, MONTH, YEAR) to continuous.+
+        Will only be applied if `encode_date_features=False`
     return_X_y : bool, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
