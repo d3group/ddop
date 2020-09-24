@@ -56,7 +56,7 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, encode_da
     encode_date_features : bool, default=False
         Whether to one hot encode column WEEKDAY, MONTH, YEAR
     categorical_to_continuous : bool, default=False
-        Whether to convert categorical columns (WEEKDAY, MONTH, YEAR) to continuous.+
+        Whether to convert categorical columns (WEEKDAY, MONTH, YEAR) to continuous.
         Will only be applied if `encode_date_features=False`
     return_X_y : bool, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
