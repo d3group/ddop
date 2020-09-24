@@ -1,1 +1,2 @@
 include ddop/datasets/data/*
+include ddop/datasets/descr/*
