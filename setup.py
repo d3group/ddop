@@ -24,8 +24,8 @@ def get_extensions():
 
 setup(
     name='ddop',
-    version='v0.4.7',
-    url='',
+    version='v0.4.9',
+    url='https://andreasphilippi.github.io/ddom-kit/',
     license='MIT',
     author='Andreas Philippi',
     author_email='',

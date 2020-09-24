@@ -151,18 +151,18 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, encode_da
 
     target = target.drop(targets_to_drop, axis=1)
 
-    frame = pd.concat([data, target], axis=1)
-
     n_features = data.shape[0]
     n_targets = data.shape[1]
 
     if encode_date_features:
-        data = pd.get_dummies(data, ["WEEKDAY", "MONTH", "YEAR"])
+        data = pd.get_dummies(data, columns=["WEEKDAY", "MONTH", "YEAR"])
 
     if not encode_date_features and categorical_to_continuous:
-        data['WEEKDAY']=data['WEEKDAY'].apply(_day_to_continuouse)
+        data['WEEKDAY'] = data['WEEKDAY'].apply(_day_to_continuouse)
         data['MONTH'] = data['MONTH'].apply(_month_to_continuouse)
         data['YEAR'] = data['YEAR'].apply(int)
+
+    frame = pd.concat([data, target], axis=1)
 
     if return_X_y:
         return data, target
