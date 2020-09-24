@@ -4,7 +4,8 @@ from os.path import dirname, join
 from sklearn.utils import Bunch
 
 
-def load_yaz(include_prod=None, include_lag=False, include_date=False, encode_date_features=False, return_X_y=False):
+def load_yaz(include_prod=None, include_lag=False, include_date=False, encode_date_features=False,
+             categorical_to_continuous=False, return_X_y=False):
     """Load and return the YAZ dataset
 
     Yaz is a fast casual restaurant in Stuttgart providing good service and food at short waiting times.
@@ -155,6 +156,11 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, encode_da
     if encode_date_features:
         data = pd.get_dummies(data, ["WEEKDAY", "MONTH", "YEAR"])
 
+    if not encode_date_features and categorical_to_continuous:
+        data['WEEKDAY']=data['WEEKDAY'].apply(_day_to_continuouse)
+        data['MONTH'] = data['MONTH'].apply(_month_to_continuouse)
+        data['YEAR'] = data['YEAR'].apply(int)
+
     if return_X_y:
         return data, target
 
@@ -166,3 +172,48 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, encode_da
                  DESCR=fdescr,
                  data_filename=data_filename,
                  target_filename=target_filename)
+
+
+def _month_to_continuouse(x):
+    if x=='JAN':
+        return 1
+    elif x=='FEB':
+        return 2
+    elif x=='MAR':
+        return 3
+    elif x=='APR':
+        return 4
+    elif x=='MAY':
+        return 5
+    elif x=='JUN':
+        return 6
+    elif x=='JUL':
+        return 7
+    elif x=='AUG':
+        return 8
+    elif x=='SEP':
+        return 9
+    elif x=='OCT':
+        return 10
+    elif x=='NOV':
+        return 11
+    else:
+        return 12
+
+
+def _day_to_continuouse(x):
+    if x=='MON':
+        return 1
+    elif x=='TUE':
+        return 2
+    elif x=='WED':
+        return 3
+    elif x=='THU':
+        return 4
+    elif x=='FRI':
+        return 5
+    elif x=='SAT':
+        return 6
+    else:
+        return 7
+
