@@ -39,7 +39,7 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="ddop.newsvendor.ExponentialSmoothingNewsvendor" href="ddop.newsvendor.ExponentialSmoothingNewsvendor.html" />
+    <link rel="next" title="ddop.newsvendor.GaussianWeightedNewsvendor" href="ddop.newsvendor.GaussianWeightedNewsvendor.html" />
     <link rel="prev" title="ddop.newsvendor.RandomForestWeightedNewsvendor" href="ddop.newsvendor.RandomForestWeightedNewsvendor.html" /> 
 </head>
 
@@ -90,9 +90,10 @@
 <li class="toctree-l2 current"><a class="reference internal" href="../../api_reference.html#ddop-newsvendor-newsvendor-decision-making"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>: Newsvendor decision making</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../api_reference.html#empirical-risk-minimization">Empirical Risk Minimization</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../api_reference.html#weighted-optimization">Weighted Optimization</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.EqualWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.EqualWeightedNewsvendor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.SampleAverageApproximationNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.SampleAverageApproximationNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.RandomForestWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.RandomForestWeightedNewsvendor</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.KNeighborsWeightedNewsvendor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.GaussianWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.GaussianWeightedNewsvendor</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../api_reference.html#parametric">Parametric</a></li>
@@ -200,6 +201,7 @@
 <dt id="ddop.newsvendor.KNeighborsWeightedNewsvendor">
 <em class="property">class </em><code class="sig-prename descclassname">ddop.newsvendor.</code><code class="sig-name descname">KNeighborsWeightedNewsvendor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cu</span></em>, <em class="sig-param"><span class="n">co</span></em>, <em class="sig-param"><span class="n">n_neighbors</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="n">radius</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">algorithm</span><span class="o">=</span><span class="default_value">'auto'</span></em>, <em class="sig-param"><span class="n">leaf_size</span><span class="o">=</span><span class="default_value">30</span></em>, <em class="sig-param"><span class="n">metric</span><span class="o">=</span><span class="default_value">'minkowski'</span></em>, <em class="sig-param"><span class="n">p</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">metric_params</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_jobs</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.KNeighborsWeightedNewsvendor" title="Permalink to this definition">¶</a></dt>
 <dd><p>A k-nearest-neighbor weighted SAA newsvendor</p>
+<p>This class implements the approach described in [1] with kNN as weight function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -243,17 +245,6 @@ equivalent to using manhattan_distance (l1), and euclidean_distance
 </ul>
 </dd>
 </dl>
-<dl class="py attribute">
-<dt id="ddop.newsvendor.KNeighborsWeightedNewsvendor.X_">
-<code class="sig-name descname">X_</code><a class="headerlink" href="#ddop.newsvendor.KNeighborsWeightedNewsvendor.X_" title="Permalink to this definition">¶</a></dt>
-<dd><p>The X training data</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py attribute">
 <dt id="ddop.newsvendor.KNeighborsWeightedNewsvendor.y_">
 <code class="sig-name descname">y_</code><a class="headerlink" href="#ddop.newsvendor.KNeighborsWeightedNewsvendor.y_" title="Permalink to this definition">¶</a></dt>
@@ -375,13 +366,10 @@ arXiv preprint arXiv:1402.5481 (2014).</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.KNeighborsWeightedNewsvendor.get_params" title="ddop.newsvendor.KNeighborsWeightedNewsvendor.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</p></td>
 <td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.KNeighborsWeightedNewsvendor.predict" title="ddop.newsvendor.KNeighborsWeightedNewsvendor.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X)</p></td>
-<td><p>Predict value for X.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.KNeighborsWeightedNewsvendor.score" title="ddop.newsvendor.KNeighborsWeightedNewsvendor.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(X, y)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.KNeighborsWeightedNewsvendor.score" title="ddop.newsvendor.KNeighborsWeightedNewsvendor.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(X, y)</p></td>
 <td><p>Return the average costs of the prediction</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.KNeighborsWeightedNewsvendor.set_params" title="ddop.newsvendor.KNeighborsWeightedNewsvendor.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.KNeighborsWeightedNewsvendor.set_params" title="ddop.newsvendor.KNeighborsWeightedNewsvendor.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</p></td>
 <td><p>Set the parameters of this estimator.</p></td>
 </tr>
 </tbody>
@@ -426,23 +414,6 @@ contained subobjects that are estimators.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">mapping</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code> to <code class="xref py py-class docutils literal notranslate"><span class="pre">any</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="ddop.newsvendor.KNeighborsWeightedNewsvendor.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.KNeighborsWeightedNewsvendor.predict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Predict value for X.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>) – The input samples to predict.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>y</strong> – The predicted values</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_outputs)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -500,7 +471,7 @@ component of a nested object.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="ddop.newsvendor.ExponentialSmoothingNewsvendor.html" class="btn btn-neutral float-right" title="ddop.newsvendor.ExponentialSmoothingNewsvendor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="ddop.newsvendor.GaussianWeightedNewsvendor.html" class="btn btn-neutral float-right" title="ddop.newsvendor.GaussianWeightedNewsvendor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="ddop.newsvendor.RandomForestWeightedNewsvendor.html" class="btn btn-neutral float-left" title="ddop.newsvendor.RandomForestWeightedNewsvendor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

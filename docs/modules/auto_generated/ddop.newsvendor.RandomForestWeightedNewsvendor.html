@@ -40,7 +40,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="ddop.newsvendor.KNeighborsWeightedNewsvendor" href="ddop.newsvendor.KNeighborsWeightedNewsvendor.html" />
-    <link rel="prev" title="ddop.newsvendor.EqualWeightedNewsvendor" href="ddop.newsvendor.EqualWeightedNewsvendor.html" /> 
+    <link rel="prev" title="ddop.newsvendor.SampleAverageApproximationNewsvendor" href="ddop.newsvendor.SampleAverageApproximationNewsvendor.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -90,9 +90,10 @@
 <li class="toctree-l2 current"><a class="reference internal" href="../../api_reference.html#ddop-newsvendor-newsvendor-decision-making"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>: Newsvendor decision making</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../../api_reference.html#empirical-risk-minimization">Empirical Risk Minimization</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../api_reference.html#weighted-optimization">Weighted Optimization</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.EqualWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.EqualWeightedNewsvendor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.SampleAverageApproximationNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.SampleAverageApproximationNewsvendor</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.RandomForestWeightedNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.KNeighborsWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.KNeighborsWeightedNewsvendor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.GaussianWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.GaussianWeightedNewsvendor</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../api_reference.html#parametric">Parametric</a></li>
@@ -198,8 +199,12 @@
 <h1><a class="reference internal" href="../../api_reference.html#module-ddop.newsvendor" title="ddop.newsvendor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code></a>.RandomForestWeightedNewsvendor<a class="headerlink" href="#ddop-newsvendor-randomforestweightednewsvendor" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="ddop.newsvendor.RandomForestWeightedNewsvendor">
-<em class="property">class </em><code class="sig-prename descclassname">ddop.newsvendor.</code><code class="sig-name descname">RandomForestWeightedNewsvendor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cu</span></em>, <em class="sig-param"><span class="n">co</span></em>, <em class="sig-param"><span class="n">criterion</span><span class="o">=</span><span class="default_value">'mse'</span></em>, <em class="sig-param"><span class="n">n_estimators</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">max_depth</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">min_samples_split</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">min_samples_leaf</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">min_weight_fraction_leaf</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">max_features</span><span class="o">=</span><span class="default_value">'auto'</span></em>, <em class="sig-param"><span class="n">max_leaf_nodes</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">min_impurity_decrease</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">bootstrap</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">oob_score</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">n_jobs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">warm_start</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ccp_alpha</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">max_samples</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.RandomForestWeightedNewsvendor" title="Permalink to this definition">¶</a></dt>
-<dd><p>A random forest weighted SAA newsvendor</p>
+<em class="property">class </em><code class="sig-prename descclassname">ddop.newsvendor.</code><code class="sig-name descname">RandomForestWeightedNewsvendor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cu</span></em>, <em class="sig-param"><span class="n">co</span></em>, <em class="sig-param"><span class="n">criterion</span><span class="o">=</span><span class="default_value">'newsvendor'</span></em>, <em class="sig-param"><span class="n">n_estimators</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">max_depth</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">min_samples_split</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">min_samples_leaf</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">min_weight_fraction_leaf</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">max_features</span><span class="o">=</span><span class="default_value">'auto'</span></em>, <em class="sig-param"><span class="n">max_leaf_nodes</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">min_impurity_decrease</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">bootstrap</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">oob_score</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">n_jobs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">warm_start</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ccp_alpha</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">max_samples</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.RandomForestWeightedNewsvendor" title="Permalink to this definition">¶</a></dt>
+<dd><p>A random forest weighted SAA newsvendor.</p>
+<p>Tis class implements a quantile regression forest as described in [5].
+However, if the criterion is set to “newsvendor”, the trees will be build
+by minimizing the newsvendor-loss function which is then equivalent to
+the approach described in [6].</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -207,12 +212,14 @@
 for each target variable</p></li>
 <li><p><strong>co</strong> (<code class="docutils literal notranslate"><span class="pre">{array-like</span> <span class="pre">of</span> <span class="pre">shape</span> <span class="pre">(n_outputs,),</span> <span class="pre">Number</span> <span class="pre">or</span> <span class="pre">None}</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – The overage costs per unit. If None, then overage costs are one
 for each target variable</p></li>
-<li><p><strong>criterion</strong> (<code class="docutils literal notranslate"><span class="pre">{&quot;mse&quot;,</span> <span class="pre">&quot;friedman_mse&quot;,</span> <span class="pre">&quot;mae&quot;}</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">&quot;mse&quot;</span></code>) – The function to measure the quality of a split. Supported criteria
+<li><p><strong>criterion</strong> (<code class="docutils literal notranslate"><span class="pre">{&quot;newsvendor&quot;,</span> <span class="pre">&quot;mse&quot;,</span> <span class="pre">&quot;friedman_mse,</span> <span class="pre">&quot;mae&quot;},</span> <span class="pre">default=&quot;newsvendor&quot;</span></code>) – The function to measure the quality of a split. Supported criteria
 are “mse” for the mean squared error, which is equal to variance
 reduction as feature selection criterion and minimizes the L2 loss
 using the mean of each terminal node, “friedman_mse”, which uses mean
 squared error with Friedman’s improvement score for potential splits,
-and “mae” for the mean absolute error, which minimizes the L1 loss</p></li>
+and “mae” for the mean absolute error, which minimizes the L1 loss
+using the median of each terminal node while “newsvendor” minimizes
+the newsvendor-loss function.</p></li>
 <li><p><strong>n_estimators</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">100</span></code>) – The number of trees in the forest.</p></li>
 <li><p><strong>max_depth</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – The maximum depth of the tree. If None, then nodes are expanded until
 all leaves are pure or until all leaves contain less than
@@ -277,7 +284,7 @@ if <code class="docutils literal notranslate"><span class="pre">sample_weight</s
 whole dataset is used to build each tree.</p></li>
 <li><p><strong>oob_score</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>) – whether to use out-of-bag samples to estimate
 the R^2 on unseen data.</p></li>
-<li><p><strong>n_jobs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – The number of jobs to run in parallel. <a class="reference internal" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.fit" title="ddop.newsvendor.RandomForestWeightedNewsvendor.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a>, <a class="reference internal" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.predict" title="ddop.newsvendor.RandomForestWeightedNewsvendor.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict()</span></code></a>,
+<li><p><strong>n_jobs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – The number of jobs to run in parallel. <a class="reference internal" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.fit" title="ddop.newsvendor.RandomForestWeightedNewsvendor.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">predict()</span></code>,
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">decision_path()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">apply()</span></code> are all parallelized over the
 trees. <code class="docutils literal notranslate"><span class="pre">None</span></code> means 1 unless in a <code class="xref py py-obj docutils literal notranslate"><span class="pre">joblib.parallel_backend</span></code>
 context. <code class="docutils literal notranslate"><span class="pre">-1</span></code> means using all processors.</p></li>
@@ -305,12 +312,12 @@ to train each base estimator.
 </dd>
 </dl>
 <dl class="py attribute">
-<dt id="ddop.newsvendor.RandomForestWeightedNewsvendor.X_">
-<code class="sig-name descname">X_</code><a class="headerlink" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.X_" title="Permalink to this definition">¶</a></dt>
-<dd><p>The X training data</p>
+<dt id="ddop.newsvendor.RandomForestWeightedNewsvendor.train_leaf_indices_">
+<code class="sig-name descname">train_leaf_indices_</code><a class="headerlink" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.train_leaf_indices_" title="Permalink to this definition">¶</a></dt>
+<dd><p>The leaf indices of the training samples</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code></p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples,)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -407,7 +414,7 @@ the best found split may vary, even with the same training data,
 <code class="docutils literal notranslate"><span class="pre">max_features=n_features</span></code> and <code class="docutils literal notranslate"><span class="pre">bootstrap=False</span></code>, if the improvement
 of the criterion is identical for several splits enumerated during the
 search of the best split. To obtain a deterministic behaviour during
-fitting, <code class="docutils literal notranslate"><span class="pre">random_state</span></code> has to be fixed.[4]</p>
+fitting, <code class="docutils literal notranslate"><span class="pre">random_state</span></code> has to be fixed.</p>
 <p class="rubric">References</p>
 <dl class="footnote brackets">
 <dt class="label" id="id1"><span class="brackets">1</span></dt>
@@ -430,6 +437,10 @@ arXiv preprint arXiv:1402.5481 (2014).</p>
 <dt class="label" id="id5"><span class="brackets">5</span></dt>
 <dd><p>N. Meinshausen, “Quantile regression forests.” Journal of Machine Learning
 Research 7.Jun (2006): 983-999.</p>
+</dd>
+<dt class="label" id="id6"><span class="brackets">6</span></dt>
+<dd><p>J. Meller and F. Taigel “Machine Learning for Inventory Management:
+Analyzing Two Concepts to Get From Data to Decisions”,</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -461,20 +472,17 @@ Research 7.Jun (2006): 983-999.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.get_params" title="ddop.newsvendor.RandomForestWeightedNewsvendor.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</p></td>
 <td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.predict" title="ddop.newsvendor.RandomForestWeightedNewsvendor.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X)</p></td>
-<td><p>Predict value for X.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.score" title="ddop.newsvendor.RandomForestWeightedNewsvendor.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(X, y)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.score" title="ddop.newsvendor.RandomForestWeightedNewsvendor.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(X, y)</p></td>
 <td><p>Return the average costs of the prediction</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.set_params" title="ddop.newsvendor.RandomForestWeightedNewsvendor.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.set_params" title="ddop.newsvendor.RandomForestWeightedNewsvendor.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</p></td>
 <td><p>Set the parameters of this estimator.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py method">
 <dt id="ddop.newsvendor.RandomForestWeightedNewsvendor.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cu</span></em>, <em class="sig-param"><span class="n">co</span></em>, <em class="sig-param"><span class="n">criterion</span><span class="o">=</span><span class="default_value">'mse'</span></em>, <em class="sig-param"><span class="n">n_estimators</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">max_depth</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">min_samples_split</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">min_samples_leaf</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">min_weight_fraction_leaf</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">max_features</span><span class="o">=</span><span class="default_value">'auto'</span></em>, <em class="sig-param"><span class="n">max_leaf_nodes</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">min_impurity_decrease</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">bootstrap</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">oob_score</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">n_jobs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">warm_start</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ccp_alpha</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">max_samples</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cu</span></em>, <em class="sig-param"><span class="n">co</span></em>, <em class="sig-param"><span class="n">criterion</span><span class="o">=</span><span class="default_value">'newsvendor'</span></em>, <em class="sig-param"><span class="n">n_estimators</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">max_depth</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">min_samples_split</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">min_samples_leaf</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">min_weight_fraction_leaf</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">max_features</span><span class="o">=</span><span class="default_value">'auto'</span></em>, <em class="sig-param"><span class="n">max_leaf_nodes</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">min_impurity_decrease</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">bootstrap</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">oob_score</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">n_jobs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">warm_start</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ccp_alpha</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">max_samples</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
@@ -512,23 +520,6 @@ contained subobjects that are estimators.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">mapping</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code> to <code class="xref py py-class docutils literal notranslate"><span class="pre">any</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="ddop.newsvendor.RandomForestWeightedNewsvendor.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.predict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Predict value for X.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>) – The input samples to predict.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>y</strong> – The predicted values</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_outputs)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -589,7 +580,7 @@ component of a nested object.</p>
         <a href="ddop.newsvendor.KNeighborsWeightedNewsvendor.html" class="btn btn-neutral float-right" title="ddop.newsvendor.KNeighborsWeightedNewsvendor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="ddop.newsvendor.EqualWeightedNewsvendor.html" class="btn btn-neutral float-left" title="ddop.newsvendor.EqualWeightedNewsvendor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="ddop.newsvendor.SampleAverageApproximationNewsvendor.html" class="btn btn-neutral float-left" title="ddop.newsvendor.SampleAverageApproximationNewsvendor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

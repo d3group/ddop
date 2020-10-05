@@ -1,11 +1,14 @@
 from .base import BaseNewsvendor, DataDrivenMixin
 from ..utils.validation import check_cu_co
-import pulp
 import numpy as np
 from abc import ABC, abstractmethod
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import NearestNeighbors
 from sklearn.utils.validation import check_is_fitted, check_array
+from ddop.newsvendor.RandomForestNewsvendor import RandomForestNewsvendor
+from scipy.spatial import distance_matrix
+from ..utils.kernels import Kernel
+import pulp
 
 
 class BaseWeightedNewsvendor(BaseNewsvendor, DataDrivenMixin, ABC):
@@ -17,20 +20,20 @@ class BaseWeightedNewsvendor(BaseNewsvendor, DataDrivenMixin, ABC):
     @abstractmethod
     def __init__(self,
                  cu,
-                 co,
+                 co
                  ):
         self.cu = cu
         self.co = co
 
     def fit(self, X, y):
-        """ Fit the estimator from the training set (X,y)"""
+        """ Fit the estimator to the training set (X,y)"""
 
-        self._get_fitted_model(X, y)
-
-        y = check_array(y, ensure_2d=False, accept_sparse='csr')
+        X, y = self._validate_data(X, y, multi_output=True)
 
         if y.ndim == 1:
             y = np.reshape(y, (-1, 1))
+
+        self._get_fitted_model(X, y)
 
         # Training data
         self.y_ = y
@@ -38,6 +41,7 @@ class BaseWeightedNewsvendor(BaseNewsvendor, DataDrivenMixin, ABC):
 
         # Determine output settings
         self.n_outputs_ = y.shape[1]
+        self.n_features_ = X.shape[1]
 
         # Check and format under- and overage costs
         self.cu_, self.co_ = check_cu_co(self.cu, self.co, self.n_outputs_)
@@ -45,12 +49,23 @@ class BaseWeightedNewsvendor(BaseNewsvendor, DataDrivenMixin, ABC):
         return self
 
     @abstractmethod
-    def _get_fitted_model(self, X, y=None):
+    def _get_fitted_model(self, X, y):
         """Initialise the underlying model"""
 
     @abstractmethod
     def _calc_weights(self, sample):
         """Calculate the sample weights"""
+
+    def _validate_X_predict(self, X):
+        """Validate X whenever one tries to predict"""
+        X = check_array(X)
+
+        n_features = X.shape[1]
+        if self.n_features_ != n_features:
+            raise ValueError("Number of features of the model must match the input. "
+                             "Model n_features is %s and input n_features is %s "
+                             % (self.n_features_, n_features))
+        return X
 
     def _findQ(self, weights):
         """Calculate the optimal order quantity q"""
@@ -58,137 +73,47 @@ class BaseWeightedNewsvendor(BaseNewsvendor, DataDrivenMixin, ABC):
         y = self.y_
         q = []
 
-        for k in range(self.n_outputs_):
-            opt_model = pulp.LpProblem(sense=pulp.LpMinimize)
-            n = np.arange(self.n_samples_)
-
-            q_k = pulp.LpVariable('q_k', lowBound=0)
-            u = pulp.LpVariable.dicts('u', n, lowBound=0)
-            o = pulp.LpVariable.dicts('o', n, lowBound=0)
-
-            u_weighted = pulp.LpAffineExpression([(u[i], weights[i]) for i in n])
-            o_weighted = pulp.LpAffineExpression([(o[i], weights[i]) for i in n])
-
-            objective = u_weighted * self.cu_[k] + o_weighted * self.co_[k]
-
-            opt_model.setObjective(objective)
-
-            for i in n:
-                opt_model += u[i] >= y[i, k] - q_k
-                opt_model += o[i] >= q_k - y[i, k]
-            opt_model.solve()
-
-            q.append(q_k.value())
+        for i in range(self.n_outputs_):
+            data = np.c_[weights, y[:, i]]
+            data = data[np.argsort(data[:, 1])]
+            sum_wi = 0
+            for row in data:
+                sum_wi = sum_wi + row[0]
+                if sum_wi >= self.cu_[i] / (self.cu_[i] + self.co_[i]):
+                    q.append(row[1])
+                    break
 
         return q
 
-    def predict(self, X):
-        """Predict value for X.
 
-        Parameters
-        ----------
-        X : array-like of shape (n_samples, n_features)
-            The input samples to predict.
-
-        Returns
-        ----------
-        y : array-like of shape (n_samples, n_outputs)
-            The predicted values
-        """
-
-        check_is_fitted(self)
-        weights = np.apply_along_axis(self._calc_weights, 1, X)
-        pred = np.apply_along_axis(self._findQ, 1, weights)
-        return pred
-
-
-class EqualWeightedNewsvendor(BaseWeightedNewsvendor):
-    """A equal weighted SAA newsvendor
+def predict(self, X):
+    """Predict value for X.
 
     Parameters
     ----------
-    cu : {array-like of shape (n_outputs,), Number or None}, default=None
-        The underage costs per unit. If None, then underage costs are one
-        for each target variable
-    co : {array-like of shape (n_outputs,), Number or None}, default=None
-        The overage costs per unit. If None, then overage costs are one
-        for each target variable
+    X : array-like of shape (n_samples, n_features)
+        The input samples to predict.
 
-    Attributes
-    ---------
-    X_ : array of shape (n_samples, n_features)
-        The X training data
-    y_ : array of shape (n_samples, n_outputs)
-        The y training data
-    cu_ : ndarray, shape (n_outputs,)
-        Validated underage costs.
-    co_ : ndarray, shape (n_outputs,)
-        Validated overage costs.
-    n_features_ : int
-        The number of features when ``fit`` is performed.
-    n_outputs_ : int
-        The number of outputs when ``fit`` is performed.
-    n_samples_ : int
-        The number of samples when ``fit`` is performed.
-
-    Notes
-    -----
-
-    References
+    Returns
     ----------
-    .. [1] Bertsimas, Dimitris, and Nathan Kallus, "From predictive to prescriptive analytics."
-           arXiv preprint arXiv:1402.5481 (2014).
-
-    Examples
-    --------
-    >>> from ddop.datasets import load_yaz
-    >>> from ddop.newsvendor import EqualWeightedNewsvendor
-    >>> from sklearn.model_selection import train_test_split
-    >>> X, Y = load_yaz(include_prod=['STEAK'],return_X_y=True)
-    >>> cu,co = 15,10
-    >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25, shuffle=False, random_state=0)
-    >>> mdl = EqualWeightedNewsvendor(cu, co)
-    >>> mdl.fit(X_train, Y_train)
-    >>> score(X_test, Y_test)
-    TODO: Add output
+    y : array-like of shape (n_samples, n_outputs)
+        The predicted values
     """
-    def __init__(self,
-                 cu,
-                 co):
-        super().__init__(
-            cu=cu,
-            co=co)
 
-    def _get_fitted_model(self, X, y=None):
-        pass
-
-    def _calc_weights(self, sample):
-        weights = np.full((self.n_samples_), 1 / self.n_samples_)
-        return weights
-
-    def fit(self, X, y):
-        """ Fit the estimator from the training set (X,y)
-
-        Parameters
-        ----------
-        X : array-like of shape (n_samples, n_features)
-            The training input samples.
-        y : array-like of shape (n_samples, n_features)
-            The target values.
-
-        Returns
-        ----------
-        self : EqualWeightedNewsvendor
-            Fitted estimator
-        """
-
-        super().fit(X,y)
-
-        return self
+    X = self._validate_X_predict(X)
+    check_is_fitted(self)
+    weights = np.apply_along_axis(self._calc_weights, 1, X)
+    pred = np.apply_along_axis(self._findQ, 1, weights)
+    return pred
 
 
 class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
-    """A random forest weighted SAA newsvendor
+    """A random forest weighted SAA newsvendor.
+
+    Tis class implements a quantile regression forest as described in [5].
+    However, if the criterion is set to "newsvendor", the trees will be build
+    by minimizing the newsvendor-loss function which is then equivalent to
+    the approach described in [6].
 
     Parameters
     ----------
@@ -198,13 +123,15 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
     co : {array-like of shape (n_outputs,), Number or None}, default=None
         The overage costs per unit. If None, then overage costs are one
         for each target variable
-    criterion : {"mse", "friedman_mse", "mae"}, default="mse"
+    criterion: {"newsvendor", "mse", "friedman_mse, "mae"}, default="newsvendor"
         The function to measure the quality of a split. Supported criteria
         are "mse" for the mean squared error, which is equal to variance
         reduction as feature selection criterion and minimizes the L2 loss
         using the mean of each terminal node, "friedman_mse", which uses mean
         squared error with Friedman's improvement score for potential splits,
         and "mae" for the mean absolute error, which minimizes the L1 loss
+        using the median of each terminal node while "newsvendor" minimizes
+        the newsvendor-loss function.
     n_estimators : int, default=100
         The number of trees in the forest.
     max_depth : int, default=None
@@ -295,8 +222,8 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
 
     Attributes
     ---------
-    X_ : array of shape (n_samples, n_features)
-        The X training data
+    train_leaf_indices_ : array of shape (n_samples,)
+        The leaf indices of the training samples
     y_ : array of shape (n_samples, n_outputs)
         The y training data
     cu_ : ndarray, shape (n_outputs,)
@@ -328,7 +255,8 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
     ``max_features=n_features`` and ``bootstrap=False``, if the improvement
     of the criterion is identical for several splits enumerated during the
     search of the best split. To obtain a deterministic behaviour during
-    fitting, ``random_state`` has to be fixed.[4]
+    fitting, ``random_state`` has to be fixed.
+
 
     References
     ----------
@@ -341,6 +269,8 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
            <https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/ensemble/_forest.py>
     .. [5] N. Meinshausen, "Quantile regression forests." Journal of Machine Learning
            Research 7.Jun (2006): 983-999.
+    .. [6] J. Meller and F. Taigel "Machine Learning for Inventory Management:
+            Analyzing Two Concepts to Get From Data to Decisions",
 
     Examples
     --------
@@ -355,10 +285,11 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
     >>> score(X_test, Y_test)
     TODO: Add output
     """
+
     def __init__(self,
                  cu,
                  co,
-                 criterion="mse",
+                 criterion="newsvendor",
                  n_estimators=100,
                  max_depth=None,
                  min_samples_split=2,
@@ -395,10 +326,13 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
         self.max_samples = max_samples
         super().__init__(
             cu=cu,
-            co=co)
+            co=co
+        )
 
     def _get_fitted_model(self, X, y):
-        model = RandomForestRegressor(
+        model = RandomForestNewsvendor(
+            cu=self.cu,
+            co=self.co,
             criterion=self.criterion,
             n_estimators=self.n_estimators,
             max_depth=self.max_depth,
@@ -444,13 +378,15 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
             Fitted estimator
         """
 
-        super().fit(X,y)
+        super().fit(X, y)
 
         return self
 
 
 class KNeighborsWeightedNewsvendor(BaseWeightedNewsvendor):
     """A k-nearest-neighbor weighted SAA newsvendor
+
+    This class implements the approach described in [1] with kNN as weight function.
 
     Parameters
     ----------
@@ -501,8 +437,6 @@ class KNeighborsWeightedNewsvendor(BaseWeightedNewsvendor):
 
     Attributes
     ---------
-    X_ : array of shape (n_samples, n_features)
-        The X training data
     y_ : array of shape (n_samples, n_outputs)
         The y training data
     cu_ : ndarray, shape (n_outputs,)
@@ -542,6 +476,7 @@ class KNeighborsWeightedNewsvendor(BaseWeightedNewsvendor):
     >>> score(X_test, Y_test)
     TODO: Add output
     """
+
     def __init__(self,
                  cu,
                  co,
@@ -564,7 +499,8 @@ class KNeighborsWeightedNewsvendor(BaseWeightedNewsvendor):
         self.n_jobs = n_jobs
         super().__init__(
             cu=cu,
-            co=co)
+            co=co
+        )
 
     def _get_fitted_model(self, X, y=None):
         model = NearestNeighbors(
@@ -601,6 +537,103 @@ class KNeighborsWeightedNewsvendor(BaseWeightedNewsvendor):
             Fitted estimator
         """
 
-        super().fit(X,y)
+        super().fit(X, y)
+
+        return self
+
+
+class GaussianWeightedNewsvendor(BaseWeightedNewsvendor):
+    """A gaussian weighted SAA newsvendor.
+
+    This class implements the Gaussian Kernel Optimization (KO) Method as described in [1].
+
+
+    Parameters
+    ----------
+    cu : {array-like of shape (n_outputs,), Number or None}, default=None
+        The underage costs per unit. If None, then underage costs are one
+        for each target variable
+    co : {array-like of shape (n_outputs,), Number or None}, default=None
+        The overage costs per unit. If None, then overage costs are one
+        for each target variable
+    kernel_bandwidth: float or int, default=1
+        The bandwidth of the kernel function
+
+    Attributes
+    ---------
+    X_ : array of shape (n_samples, n_features)
+        The X training data
+    y_ : array of shape (n_samples, n_outputs)
+        The y training data
+    cu_ : ndarray, shape (n_outputs,)
+        Validated underage costs.
+    co_ : ndarray, shape (n_outputs,)
+        Validated overage costs.
+    n_features_ : int
+        The number of features when ``fit`` is performed.
+    n_outputs_ : int
+        The number of outputs when ``fit`` is performed.
+    n_samples_ : int
+        The number of samples when ``fit`` is performed.
+
+    References
+    ----------
+    .. [1] Gah-Yi Ban, Cynthia Rudin, "The Big Data Newsvendor: Practical Insights from
+    Machine Learning", 2018.
+
+    Examples
+    --------
+    >>> from ddop.datasets import load_yaz
+    >>> from ddop.newsvendor import GaussianWeightedNewsvendor
+    >>> from sklearn.model_selection import train_test_split
+    >>> X, Y = load_yaz(include_prod=['STEAK'],return_X_y=True)
+    >>> cu,co = 15,10
+    >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25, shuffle=False, random_state=0)
+    >>> mdl = GaussianWeightedNewsvendor(cu, co, kernel_bandwidth=10)
+    >>> mdl.fit(X_train, Y_train)
+    >>> score(X_test, Y_test)
+    TODO: Add output
+    """
+
+    def __init__(self,
+                 cu,
+                 co,
+                 kernel_bandwidth=1
+                 ):
+        self.kernel_bandwidth = kernel_bandwidth
+        super().__init__(
+            cu=cu,
+            co=co
+        )
+
+    def _get_fitted_model(self, X, y=None):
+        self.model_ = Kernel("gaussian", self.kernel_bandwidth)
+        self.X_ = X
+
+    def _calc_weights(self, sample):
+        distances = distance_matrix(self.X_, [sample]).ravel()
+        distances_kernel_weighted = np.array([self.model_.get_kernel_output(x) for x in distances])
+        total = np.sum(distances_kernel_weighted)
+        weights = distances_kernel_weighted / total
+
+        return weights
+
+    def fit(self, X, y):
+        """ Fit the estimator from the training set (X,y)
+
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_features)
+            The training input samples.
+        y : array-like of shape (n_samples, n_features)
+            The training target values.
+
+        Returns
+        ----------
+        self : KNeighborsWeightedNewsvendor
+            Fitted estimator
+        """
+
+        super().fit(X, y)
 
         return self

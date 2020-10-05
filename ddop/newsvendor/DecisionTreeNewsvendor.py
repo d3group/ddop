@@ -14,7 +14,7 @@ from sklearn.utils.validation import _check_sample_weight
 from sklearn.tree import _tree
 from sklearn.tree._tree import Tree
 from sklearn.tree._splitter import Splitter
-from sklearn.tree import _splitter
+from sklearn.tree import _splitter, _criterion
 from sklearn.tree._tree import BestFirstTreeBuilder
 from sklearn.tree._tree import DepthFirstTreeBuilder
 from sklearn.tree import DecisionTreeRegressor
@@ -27,6 +27,9 @@ from sklearn.utils.validation import check_array
 DTYPE = _tree.DTYPE
 DOUBLE = _tree.DOUBLE
 
+CRITERIA_REG = {"mse": _criterion.MSE, "friedman_mse": _criterion.FriedmanMSE,
+                "mae": _criterion.MAE}
+
 DENSE_SPLITTERS = {"best": _splitter.BestSplitter,
                    "random": _splitter.RandomSplitter}
 
@@ -35,12 +38,11 @@ SPARSE_SPLITTERS = {"best": _splitter.BestSparseSplitter,
 
 
 class DecisionTreeNewsvendor(DecisionTreeRegressor):
-    """A Decision Tree Newsvendor estimator
+    """A Decision Tree Regressor
 
-    The implementation is based on the DecisionTreeRegressor from scikit-learn [6].
-    It was adapted to solve the newsvendor problem by using a decision tree as described
-    in [5]. Therefore it takes two additional parameter co and cu and a custom criterion
-    is used to build the tree.
+    The implementation is based on the DecisionTreeRegressor from scikit-learn [5],
+    but extends it by another criterion. This criterion implements the newsvendor-loss
+    function for which the model takes two additional parameter co and cu.
 
     Parameters
     ----------
@@ -50,6 +52,16 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
     co : {array-like of shape (n_outputs,), Number or None}, default=None
        The overage costs per unit. If None, then overage costs are one
        for each target variable
+    criterion: {"newsvendor", "mse", "friedman_mse, "mae"}, default="newsvendor"
+        The function to measure the quality of a split. Supported criteria
+        are "mse" for the mean squared error, which is equal to variance
+        reduction as feature selection criterion and minimizes the L2 loss
+        using the mean of each terminal node, "friedman_mse", which uses mean
+        squared error with Friedman's improvement score for potential splits,
+        and "mae" for the mean absolute error, which minimizes the L1 loss
+        using the median of each terminal node while "newsvendor" minimizes
+        the newsvendor-loss function. For the criteria "mse", "friedman_mse
+        and "mae", the model es equal to DecisionTreeRegressor from sklean [5].
     splitter : {"best", "random"}, default="best"
         The strategy used to choose the split at each node. Supported
         strategies are "best" to choose the best split and "random" to choose
@@ -146,7 +158,7 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
 
     See Also
     --------
-    DecisionTreeRegressor [6]
+    DecisionTreeRegressor [5]
 
     Notes
     -----
@@ -165,9 +177,7 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
            Learning", Springer, 2009.
     .. [4] L. Breiman, and A. Cutler, "Random Forests",
            https://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm
-    .. [5] J. Meller and F. Taigel "Machine Learning for Inventory Management:
-            Analyzing Two Concepts to Get From Data to Decisions",
-    .. [6]  scikit-learn, DecisionTreeRegressor,
+    .. [5]  scikit-learn, DecisionTreeRegressor,
             <https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/tree/_classes.py>
 
     Examples
@@ -187,6 +197,7 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
     def __init__(self,
                  cu=None,
                  co=None,
+                 criterion="newsvendor",
                  splitter="best",
                  max_depth=None,
                  min_samples_split=2,
@@ -198,7 +209,7 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
                  min_impurity_decrease=0.,
                  ccp_alpha=0.0):
         super().__init__(
-            criterion="NewsvendorCriterion",
+            criterion=criterion,
             splitter=splitter,
             max_depth=max_depth,
             min_samples_split=min_samples_split,
@@ -212,7 +223,7 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
         self.cu = cu
         self.co = co
 
-    def fit(self, X, y, sample_weight=None, check_input=True, X_idx_sorted=None):
+    def fit(self, X, y, sample_weight=None, check_input=True):
         """Build a newsvendor decision tree regressor from the training set (X, y).
 
         Method is based on [1] and was adapted to enable usage of the newsvendor criterion
@@ -230,15 +241,6 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
             Sample weights. If None, then samples are equally weighted. Splits
             that would create child nodes with net zero or negative weight are
             ignored while searching for a split in each node.
-        check_input : bool, default=True
-            Allow to bypass several input checking.
-            Don't use this parameter unless you know what you do.
-        X_idx_sorted : array-like of shape (n_samples, n_features), \
-            default=None
-            The indexes of the sorted training input samples. If many tree
-            are grown on the same dataset, this allows the ordering to be
-            cached between trees. If None, the data will be sorted here.
-            Don't use this parameter unless you know what to do.
         Returns
         -------
         self : NewsvendorDecisionTreeRegressor
@@ -400,7 +402,11 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
                              "or equal to 0")
 
         # Build tree
-        criterion = NewsvendorCriterion(self.n_outputs_, n_samples, self.cu_, self.co_)
+        if self.criterion == "newsvendor":
+            criterion = NewsvendorCriterion(self.n_outputs_, n_samples, self.cu_, self.co_)
+
+        else:
+            criterion = CRITERIA_REG[self.criterion](self.n_outputs_, n_samples)
 
         SPLITTERS = SPARSE_SPLITTERS if issparse(X) else DENSE_SPLITTERS
 
@@ -434,7 +440,7 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
                                            self.min_impurity_decrease,
                                            min_impurity_split)
 
-        builder.build(self.tree_, X, y, sample_weight, X_idx_sorted=None)
+        builder.build(self.tree_, X, y, sample_weight)
 
         self._prune_tree()
 

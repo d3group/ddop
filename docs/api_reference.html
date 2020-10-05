@@ -92,14 +92,15 @@
 <li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.DeepLearningNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.DeepLearningNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.LightGradientBoostingNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.LightGradientBoostingNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.EmpiricalRiskMinimizationNewsvendor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.KernelOptimizationNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.KernelOptimizationNewsvendor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.RandomForestNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.RandomForestNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.DecisionTreeNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.DecisionTreeNewsvendor</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#weighted-optimization">Weighted Optimization</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.EqualWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.EqualWeightedNewsvendor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.SampleAverageApproximationNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.SampleAverageApproximationNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.RandomForestWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.RandomForestWeightedNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.KNeighborsWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.KNeighborsWeightedNewsvendor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.GaussianWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.GaussianWeightedNewsvendor</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#parametric">Parametric</a><ul>
@@ -244,11 +245,11 @@ decision making.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.html#ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor" title="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.EmpiricalRiskMinimizationNewsvendor</span></code></a>(cu, co)</p></td>
 <td><p>A Empirical Risk Minimization Newsvendor estimator</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.KernelOptimizationNewsvendor.html#ddop.newsvendor.KernelOptimizationNewsvendor" title="ddop.newsvendor.KernelOptimizationNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.KernelOptimizationNewsvendor</span></code></a>(cu, co)</p></td>
-<td><p>A Kernel Optimization Newsvendor estimator</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.RandomForestNewsvendor.html#ddop.newsvendor.RandomForestNewsvendor" title="ddop.newsvendor.RandomForestNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.RandomForestNewsvendor</span></code></a>([cu, co, …])</p></td>
+<td><p>A Random Rorest Regressor.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.DecisionTreeNewsvendor.html#ddop.newsvendor.DecisionTreeNewsvendor" title="ddop.newsvendor.DecisionTreeNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.DecisionTreeNewsvendor</span></code></a>([cu, co, …])</p></td>
-<td><p>A Decision Tree Newsvendor estimator</p></td>
+<td><p>A Decision Tree Regressor</p></td>
 </tr>
 </tbody>
 </table>
@@ -261,14 +262,17 @@ decision making.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.EqualWeightedNewsvendor.html#ddop.newsvendor.EqualWeightedNewsvendor" title="ddop.newsvendor.EqualWeightedNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.EqualWeightedNewsvendor</span></code></a>(cu, co)</p></td>
-<td><p>A equal weighted SAA newsvendor</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.SampleAverageApproximationNewsvendor.html#ddop.newsvendor.SampleAverageApproximationNewsvendor" title="ddop.newsvendor.SampleAverageApproximationNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.SampleAverageApproximationNewsvendor</span></code></a>(cu, co)</p></td>
+<td><p>A SAA newsvendor</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.RandomForestWeightedNewsvendor.html#ddop.newsvendor.RandomForestWeightedNewsvendor" title="ddop.newsvendor.RandomForestWeightedNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.RandomForestWeightedNewsvendor</span></code></a>(cu, co)</p></td>
-<td><p>A random forest weighted SAA newsvendor</p></td>
+<td><p>A random forest weighted SAA newsvendor.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.KNeighborsWeightedNewsvendor.html#ddop.newsvendor.KNeighborsWeightedNewsvendor" title="ddop.newsvendor.KNeighborsWeightedNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.KNeighborsWeightedNewsvendor</span></code></a>(cu, co)</p></td>
 <td><p>A k-nearest-neighbor weighted SAA newsvendor</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.GaussianWeightedNewsvendor.html#ddop.newsvendor.GaussianWeightedNewsvendor" title="ddop.newsvendor.GaussianWeightedNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.GaussianWeightedNewsvendor</span></code></a>(cu, co)</p></td>
+<td><p>A gaussian weighted SAA newsvendor.</p></td>
 </tr>
 </tbody>
 </table>

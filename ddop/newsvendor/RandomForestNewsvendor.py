@@ -1,21 +1,14 @@
-from ..utils.validation import check_cu_co
 from ..metrics.costs import calc_avg_costs
 from .DecisionTreeNewsvendor import DecisionTreeNewsvendor
-from sklearn.utils.validation import check_is_fitted
 from sklearn.ensemble._forest import ForestRegressor
-from sklearn.tree import _tree
-import numpy as np
-
-DTYPE = _tree.DTYPE
 
 
 class RandomForestNewsvendor(ForestRegressor):
-    """A random forest regressor for a newsvendor problem.
+    """A Random Rorest Regressor.
 
-    The implementation is based on the RandomForestRegressor from scikit-learn [4].
-    It was adaped to solve the newsvendor problem by using a random forest as described
-    in [3]. Therefore it takes two additional parameter co and cu and a custom criterion
-    is used to build the trees.
+    The implementation is based on the RandomForestRegressor from scikit-learn [3],
+    but extends it by another criterion. This criterion implements the newsvendor-loss
+    function for which the model takes two additional parameter co and cu.
 
     Parameters
     ----------
@@ -25,6 +18,16 @@ class RandomForestNewsvendor(ForestRegressor):
     co : {array-like of shape (n_outputs,), Number or None}, default=None
        The overage costs per unit. If None, then overage costs are one
        for each target variable
+    criterion: {"newsvendor", "mse", "friedman_mse, "mae"}, default="newsvendor"
+        The function to measure the quality of a split. Supported criteria
+        are "mse" for the mean squared error, which is equal to variance
+        reduction as feature selection criterion and minimizes the L2 loss
+        using the mean of each terminal node, "friedman_mse", which uses mean
+        squared error with Friedman's improvement score for potential splits,
+        and "mae" for the mean absolute error, which minimizes the L1 loss
+        using the median of each terminal node while "newsvendor" minimizes
+        the newsvendor-loss function. For the criteria "mse", "friedman_mse
+        and "mae", the model es equal to RandomForestRegressor from sklean [3].
     n_estimators : int, default=100
         The number of trees in the forest.
     max_depth : int, default=None
@@ -151,7 +154,7 @@ class RandomForestNewsvendor(ForestRegressor):
 
     See Also
     --------
-    DecisionTreeNewsvendor, ForestRegressor [4]
+    DecisionTreeNewsvendor, ForestRegressor [3]
 
     Notes
     -----
@@ -165,21 +168,17 @@ class RandomForestNewsvendor(ForestRegressor):
     ``max_features=n_features`` and ``bootstrap=False``, if the improvement
     of the criterion is identical for several splits enumerated during the
     search of the best split. To obtain a deterministic behaviour during
-    fitting, ``random_state`` has to be fixed.[4]
+    fitting, ``random_state`` has to be fixed.
 
     References
     ----------
     .. [1] L. Breiman, "Random Forests", Machine Learning, 45(1), 5-32, 2001.
     .. [2] P. Geurts, D. Ernst., and L. Wehenkel, "Extremely randomized
            trees", Machine Learning, 63(1), 3-42, 2006.
-    .. [3] J. Meller and F. Taigel "Machine Learning for Inventory Management:
-            Analyzing Two Concepts to Get From Data to Decisions",
-            Available at SSRN 3256643 (2019)
-    .. [4]  scikit-learn, ForestRegressor,
+    .. [3]  scikit-learn, ForestRegressor,
             <https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/ensemble/_forest.py>
-    .. [5] N. Meinshausen, "Quantile regression forests." Journal of Machine Learning
-           Research 7.Jun (2006): 983-999.
-     Examples
+
+    Examples
     --------
     >>> from ddop.datasets import load_yaz
     >>> from ddop.newsvendor import RandomForestNewsvendor
@@ -196,6 +195,7 @@ class RandomForestNewsvendor(ForestRegressor):
     def __init__(self,
                  cu=None,
                  co=None,
+                 criterion="newsvendor",
                  n_estimators=100, *,
                  max_depth=None,
                  min_samples_split=2,
@@ -227,7 +227,7 @@ class RandomForestNewsvendor(ForestRegressor):
             verbose=verbose,
             warm_start=warm_start,
             max_samples=max_samples)
-        self.criterion = "NewsvendorCriterion"
+        self.criterion = criterion
         self.cu = cu
         self.co = co
         self.max_depth = max_depth
@@ -238,86 +238,6 @@ class RandomForestNewsvendor(ForestRegressor):
         self.max_leaf_nodes = max_leaf_nodes
         self.min_impurity_decrease = min_impurity_decrease
         self.ccp_alpha = ccp_alpha
-
-    def fit(self, X, y, sample_weight=None):
-        """
-        Build a forest of trees from the training set (X, y),
-        and save the historic X- and y-data needed for the prediction method
-
-        Parameters
-        ----------
-        X : array-like of shape (n_samples, n_features)
-            The training input samples.
-        y : array-like of shape (n_samples, n_features)
-            The target values.
-        sample_weight : array-like of shape (n_samples,), default=None
-            Sample weights. If None, then samples are equally weighted. Splits
-            that would create child nodes with net zero or negative weight are
-            ignored while searching for a split in each node.
-
-        Returns
-        ----------
-        self : RandomForestNewsvendor
-            Fitted estimator
-        """
-
-        super().fit(X, y, sample_weight)
-
-        check_X_params = dict(dtype=DTYPE, accept_sparse="csc")
-        check_y_params = dict(ensure_2d=False, dtype=None)
-
-        X, y = self._validate_data(X, y,
-                                   validate_separately=(check_X_params,
-                                                        check_y_params))
-        if y.ndim == 1:
-            y = np.reshape(y, (-1, 1))
-
-        # Training data
-        self.X_ = X
-        self.y_ = y
-
-        # Check and format under- and overage costs
-        self.cu_, self.co_ = check_cu_co(self.cu, self.co, self.n_outputs_)
-
-        return self
-
-    def predict(self, X):
-        """Predict value for X.
-
-        Parameters
-        ----------
-        X : array-like of shape (n_samples, n_features)
-            The input samples to predict.
-
-        Returns
-        ----------
-        y : array-like of shape (n_samples, n_outputs)
-            The predicted values
-        """
-
-        check_is_fitted(self)
-        X_train = self.X_
-        y_train = self.y_
-        X_leaf_indices = self.apply(X)
-        X_train_leaf_indices = self.apply(X_train)
-        pred = []
-        for xi in X_leaf_indices:
-            cnt_same_leafs = np.sum(xi == X_train_leaf_indices, axis=1)
-            sample_weights = cnt_same_leafs / sum(cnt_same_leafs)
-
-            pred_xi = []
-            for i in range(self.n_outputs_):
-                data = np.c_[sample_weights, y_train[:, i]]
-                data = data[np.argsort(data[:, 1])]
-                sum_wi = 0
-                for row in data:
-                    sum_wi = sum_wi + row[0]
-                    if sum_wi >= self.cu_[i] / (self.cu_[i] + self.co_[i]):
-                        pred_xi.append(row[1])
-                        break
-            pred.append(pred_xi)
-
-        return np.asarray(pred)
 
     def score(self, X, y, sample_weight=None):
         """
@@ -339,5 +259,3 @@ class RandomForestNewsvendor(ForestRegressor):
         """
         y_pred = self.predict(X)
         return calc_avg_costs(y, y_pred, self.cu_, self.co_)
-
-

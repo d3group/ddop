@@ -14,7 +14,6 @@
       ~KNeighborsWeightedNewsvendor.__init__
       ~KNeighborsWeightedNewsvendor.fit
       ~KNeighborsWeightedNewsvendor.get_params
-      ~KNeighborsWeightedNewsvendor.predict
       ~KNeighborsWeightedNewsvendor.score
       ~KNeighborsWeightedNewsvendor.set_params
    

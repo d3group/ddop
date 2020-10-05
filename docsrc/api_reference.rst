@@ -32,7 +32,7 @@ Empirical Risk Minimization
     newsvendor.DeepLearningNewsvendor
     newsvendor.LightGradientBoostingNewsvendor
     newsvendor.EmpiricalRiskMinimizationNewsvendor
-    newsvendor.KernelOptimizationNewsvendor
+    newsvendor.RandomForestNewsvendor
     newsvendor.DecisionTreeNewsvendor
 
 
@@ -43,9 +43,10 @@ Weighted Optimization
     :toctree: modules/auto_generated/
     :template: class.rst
 
-    newsvendor.EqualWeightedNewsvendor
+    newsvendor.SampleAverageApproximationNewsvendor
     newsvendor.RandomForestWeightedNewsvendor
     newsvendor.KNeighborsWeightedNewsvendor
+    newsvendor.GaussianWeightedNewsvendor
 
 
 Parametric

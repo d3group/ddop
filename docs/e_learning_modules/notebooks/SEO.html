@@ -429,8 +429,8 @@ ingredients/meals then have to be sold within the following day. Unsold ingredie
 <div class="section" id="Load-libraries">
 <h2>Load libraries<a class="headerlink" href="#Load-libraries" title="Permalink to this headline">¶</a></h2>
 <p>Before we are ready to start we have to load the libraries we will need in the following.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -446,14 +446,6 @@ ingredients/meals then have to be sold within the following day. Unsold ingredie
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Using TensorFlow backend.
-</pre></div></div>
 </div>
 <p>You can install the missing packages by uncommenting and executing the following cell:</p>
 <div class="nbinput nblast docutils container">
@@ -876,7 +868,7 @@ Using TensorFlow backend.
 </div>
 <p>Given the plot above let us assume the demand of steak is normally distributed. Fitting a normal distribution to the data gives us the following result:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -888,21 +880,22 @@ Using TensorFlow backend.
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-[]
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../../_images/e_learning_modules_notebooks_SEO_24_1.png" src="../../_images/e_learning_modules_notebooks_SEO_24_1.png" />
-</div>
+<div class="highlight"><pre>
+<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
+<span class="ansi-red-intense-fg ansi-bold">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-1-3abba4c9f7a6&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">      1</span> <span class="ansi-red-intense-fg ansi-bold"># seaborn histogram</span>
+<span class="ansi-green-intense-fg ansi-bold">----&gt; 2</span><span class="ansi-yellow-intense-fg ansi-bold"> hist = sns.distplot(y_train, fit=scipy.stats.norm, hist=True, norm_hist=True, kde=False,
+</span><span class="ansi-green-fg">      3</span>              bins<span class="ansi-yellow-intense-fg ansi-bold">=</span>y_train<span class="ansi-yellow-intense-fg ansi-bold">.</span>max<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">-</span>y_train<span class="ansi-yellow-intense-fg ansi-bold">.</span>min<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> color <span class="ansi-yellow-intense-fg ansi-bold">=</span> <span class="ansi-blue-intense-fg ansi-bold">&#39;blue&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-fg">      4</span>              hist_kws={&#39;edgecolor&#39;:&#39;black&#39;})
+<span class="ansi-green-fg">      5</span> hist<span class="ansi-yellow-intense-fg ansi-bold">.</span>plot<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+
+<span class="ansi-red-intense-fg ansi-bold">NameError</span>: name &#39;sns&#39; is not defined
+</pre></div></div>
 </div>
 <p>With mean and standard deviation:</p>
 <div class="nbinput docutils container">
