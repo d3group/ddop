@@ -1,0 +1,21 @@
+﻿:mod:`ddop.newsvendor`.SampleAverageApproximationNewsvendor
+==================================================================
+
+.. currentmodule:: ddop.newsvendor
+
+.. autoclass:: SampleAverageApproximationNewsvendor
+
+   
+    
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~SampleAverageApproximationNewsvendor.__init__
+      ~SampleAverageApproximationNewsvendor.fit
+      ~SampleAverageApproximationNewsvendor.get_params
+      ~SampleAverageApproximationNewsvendor.predict
+      ~SampleAverageApproximationNewsvendor.score
+      ~SampleAverageApproximationNewsvendor.set_params
+   
+   

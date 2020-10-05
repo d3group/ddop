@@ -1,0 +1,6 @@
+﻿ddop.datasets.load\_yaz
+=======================
+
+.. currentmodule:: ddop.datasets
+
+.. autofunction:: load_yaz

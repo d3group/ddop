@@ -1,0 +1,20 @@
+﻿:mod:`ddop.newsvendor`.GaussianWeightedNewsvendor
+========================================================
+
+.. currentmodule:: ddop.newsvendor
+
+.. autoclass:: GaussianWeightedNewsvendor
+
+   
+    
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~GaussianWeightedNewsvendor.__init__
+      ~GaussianWeightedNewsvendor.fit
+      ~GaussianWeightedNewsvendor.get_params
+      ~GaussianWeightedNewsvendor.score
+      ~GaussianWeightedNewsvendor.set_params
+   
+   
