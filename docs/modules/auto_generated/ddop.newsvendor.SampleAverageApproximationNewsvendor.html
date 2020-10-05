@@ -1,0 +1,481 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ddop.newsvendor.SampleAverageApproximationNewsvendor &mdash; ddom-kit  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ddop.newsvendor.RandomForestWeightedNewsvendor" href="ddop.newsvendor.RandomForestWeightedNewsvendor.html" />
+    <link rel="prev" title="ddop.newsvendor.DecisionTreeNewsvendor" href="ddop.newsvendor.DecisionTreeNewsvendor.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> ddom-kit
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../api_reference.html#ddop-newsvendor-newsvendor-decision-making"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>: Newsvendor decision making</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../api_reference.html#empirical-risk-minimization">Empirical Risk Minimization</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../../api_reference.html#weighted-optimization">Weighted Optimization</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.SampleAverageApproximationNewsvendor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.RandomForestWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.RandomForestWeightedNewsvendor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.KNeighborsWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.KNeighborsWeightedNewsvendor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.GaussianWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.GaussianWeightedNewsvendor</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api_reference.html#parametric">Parametric</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api_reference.html#ddop-metrics-evaluation-metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.metrics</span></code>: Evaluation metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api_reference.html#ddop-dataset-datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.dataset</span></code>: Datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../e_learning.html">E-Learning</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ddom-kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../api_reference.html">API Reference</a> &raquo;</li>
+        
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.SampleAverageApproximationNewsvendor</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/modules/auto_generated/ddop.newsvendor.SampleAverageApproximationNewsvendor.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="ddop-newsvendor-sampleaverageapproximationnewsvendor">
+<h1><a class="reference internal" href="../../api_reference.html#module-ddop.newsvendor" title="ddop.newsvendor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code></a>.SampleAverageApproximationNewsvendor<a class="headerlink" href="#ddop-newsvendor-sampleaverageapproximationnewsvendor" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="ddop.newsvendor.SampleAverageApproximationNewsvendor">
+<em class="property">class </em><code class="sig-prename descclassname">ddop.newsvendor.</code><code class="sig-name descname">SampleAverageApproximationNewsvendor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cu</span></em>, <em class="sig-param"><span class="n">co</span></em>, <em class="sig-param"><span class="n">opt_lp</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.SampleAverageApproximationNewsvendor" title="Permalink to this definition">¶</a></dt>
+<dd><p>A SAA newsvendor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cu</strong> (<code class="docutils literal notranslate"><span class="pre">{array-like</span> <span class="pre">of</span> <span class="pre">shape</span> <span class="pre">(n_outputs,),</span> <span class="pre">Number</span> <span class="pre">or</span> <span class="pre">None}</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – The underage costs per unit. If None, then underage costs are one
+for each target variable</p></li>
+<li><p><strong>co</strong> (<code class="docutils literal notranslate"><span class="pre">{array-like</span> <span class="pre">of</span> <span class="pre">shape</span> <span class="pre">(n_outputs,),</span> <span class="pre">Number</span> <span class="pre">or</span> <span class="pre">None}</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – The overage costs per unit. If None, then overage costs are one
+for each target variable</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="ddop.newsvendor.SampleAverageApproximationNewsvendor.X_">
+<code class="sig-name descname">X_</code><a class="headerlink" href="#ddop.newsvendor.SampleAverageApproximationNewsvendor.X_" title="Permalink to this definition">¶</a></dt>
+<dd><p>The X training data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="ddop.newsvendor.SampleAverageApproximationNewsvendor.y_">
+<code class="sig-name descname">y_</code><a class="headerlink" href="#ddop.newsvendor.SampleAverageApproximationNewsvendor.y_" title="Permalink to this definition">¶</a></dt>
+<dd><p>The y training data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_outputs)</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="ddop.newsvendor.SampleAverageApproximationNewsvendor.cu_">
+<code class="sig-name descname">cu_</code><a class="headerlink" href="#ddop.newsvendor.SampleAverageApproximationNewsvendor.cu_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validated underage costs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_outputs,)</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="ddop.newsvendor.SampleAverageApproximationNewsvendor.co_">
+<code class="sig-name descname">co_</code><a class="headerlink" href="#ddop.newsvendor.SampleAverageApproximationNewsvendor.co_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validated overage costs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_outputs,)</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="ddop.newsvendor.SampleAverageApproximationNewsvendor.n_features_">
+<code class="sig-name descname">n_features_</code><a class="headerlink" href="#ddop.newsvendor.SampleAverageApproximationNewsvendor.n_features_" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of features when <code class="docutils literal notranslate"><span class="pre">fit</span></code> is performed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="ddop.newsvendor.SampleAverageApproximationNewsvendor.n_outputs_">
+<code class="sig-name descname">n_outputs_</code><a class="headerlink" href="#ddop.newsvendor.SampleAverageApproximationNewsvendor.n_outputs_" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of outputs when <code class="docutils literal notranslate"><span class="pre">fit</span></code> is performed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="ddop.newsvendor.SampleAverageApproximationNewsvendor.n_samples_">
+<code class="sig-name descname">n_samples_</code><a class="headerlink" href="#ddop.newsvendor.SampleAverageApproximationNewsvendor.n_samples_" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of samples when <code class="docutils literal notranslate"><span class="pre">fit</span></code> is performed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Notes</p>
+<p class="rubric">References</p>
+<dl class="footnote brackets">
+<dt class="label" id="id1"><span class="brackets">1</span></dt>
+<dd><p>Bertsimas, Dimitris, and Nathan Kallus, “From predictive to prescriptive analytics.”
+arXiv preprint arXiv:1402.5481 (2014).</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ddop.datasets</span> <span class="kn">import</span> <span class="n">load_yaz</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ddop.newsvendor</span> <span class="kn">import</span> <span class="n">SampleAverageApproximationNewsvendor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">load_yaz</span><span class="p">(</span><span class="n">include_prod</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;STEAK&#39;</span><span class="p">],</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cu</span><span class="p">,</span><span class="n">co</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span><span class="mi">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">Y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mdl</span> <span class="o">=</span> <span class="n">SampleAverageApproximationNewsvendor</span><span class="p">(</span><span class="n">cu</span><span class="p">,</span> <span class="n">co</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mdl</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">Y_test</span><span class="p">)</span>
+<span class="go">TODO: Add output</span>
+</pre></div>
+</div>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(cu, co[, opt_lp])</p></td>
+<td><p>Initialize self.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(y[, X])</p></td>
+<td><p>Fit the estimator for training data y</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</p></td>
+<td><p>Get parameters for this estimator.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code>(y[, X])</p></td>
+<td><p>Return the average costs of the prediction</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</p></td>
+<td><p>Set the parameters of this estimator.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="ddop.newsvendor.SampleAverageApproximationNewsvendor.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cu</span></em>, <em class="sig-param"><span class="n">co</span></em>, <em class="sig-param"><span class="n">opt_lp</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.SampleAverageApproximationNewsvendor.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ddop.newsvendor.SampleAverageApproximationNewsvendor.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">X</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.SampleAverageApproximationNewsvendor.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the estimator for training data y</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>) – The training target values.</p></li>
+<li><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – Exogenous variables are ignored</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>self</strong> – Fitted estimator</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="ddop.newsvendor.KNeighborsWeightedNewsvendor.html#ddop.newsvendor.KNeighborsWeightedNewsvendor" title="ddop.newsvendor.KNeighborsWeightedNewsvendor"><code class="xref py py-class docutils literal notranslate"><span class="pre">KNeighborsWeightedNewsvendor</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ddop.newsvendor.SampleAverageApproximationNewsvendor.get_params">
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.SampleAverageApproximationNewsvendor.get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get parameters for this estimator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>deep</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>) – If True, will return the parameters for this estimator and
+contained subobjects that are estimators.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>params</strong> – Parameter names mapped to their values.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">mapping</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code> to <code class="xref py py-class docutils literal notranslate"><span class="pre">any</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ddop.newsvendor.SampleAverageApproximationNewsvendor.score">
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">X</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.SampleAverageApproximationNewsvendor.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the average costs of the prediction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>) – Exogenous variables are ignored</p></li>
+<li><p><strong>y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_outputs)</span></code>) – The true values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>score</strong> – The average costs</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ddop.newsvendor.SampleAverageApproximationNewsvendor.set_params">
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.SampleAverageApproximationNewsvendor.set_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the parameters of this estimator.</p>
+<p>The method works on simple estimators as well as on nested objects
+(such as pipelines). The latter have parameters of the form
+<code class="docutils literal notranslate"><span class="pre">&lt;component&gt;__&lt;parameter&gt;</span></code> so that it’s possible to update each
+component of a nested object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**params</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) – Estimator parameters.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>self</strong> – Estimator instance.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ddop.newsvendor.RandomForestWeightedNewsvendor.html" class="btn btn-neutral float-right" title="ddop.newsvendor.RandomForestWeightedNewsvendor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ddop.newsvendor.DecisionTreeNewsvendor.html" class="btn btn-neutral float-left" title="ddop.newsvendor.DecisionTreeNewsvendor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Andreas Philippi
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
