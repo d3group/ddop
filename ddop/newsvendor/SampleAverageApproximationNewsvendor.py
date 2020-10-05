@@ -2,7 +2,6 @@ from .base import BaseNewsvendor, ClassicMixin
 from ..utils.validation import check_cu_co
 import numpy as np
 from sklearn.utils.validation import check_is_fitted, check_array
-import pulp
 
 
 class SampleAverageApproximationNewsvendor(BaseNewsvendor, ClassicMixin):
@@ -114,24 +113,23 @@ class SampleAverageApproximationNewsvendor(BaseNewsvendor, ClassicMixin):
 
         return q
 
+    def predict(self, n_steps=1):
+        """Predict n time-steps
 
-def predict(self, n_steps=1):
-    """Predict n time-steps
+        Parameters
+        ----------
+        n_steps : int, default=1
+            The number of steps to predict ahead
 
-    Parameters
-    ----------
-    n_steps : int, default=1
-        The number of steps to predict ahead
+        Returns
+        ----------
+        y : array-like of shape (n, n_outputs)
+            The predicted values
+        """
 
-    Returns
-    ----------
-    y : array-like of shape (n, n_outputs)
-        The predicted values
-    """
+        check_is_fitted(self)
+        weights = self._calc_weights()
+        pred = self._findQ(weights)
+        pred = np.full((n_steps, self.n_outputs_), pred)
 
-    check_is_fitted(self)
-    weights = self._calc_weights()
-    pred = self._findQ(weights)
-    pred = np.full((n_steps, self.n_outputs_), pred)
-
-    return pred
+        return pred

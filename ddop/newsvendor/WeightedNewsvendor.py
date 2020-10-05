@@ -8,7 +8,6 @@ from sklearn.utils.validation import check_is_fitted, check_array
 from ddop.newsvendor.RandomForestNewsvendor import RandomForestNewsvendor
 from scipy.spatial import distance_matrix
 from ..utils.kernels import Kernel
-import pulp
 
 
 class BaseWeightedNewsvendor(BaseNewsvendor, DataDrivenMixin, ABC):
