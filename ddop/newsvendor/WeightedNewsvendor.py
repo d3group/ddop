@@ -85,25 +85,25 @@ class BaseWeightedNewsvendor(BaseNewsvendor, DataDrivenMixin, ABC):
         return q
 
 
-def predict(self, X):
-    """Predict value for X.
+    def predict(self, X):
+        """Predict value for X.
 
-    Parameters
-    ----------
-    X : array-like of shape (n_samples, n_features)
-        The input samples to predict.
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_features)
+            The input samples to predict.
 
-    Returns
-    ----------
-    y : array-like of shape (n_samples, n_outputs)
-        The predicted values
-    """
+        Returns
+        ----------
+        y : array-like of shape (n_samples, n_outputs)
+            The predicted values
+        """
 
-    X = self._validate_X_predict(X)
-    check_is_fitted(self)
-    weights = np.apply_along_axis(self._calc_weights, 1, X)
-    pred = np.apply_along_axis(self._findQ, 1, weights)
-    return pred
+        X = self._validate_X_predict(X)
+        check_is_fitted(self)
+        weights = np.apply_along_axis(self._calc_weights, 1, X)
+        pred = np.apply_along_axis(self._findQ, 1, weights)
+        return pred
 
 
 class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
