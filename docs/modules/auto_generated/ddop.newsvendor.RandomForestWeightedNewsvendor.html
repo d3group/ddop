@@ -284,7 +284,7 @@ if <code class="docutils literal notranslate"><span class="pre">sample_weight</s
 whole dataset is used to build each tree.</p></li>
 <li><p><strong>oob_score</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>) – whether to use out-of-bag samples to estimate
 the R^2 on unseen data.</p></li>
-<li><p><strong>n_jobs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – The number of jobs to run in parallel. <a class="reference internal" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.fit" title="ddop.newsvendor.RandomForestWeightedNewsvendor.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">predict()</span></code>,
+<li><p><strong>n_jobs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – The number of jobs to run in parallel. <a class="reference internal" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.fit" title="ddop.newsvendor.RandomForestWeightedNewsvendor.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a>, <a class="reference internal" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.predict" title="ddop.newsvendor.RandomForestWeightedNewsvendor.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict()</span></code></a>,
 <code class="xref py py-meth docutils literal notranslate"><span class="pre">decision_path()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">apply()</span></code> are all parallelized over the
 trees. <code class="docutils literal notranslate"><span class="pre">None</span></code> means 1 unless in a <code class="xref py py-obj docutils literal notranslate"><span class="pre">joblib.parallel_backend</span></code>
 context. <code class="docutils literal notranslate"><span class="pre">-1</span></code> means using all processors.</p></li>
@@ -472,10 +472,13 @@ Analyzing Two Concepts to Get From Data to Decisions”,</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.get_params" title="ddop.newsvendor.RandomForestWeightedNewsvendor.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</p></td>
 <td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.score" title="ddop.newsvendor.RandomForestWeightedNewsvendor.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(X, y)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.predict" title="ddop.newsvendor.RandomForestWeightedNewsvendor.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X)</p></td>
+<td><p>Predict value for X.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.score" title="ddop.newsvendor.RandomForestWeightedNewsvendor.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(X, y)</p></td>
 <td><p>Return the average costs of the prediction</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.set_params" title="ddop.newsvendor.RandomForestWeightedNewsvendor.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.set_params" title="ddop.newsvendor.RandomForestWeightedNewsvendor.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</p></td>
 <td><p>Set the parameters of this estimator.</p></td>
 </tr>
 </tbody>
@@ -520,6 +523,23 @@ contained subobjects that are estimators.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">mapping</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">string</span></code> to <code class="xref py py-class docutils literal notranslate"><span class="pre">any</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ddop.newsvendor.RandomForestWeightedNewsvendor.predict">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.RandomForestWeightedNewsvendor.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predict value for X.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>) – The input samples to predict.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – The predicted values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_outputs)</span></code></p>
 </dd>
 </dl>
 </dd></dl>
