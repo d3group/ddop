@@ -29,10 +29,10 @@ class BaseWeightedNewsvendor(BaseNewsvendor, DataDrivenMixin, ABC):
 
         X, y = self._validate_data(X, y, multi_output=True)
 
+        self._get_fitted_model(X, y)
+
         if y.ndim == 1:
             y = np.reshape(y, (-1, 1))
-
-        self._get_fitted_model(X, y)
 
         # Training data
         self.y_ = y
@@ -83,7 +83,6 @@ class BaseWeightedNewsvendor(BaseNewsvendor, DataDrivenMixin, ABC):
                     break
 
         return q
-
 
     def predict(self, X):
         """Predict value for X.

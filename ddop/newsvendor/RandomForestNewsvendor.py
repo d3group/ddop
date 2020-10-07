@@ -1,6 +1,7 @@
 from ..metrics.costs import calc_avg_costs
 from .DecisionTreeNewsvendor import DecisionTreeNewsvendor
 from sklearn.ensemble._forest import ForestRegressor
+from ..utils.validation import check_cu_co
 
 
 class RandomForestNewsvendor(ForestRegressor):
@@ -238,6 +239,28 @@ class RandomForestNewsvendor(ForestRegressor):
         self.max_leaf_nodes = max_leaf_nodes
         self.min_impurity_decrease = min_impurity_decrease
         self.ccp_alpha = ccp_alpha
+
+    def fit(self, X, y):
+        """ Fit the estimator from the training set (X,y)
+
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_features)
+            The training input samples.
+        y : array-like of shape (n_samples, n_features)
+            The target values.
+
+        Returns
+        ----------
+        self : RandomForestWeightedNewsvendor
+            Fitted estimator
+        """
+
+        super().fit(X, y)
+
+        self.cu_, self.co_ = check_cu_co(self.cu, self.co, self.n_outputs_)
+
+        return self
 
     def score(self, X, y, sample_weight=None):
         """
