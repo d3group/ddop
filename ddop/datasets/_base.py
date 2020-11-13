@@ -4,7 +4,7 @@ from os.path import dirname, join
 from sklearn.utils import Bunch
 
 
-def load_yaz(include_prod=None, include_lag=False, include_date=False, encode_date_features=False,
+def load_yaz(include_prod=None, include_lag=False, include_date=False, one_hot_encoding=False,
              categorical_to_continuous=False, return_X_y=False):
     """Load and return the YAZ dataset
 
@@ -16,15 +16,16 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, encode_da
 
         :Number of Instances: 760
 
-        :Number of Attributes: 10
-
         :Number of Targets: 7
+
+        :Number of Features: 10
 
         :Target Information:
             - 'CALAMARI' the demand for calamari
             - 'FISH' the demand for fish
             - 'SHRIMP' the demand for shrimps
-            - 'CHICKEN' the demand for koefte
+            - 'CHICKEN' the demand for chicken
+            - 'KOEFTE' the demand for koefte
             - 'LAMB' the demand for lamb
             - 'STEAK' the demand for steak
 
@@ -37,10 +38,10 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, encode_da
             - 'WIND' the wind force,
             - 'CLOUDS' the cloudiness degree,
             - 'RAINFALL' the amount of rainfall,
-            - 'HOURS_OF_SUNSHINE' the number of sunshine hours,
+            - 'HOURS_OF_SUNSHINE' the sunshine hours,
             - 'TEMPERATURE' the outdoor temperature,
 
-        Note: The dataset also includes 194 weather and demand lag features as well as a column for the demand date.
+        Note: The dataset also includes 193 weather and demand lag features as well as a column for the demand date.
         By default, those features are not included when loading the data. You can include them
         by setting the parameter `include_lag`/`include_date` to `True`.
 
@@ -53,11 +54,11 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, encode_da
         Whether to include lag features
     include_date : bool, default=False
         Whether to include the demand date
-    encode_date_features : bool, default=False
-        Whether to one hot encode column WEEKDAY, MONTH, YEAR
+    one_hot_encoding : bool, default=False
+        Whether to one hot encode categorical features
     categorical_to_continuous : bool, default=False
         Whether to convert categorical columns (WEEKDAY, MONTH, YEAR) to continuous.
-        Will only be applied if `encode_date_features=False`
+        Will only be applied if `one_hot_encoding=False`
     return_X_y : bool, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
@@ -154,10 +155,10 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, encode_da
     n_features = data.shape[0]
     n_targets = data.shape[1]
 
-    if encode_date_features:
+    if one_hot_encoding:
         data = pd.get_dummies(data, columns=["WEEKDAY", "MONTH", "YEAR"])
 
-    if not encode_date_features and categorical_to_continuous:
+    if not one_hot_encoding and categorical_to_continuous:
         data['WEEKDAY'] = data['WEEKDAY'].apply(_day_to_continuouse)
         data['MONTH'] = data['MONTH'].apply(_month_to_continuouse)
         data['YEAR'] = data['YEAR'].apply(int)

@@ -31,8 +31,6 @@
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -194,7 +192,7 @@
 <h1>ddop.datasets.load_yaz<a class="headerlink" href="#ddop-datasets-load-yaz" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="ddop.datasets.load_yaz">
-<code class="sig-prename descclassname">ddop.datasets.</code><code class="sig-name descname">load_yaz</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include_prod</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">include_lag</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">include_date</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">encode_date_features</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">categorical_to_continuous</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">return_X_y</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.datasets.load_yaz" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">ddop.datasets.</code><code class="sig-name descname">load_yaz</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include_prod</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">include_lag</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">include_date</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">one_hot_encoding</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">categorical_to_continuous</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">return_X_y</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.datasets.load_yaz" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load and return the YAZ dataset</p>
 <p>Yaz is a fast casual restaurant in Stuttgart providing good service and food at short waiting times.
 The dataset contains the demand for the main ingredients for the meals at YAZ. Moreover, it stores a
@@ -205,18 +203,19 @@ number of demand features. A description of targets and features is given below.
 <dt class="field-odd">Number of Instances</dt>
 <dd class="field-odd"><p>760</p>
 </dd>
-<dt class="field-even">Number of Attributes</dt>
-<dd class="field-even"><p>10</p>
+<dt class="field-even">Number of Targets</dt>
+<dd class="field-even"><p>7</p>
 </dd>
-<dt class="field-odd">Number of Targets</dt>
-<dd class="field-odd"><p>7</p>
+<dt class="field-odd">Number of Features</dt>
+<dd class="field-odd"><p>10</p>
 </dd>
 <dt class="field-even">Target Information</dt>
 <dd class="field-even"><ul class="simple">
 <li><p>‘CALAMARI’ the demand for calamari</p></li>
 <li><p>‘FISH’ the demand for fish</p></li>
 <li><p>‘SHRIMP’ the demand for shrimps</p></li>
-<li><p>‘CHICKEN’ the demand for koefte</p></li>
+<li><p>‘CHICKEN’ the demand for chicken</p></li>
+<li><p>‘KOEFTE’ the demand for koefte</p></li>
 <li><p>‘LAMB’ the demand for lamb</p></li>
 <li><p>‘STEAK’ the demand for steak</p></li>
 </ul>
@@ -231,12 +230,12 @@ number of demand features. A description of targets and features is given below.
 <li><p>‘WIND’ the wind force,</p></li>
 <li><p>‘CLOUDS’ the cloudiness degree,</p></li>
 <li><p>‘RAINFALL’ the amount of rainfall,</p></li>
-<li><p>‘HOURS_OF_SUNSHINE’ the number of sunshine hours,</p></li>
+<li><p>‘HOURS_OF_SUNSHINE’ the sunshine hours,</p></li>
 <li><p>‘TEMPERATURE’ the outdoor temperature,</p></li>
 </ul>
 </dd>
 </dl>
-<p>Note: The dataset also includes 194 weather and demand lag features as well as a column for the demand date.
+<p>Note: The dataset also includes 193 weather and demand lag features as well as a column for the demand date.
 By default, those features are not included when loading the data. You can include them
 by setting the parameter <cite>include_lag</cite>/<cite>include_date</cite> to <cite>True</cite>.</p>
 </div></blockquote>
@@ -247,9 +246,9 @@ by setting the parameter <cite>include_lag</cite>/<cite>include_date</cite> to <
 “CALAMARI”}. If None, all products are included</p></li>
 <li><p><strong>include_lag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>) – Whether to include lag features</p></li>
 <li><p><strong>include_date</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>) – Whether to include the demand date</p></li>
-<li><p><strong>encode_date_features</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>) – Whether to one hot encode column WEEKDAY, MONTH, YEAR</p></li>
+<li><p><strong>one_hot_encoding</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>) – Whether to one hot encode categorical features</p></li>
 <li><p><strong>categorical_to_continuous</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>) – Whether to convert categorical columns (WEEKDAY, MONTH, YEAR) to continuous.
-Will only be applied if <cite>encode_date_features=False</cite></p></li>
+Will only be applied if <cite>one_hot_encoding=False</cite></p></li>
 <li><p><strong>return_X_y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">False.</span></code>) – If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
 See below for more information about the <cite>data</cite> and <cite>target</cite> object.</p></li>
 </ul>

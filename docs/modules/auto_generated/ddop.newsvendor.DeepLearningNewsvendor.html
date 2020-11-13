@@ -31,8 +31,6 @@
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -200,7 +198,7 @@
 <h1><a class="reference internal" href="../../api_reference.html#module-ddop.newsvendor" title="ddop.newsvendor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code></a>.DeepLearningNewsvendor<a class="headerlink" href="#ddop-newsvendor-deeplearningnewsvendor" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="ddop.newsvendor.DeepLearningNewsvendor">
-<em class="property">class </em><code class="sig-prename descclassname">ddop.newsvendor.</code><code class="sig-name descname">DeepLearningNewsvendor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cu</span></em>, <em class="sig-param"><span class="n">co</span></em>, <em class="sig-param"><span class="n">hidden_layers</span><span class="o">=</span><span class="default_value">'auto'</span></em>, <em class="sig-param"><span class="n">neurons</span><span class="o">=</span><span class="default_value">[100]</span></em>, <em class="sig-param"><span class="n">activations</span><span class="o">=</span><span class="default_value">['relu']</span></em>, <em class="sig-param"><span class="n">optimizer</span><span class="o">=</span><span class="default_value">'adam'</span></em>, <em class="sig-param"><span class="n">epochs</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.DeepLearningNewsvendor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">ddop.newsvendor.</code><code class="sig-name descname">DeepLearningNewsvendor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cu</span></em>, <em class="sig-param"><span class="n">co</span></em>, <em class="sig-param"><span class="n">neurons</span><span class="o">=</span><span class="default_value">[100, 50]</span></em>, <em class="sig-param"><span class="n">activations</span><span class="o">=</span><span class="default_value">['relu', 'relu']</span></em>, <em class="sig-param"><span class="n">optimizer</span><span class="o">=</span><span class="default_value">'adam'</span></em>, <em class="sig-param"><span class="n">epochs</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.DeepLearningNewsvendor" title="Permalink to this definition">¶</a></dt>
 <dd><p>A newsvendor based on deep learning</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -209,26 +207,15 @@
 for each target variable</p></li>
 <li><p><strong>co</strong> (<code class="docutils literal notranslate"><span class="pre">{array-like</span> <span class="pre">of</span> <span class="pre">shape</span> <span class="pre">(n_outputs,),</span> <span class="pre">Number</span> <span class="pre">or</span> <span class="pre">None}</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – The overage costs per unit. If None, then overage costs are one
 for each target variable</p></li>
-<li><p><strong>hidden_layers</strong> (<code class="docutils literal notranslate"><span class="pre">{'auto',</span> <span class="pre">'custom'}</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">'auto'</span></code>) – <p>Whether to use a automated or customized hidden layer structure.
--   When set to ‘auto’ the network will use two hidden layers. The first</p>
-<blockquote>
-<div><p>with 2*n_features neurons and ‘relu’ as activation function the second
-one with n_features neurons and ‘linear’ as activation function</p>
-</div></blockquote>
-<ul>
-<li><p>When set to ‘custom’ the settings specified in both parameters ‘neurons’ and
-‘activations’ will be used to build the hidden layers of the network</p></li>
-</ul>
-</p></li>
-<li><p><strong>neurons</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>, <em>default</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">[100]</span></code>) – The ith element represents the number of neurons in the ith hidden layer
+<li><p><strong>neurons</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>, <em>default</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">[100,50]</span></code>) – The ith element represents the number of neurons in the ith hidden layer
 Only used when hidden_layers=’custom’.</p></li>
-<li><p><strong>activations</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>, <em>default</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">[``</span></code>’relu’<a href="#id1"><span class="problematic" id="id2">``</span></a><code class="xref py py-class docutils literal notranslate"><span class="pre">]</span></code>) – The ith element of the list represents the activation function of the ith layer.
+<li><p><strong>activations</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>, <em>default</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">[``</span></code>’relu’<code class="docutils literal notranslate"><span class="pre">:class:`,`</span></code>’linear’<a href="#id1"><span class="problematic" id="id2">``</span></a><code class="xref py py-class docutils literal notranslate"><span class="pre">]</span></code>) – The ith element of the list represents the activation function of the ith layer.
 Valid activation functions are: ‘elu’, ‘selu’, ‘linear’, ‘tanh’, ‘relu’, ‘softmax’,
 ‘softsign’, ‘softplus’,’sigmoid’, ‘hard_sigmoid’, ‘exponential’.
 Only used when hidden_layers=’custom’.</p></li>
 <li><p><strong>optimizer</strong> (<code class="docutils literal notranslate"><span class="pre">{'adam',</span> <span class="pre">'sgd'}</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">'adam'</span></code>) – The optimizer to be used.</p></li>
 <li><p><strong>epochs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">100</span></code>) – Number of epochs to train the model</p></li>
-<li><p><strong>verbose</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span> <span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">1</span></code>, or <code class="docutils literal notranslate"><span class="pre">2</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">1</span></code>) – Verbosity mode. 0 = silent, 1 = progress bar, 2 = one line per epoch.</p></li>
+<li><p><strong>verbose</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span> <span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">1</span></code>, or <code class="docutils literal notranslate"><span class="pre">2</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">0</span></code>) – Verbosity mode. 0 = silent, 1 = progress bar, 2 = one line per epoch.</p></li>
 </ul>
 </dd>
 </dl>
@@ -314,7 +301,7 @@ Only used when hidden_layers=’custom’.</p></li>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(cu, co[, hidden_layers, neurons, …])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(cu, co[, neurons, activations, …])</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X, y)</p></td>
@@ -336,7 +323,7 @@ Only used when hidden_layers=’custom’.</p></li>
 </table>
 <dl class="py method">
 <dt id="ddop.newsvendor.DeepLearningNewsvendor.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cu</span></em>, <em class="sig-param"><span class="n">co</span></em>, <em class="sig-param"><span class="n">hidden_layers</span><span class="o">=</span><span class="default_value">'auto'</span></em>, <em class="sig-param"><span class="n">neurons</span><span class="o">=</span><span class="default_value">[100]</span></em>, <em class="sig-param"><span class="n">activations</span><span class="o">=</span><span class="default_value">['relu']</span></em>, <em class="sig-param"><span class="n">optimizer</span><span class="o">=</span><span class="default_value">'adam'</span></em>, <em class="sig-param"><span class="n">epochs</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.DeepLearningNewsvendor.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cu</span></em>, <em class="sig-param"><span class="n">co</span></em>, <em class="sig-param"><span class="n">neurons</span><span class="o">=</span><span class="default_value">[100, 50]</span></em>, <em class="sig-param"><span class="n">activations</span><span class="o">=</span><span class="default_value">['relu', 'relu']</span></em>, <em class="sig-param"><span class="n">optimizer</span><span class="o">=</span><span class="default_value">'adam'</span></em>, <em class="sig-param"><span class="n">epochs</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.DeepLearningNewsvendor.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 

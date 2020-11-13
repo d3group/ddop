@@ -49,23 +49,23 @@ def _multiply_cost_weights(x, cu, co):
 
 def calc_costs(y_true, y_pred, cu, co):
     """ Compute pairwise costs based on the the difference between y_true and y_pred
-        and the given underage and overage costs.
+    and the given underage and overage costs.
 
-        Parameters
-        ----------
-        y_true : array-like
-            The true values
-        y_pred : array-like
-            The predicted vales
-        cu : int or float
-            the underage costs per unit.
-        co : int or float
-            the overage costs per unit.
+    Parameters
+    ----------
+    y_true : array-like
+        The true values
+    y_pred : array-like
+        The predicted vales
+    cu : int or float
+        the underage costs per unit.
+    co : int or float
+        the overage costs per unit.
 
-        Returns
-        -------
-        costs : array of floating point values.
-        """
+    Returns
+    -------
+    costs : array of floating point values.
+    """
     y_true, y_pred = _check_newsvendor_targets(y_true, y_pred)
     y_diff = y_pred - y_true
     func = np.vectorize(_multiply_cost_weights)
@@ -76,23 +76,23 @@ def calc_costs(y_true, y_pred, cu, co):
 
 def calc_total_costs(y_true, y_pred, cu, co):
     """ Compute total costs based on the the difference between y_true and y_pred
-        and the given underage and overage costs.
+    and the given underage and overage costs.
 
-        Parameters
-        ----------
-        y_true : array-like
-            The true values
-        y_pred : array-like
-            The predicted vales
-        cu : int or float
-            the underage costs per unit.
-        co : int or float
-            the overage costs per unit.
+    Parameters
+    ----------
+    y_true : array-like
+        The true values
+    y_pred : array-like
+        The predicted vales
+    cu : int or float
+        the underage costs per unit.
+    co : int or float
+        the overage costs per unit.
 
-        Returns
-        -------
-        total_costs :  array of floating point values.
-        """
+    Returns
+    -------
+    total_costs :  array of floating point values.
+    """
     costs = calc_costs(y_true, y_pred, cu, co)
     total_costs = np.sum(costs, axis=0)
     return total_costs
@@ -100,23 +100,24 @@ def calc_total_costs(y_true, y_pred, cu, co):
 
 def calc_avg_costs(y_true, y_pred, cu, co):
     """ Compute average costs based on the the difference between y_true and y_pred
-        and the given underage and overage costs.
+    and the given underage and overage costs.
 
-        Parameters
-        ----------
-        y_true : array-like
-            The true values
-        y_pred : array-like
-            The predicted vales
-        cu : int or float
-            the underage costs per unit.
-        co : int or float
-            the overage costs per unit.
+    Parameters
+    ----------
+    y_true : array-like
+        The true values
+    y_pred : array-like
+        The predicted vales
+    cu : int or float
+        the underage costs per unit.
+    co : int or float
+        the overage costs per unit.
 
-        Returns
-        -------
-        avg_costs :  array of floating point values.
-        """
+    Returns
+    -------
+    avg_costs :  array of floating point values.
+    """
     total_costs = calc_total_costs(y_true, y_pred, cu, co)
     avg_costs = total_costs / y_true.shape[0]
     return avg_costs
+

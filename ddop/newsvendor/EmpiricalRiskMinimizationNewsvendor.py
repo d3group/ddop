@@ -51,7 +51,7 @@ class EmpiricalRiskMinimizationNewsvendor(BaseNewsvendor, DataDrivenMixin):
     TODO: ADD SCORE
     """
 
-    def __init__(self, cu, co):
+    def __init__(self, cu=None, co=None):
         super().__init__(
             cu=cu,
             co=co)

@@ -18,8 +18,8 @@ class BaseWeightedNewsvendor(BaseNewsvendor, DataDrivenMixin, ABC):
 
     @abstractmethod
     def __init__(self,
-                 cu,
-                 co
+                 cu=None,
+                 co=None
                  ):
         self.cu = cu
         self.co = co
@@ -121,7 +121,7 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
     co : {array-like of shape (n_outputs,), Number or None}, default=None
         The overage costs per unit. If None, then overage costs are one
         for each target variable
-    criterion: {"newsvendor", "mse", "friedman_mse, "mae"}, default="newsvendor"
+    criterion: {"newsvendor", "mse", "friedman_mse, "mae"}, default="mse"
         The function to measure the quality of a split. Supported criteria
         are "mse" for the mean squared error, which is equal to variance
         reduction as feature selection criterion and minimizes the L2 loss
@@ -285,9 +285,9 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
     """
 
     def __init__(self,
-                 cu,
-                 co,
-                 criterion="newsvendor",
+                 cu=None,
+                 co=None,
+                 criterion="mse",
                  n_estimators=100,
                  max_depth=None,
                  min_samples_split=2,
@@ -358,6 +358,7 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
         n = np.sum(sample_leaf_indices == self.train_leaf_indices_, axis=0)
         treeWeights = (sample_leaf_indices == self.train_leaf_indices_) / n
         weights = np.sum(treeWeights, axis=1) / self.n_estimators
+
         return weights
 
     def fit(self, X, y):
@@ -476,8 +477,8 @@ class KNeighborsWeightedNewsvendor(BaseWeightedNewsvendor):
     """
 
     def __init__(self,
-                 cu,
-                 co,
+                 cu=None,
+                 co=None,
                  n_neighbors=5,
                  radius=1.0,
                  algorithm='auto',
@@ -573,6 +574,8 @@ class GaussianWeightedNewsvendor(BaseWeightedNewsvendor):
         The number of outputs when ``fit`` is performed.
     n_samples_ : int
         The number of samples when ``fit`` is performed.
+    kernel_ :
+        The kernel object
 
     References
     ----------
@@ -594,8 +597,8 @@ class GaussianWeightedNewsvendor(BaseWeightedNewsvendor):
     """
 
     def __init__(self,
-                 cu,
-                 co,
+                 cu=None,
+                 co=None,
                  kernel_bandwidth=1
                  ):
         self.kernel_bandwidth = kernel_bandwidth
@@ -605,12 +608,12 @@ class GaussianWeightedNewsvendor(BaseWeightedNewsvendor):
         )
 
     def _get_fitted_model(self, X, y=None):
-        self.model_ = Kernel("gaussian", self.kernel_bandwidth)
+        self.kernel_ = Kernel("gaussian", self.kernel_bandwidth)
         self.X_ = X
 
     def _calc_weights(self, sample):
         distances = distance_matrix(self.X_, [sample]).ravel()
-        distances_kernel_weighted = np.array([self.model_.get_kernel_output(x) for x in distances])
+        distances_kernel_weighted = np.array([self.kernel_.get_kernel_output(x) for x in distances])
         total = np.sum(distances_kernel_weighted)
         weights = distances_kernel_weighted / total
 

@@ -122,8 +122,8 @@ class LightGradientBoostingNewsvendor(BaseNewsvendor, DataDrivenMixin):
     """
 
     def __init__(self,
-                 cu,
-                 co,
+                 cu=None,
+                 co=None,
                  boosting_type='gbdt',
                  num_leaves=31,
                  max_depth=-1,

@@ -21,17 +21,10 @@ class DeepLearningNewsvendor(BaseNewsvendor, DataDrivenMixin):
     co : {array-like of shape (n_outputs,), Number or None}, default=None
        The overage costs per unit. If None, then overage costs are one
        for each target variable
-    hidden_layers : {'auto', 'custom'}, default='auto'
-        Whether to use a automated or customized hidden layer structure.
-        -   When set to 'auto' the network will use two hidden layers. The first
-            with 2*n_features neurons and 'relu' as activation function the second
-            one with n_features neurons and 'linear' as activation function
-        -   When set to 'custom' the settings specified in both parameters 'neurons' and
-            'activations' will be used to build the hidden layers of the network
-    neurons : list, default=[100]
+    neurons : list, default=[100,50]
         The ith element represents the number of neurons in the ith hidden layer
         Only used when hidden_layers='custom'.
-    activations : list, default=['relu']
+    activations : list, default=['relu','linear']
         The ith element of the list represents the activation function of the ith layer.
         Valid activation functions are: 'elu', 'selu', 'linear', 'tanh', 'relu', 'softmax',
         'softsign', 'softplus','sigmoid', 'hard_sigmoid', 'exponential'.
@@ -40,7 +33,7 @@ class DeepLearningNewsvendor(BaseNewsvendor, DataDrivenMixin):
         The optimizer to be used.
     epochs: int, default=100
         Number of epochs to train the model
-    verbose: int 0, 1, or 2, default=1
+    verbose: int 0, 1, or 2, default=0
         Verbosity mode. 0 = silent, 1 = progress bar, 2 = one line per epoch.
 
     Attributes
@@ -75,9 +68,8 @@ class DeepLearningNewsvendor(BaseNewsvendor, DataDrivenMixin):
     TODO: ADD SCORE
     """
 
-    def __init__(self, cu, co, hidden_layers='auto', neurons=[100],
-                 activations=['relu'], optimizer='adam', epochs=100, verbose=1):
-        self.hidden_layers = hidden_layers
+    def __init__(self, cu, co, neurons=[100, 50], activations=['relu', 'linear'], optimizer='adam', epochs=100,
+                 verbose=0):
         self.neurons = neurons
         self.activations = activations
         self.optimizer = optimizer
@@ -89,8 +81,8 @@ class DeepLearningNewsvendor(BaseNewsvendor, DataDrivenMixin):
 
     def _nv_loss(self, cu, co):
         """Create a newsvendor loss function with the given under- and overage costs"""
+
         def customized_loss(y_true, y_pred):
-            self.tensor_ = y_true
             loss = K.switch(K.less(y_pred, y_true), cu * (y_true - y_pred), co * (y_pred - y_true))
             return K.sum(loss)
 
@@ -98,7 +90,6 @@ class DeepLearningNewsvendor(BaseNewsvendor, DataDrivenMixin):
 
     def _create_model(self):
         """Create model"""
-        hidden_layers = self.hidden_layers
         neurons = self.neurons
         activations = self.activations
         n_features = self.n_features_
@@ -106,16 +97,10 @@ class DeepLearningNewsvendor(BaseNewsvendor, DataDrivenMixin):
 
         model = Sequential()
 
-        if hidden_layers == 'auto':
-            model.add(Dense(2 * n_features, activation='relu', input_dim=n_features))
-            model.add(Dense(n_features))
-            model.add(Dense(n_outputs))
-
-        else:
-            for size, activation in zip(neurons, activations):
-                model.add(Dense(units=size, activation=activation))
-            model.add(Dense(n_outputs))
-            model.build((None, n_features))
+        for size, activation in zip(neurons, activations):
+            model.add(Dense(units=size, activation=activation))
+        model.add(Dense(n_outputs))
+        model.build((None, n_features))
 
         model.compile(loss=self._nv_loss(self.cu_, self.co_), optimizer=self.optimizer)
 
@@ -172,22 +157,17 @@ class DeepLearningNewsvendor(BaseNewsvendor, DataDrivenMixin):
             activations = [activations]
         activations = list(activations)
 
-        if self.hidden_layers == "custom" and np.any(np.array(neurons) <= 0):
+        if np.any(np.array(neurons) <= 0):
             raise ValueError("neurons must be > 0, got %s." %
                              self.neurons)
 
-        if self.hidden_layers == "custom" and \
-                np.any(np.array([activation not in ACTIVATIONS for activation in activations])):
+        if np.any(np.array([activation not in ACTIVATIONS for activation in activations])):
             raise ValueError("Invalid activation function in activations. Supported are %s but got %s"
                              % (list(ACTIVATIONS), activations))
 
-        if self.hidden_layers not in ["auto", "custom"]:
-            raise ValueError("hidden_layers %s is not supported." % self.hidden_layers)
-
-        if self.hidden_layers == "custom" and len(neurons) != len(activations):
-            raise ValueError("When customizing the hidden layers neurons and activations must have same "
-                             "length but neurons is of length %s and activations %s"
-                             % (len(neurons), len(activations)))
+        if len(neurons) != len(activations):
+            raise ValueError("Neurons and activations must have same length but neurons is of length %s and "
+                             "activations %s " % (len(neurons), len(activations)))
 
         if self.verbose not in [0, 1, 2]:
             raise ValueError("verbose must be either 0, 1 or 2, got %s." %

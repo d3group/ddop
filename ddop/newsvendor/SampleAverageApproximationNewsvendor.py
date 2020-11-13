@@ -56,13 +56,11 @@ class SampleAverageApproximationNewsvendor(BaseNewsvendor, ClassicMixin):
     """
 
     def __init__(self,
-                 cu,
-                 co,
-                 opt_lp=False,
+                 cu=None,
+                 co=None
                  ):
         self.cu = cu
         self.co = co
-        self.opt_lp = opt_lp
 
     def _calc_weights(self):
         weights = np.full(self.n_samples_, 1 / self.n_samples_)

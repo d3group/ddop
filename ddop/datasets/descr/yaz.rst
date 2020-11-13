@@ -13,15 +13,16 @@ lag demand, weather conditions and more. A full description of targets and featu
 
   :Number of Instances: 760
 
-  :Number of Attributes: 10
-
   :Number of Targets: 7
+
+  :Number of Features: 10
 
   :Target Information:
     - 'CALAMARI' the demand for calamari
     - 'FISH' the demand for fish
     - 'SHRIMP' the demand for shrimps
-    - 'CHICKEN' the demand for koefte
+    - 'CHICKEN' the demand for chicken
+    - 'KOEFTE' the demand for koefte
     - 'LAMB' the demand for lamb
     - 'STEAK' the demand for steak
 
@@ -37,7 +38,7 @@ lag demand, weather conditions and more. A full description of targets and featu
     - 'HOURS_OF_SUNSHINE' the number of sunshine hours,
     - 'TEMPERATURE' the outdoor temperature,
 
-Note: The dataset also includes 194 weather and demand lag features as well as a column for the demand date.
+Note: The dataset also includes 193 weather and demand lag features as well as a column for the demand date.
 By default, those features are not included when loading the data. You can include them by setting the parameter
 ``include_lag``/``include_date`` to ``True``.
 

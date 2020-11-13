@@ -5,7 +5,6 @@ import warnings
 with open('README.rst') as f:
     README = f.read()
 
-
 def get_extensions():
     import numpy
     ext_modules = [
@@ -24,7 +23,7 @@ def get_extensions():
 
 setup(
     name='ddop',
-    version='v0.5.3',
+    version='v0.5.4',
     url='https://andreasphilippi.github.io/ddom-kit/',
     license='MIT',
     author='Andreas Philippi',
