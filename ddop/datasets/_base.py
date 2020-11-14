@@ -178,6 +178,141 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, one_hot_e
                  target_filename=target_filename)
 
 
+def load_bakery(include_prod=None, include_date=False, one_hot_encoding=False,
+             categorical_to_continuous=False, return_X_y=False):
+    """Load and return the bakery dataset
+
+    The bakery dataset contains the demand for rolls, seeded rolls and pretzels. Moreover, it stores a
+    number of demand features. A description of targets and features is given below.
+
+    **Dataset Characteristics:**
+
+        :Number of Instances: 1155
+
+        :Number of Targets: 3
+
+        :Number of Features: 6
+
+        :Target Information:
+            - 'roll' the demand for calamari
+            - 'seeded_roll' the demand for fish
+            - 'pretzel' the demand for shrimps
+
+        :Feature Information:
+            - 'weekday' the day of the week,
+            - 'month' the month of the year,
+            - 'year' the year,
+            - 'is_holiday' whether it is a national holiday,
+            - 'rainfall' the amount of rainfall,
+            - 'temperature' the outdoor temperature,
+
+        Note: The dataset also includes a column for the demand date. By default, the date
+        is not included when loading the data. You can include it by setting the parameter
+        `include_date` to `True`.
+
+    Parameters
+    ----------
+    include_prod : 1d array or list , default=None
+        List of products to include. Valid products are {"roll", "seeded_roll", "pretzel"}.
+        If None, all products are included
+    include_date : bool, default=False
+        Whether to include the demand date
+    one_hot_encoding : bool, default=False
+        Whether to one hot encode categorical features
+    categorical_to_continuous : bool, default=False
+        Whether to convert categorical columns (WEEKDAY, MONTH, YEAR) to continuous.
+        Will only be applied if `one_hot_encoding=False`
+    return_X_y : bool, default=False.
+        If True, returns ``(data, target)`` instead of a Bunch object.
+        See below for more information about the `data` and `target` object.
+
+    Returns
+    -------
+    data : sklearn Bunch
+        Dictionary-like object, with the following attributes.
+
+        data : Pandas DataFrame of shape (760, n_features)
+            The data matrix.
+        target: Pandas DataFrame of shape (760, n_targets)
+            The target values.
+        frame: pandas DataFrame of shape (760, n_features+n_targets)
+            Only present when `as_frame=True`. Pandas DataFrame with `data` and
+            `target`.
+        n_features: int
+            The number of features included
+        n_targets: int
+            The number of target variables included
+        DESCR: str
+            The full description of the dataset.
+        data_filename: str
+            The path to the location of the data.
+        target_filename: str
+            The path to the location of the target.
+
+    (data, target) : tuple if ``return_X_y`` is True
+    """
+
+    module_path = dirname(__file__)
+    base_dir = join(module_path, 'data')
+    data_filename = join(base_dir, 'bakery_data.csv')
+    data = pd.read_csv(data_filename)
+    target_filename = join(base_dir, 'bakery_target.csv')
+    target = pd.read_csv(target_filename)
+
+    with open(join(module_path, 'descr', 'bakery.rst')) as rst_file:
+        fdescr = rst_file.read()
+
+    if not include_date:
+        data = data.drop('date', axis=1)
+
+    targets_to_drop = []
+
+    if include_prod is not None:
+
+        products = ["roll", "seeded_roll", "pretzel"]
+
+        if not np.any([prod in products for prod in include_prod]):
+            raise ValueError(
+                "No valid product in include_prod. If you specify this parameter, please select at least one valid "
+                "product. Supported are %s" % (list(products)))
+
+        if "roll" not in include_prod:
+            targets_to_drop.append("roll")
+
+        if "seeded_roll" not in include_prod:
+            targets_to_drop.append("seeded_roll")
+
+        if "pretzel" not in include_prod:
+            targets_to_drop.append("pretzel")
+
+    target = target.drop(targets_to_drop, axis=1)
+
+    n_features = data.shape[0]
+    n_targets = data.shape[1]
+
+    if one_hot_encoding:
+        data = pd.get_dummies(data, columns=["weekday", "month", "year"])
+
+    if not one_hot_encoding and categorical_to_continuous:
+        data['weekday'] = data['weekday'].apply(_day_to_continuouse)
+        data['month'] = data['month'].apply(_month_to_continuouse)
+        data['year'] = data['year'].apply(int)
+
+    frame = pd.concat([data, target], axis=1)
+
+    if return_X_y:
+        return data, target
+
+    return Bunch(data=data,
+                 target=target,
+                 frame=frame,
+                 n_features=n_features,
+                 n_targets=n_targets,
+                 DESCR=fdescr,
+                 data_filename=data_filename,
+                 target_filename=target_filename)
+
+
 def _month_to_continuouse(x):
     if x=='JAN':
         return 1

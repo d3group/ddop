@@ -1,0 +1,335 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ddop.datasets.load_bakery &mdash; ddom-kit  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="E-Learning" href="../../e_learning.html" />
+    <link rel="prev" title="ddop.datasets.load_yaz" href="ddop.datasets.load_yaz.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> ddom-kit
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../api_reference.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../api_reference.html#ddop-newsvendor-newsvendor-decision-making"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>: Newsvendor decision making</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api_reference.html#ddop-metrics-evaluation-metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.metrics</span></code>: Evaluation metrics</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../api_reference.html#ddop-dataset-datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.dataset</span></code>: Datasets</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../api_reference.html#loaders">Loaders</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="ddop.datasets.load_yaz.html">ddop.datasets.load_yaz</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">ddop.datasets.load_bakery</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../e_learning.html">E-Learning</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ddom-kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../api_reference.html">API Reference</a> &raquo;</li>
+        
+      <li>ddop.datasets.load_bakery</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/modules/auto_generated/ddop.datasets.load_bakery.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="ddop-datasets-load-bakery">
+<h1>ddop.datasets.load_bakery<a class="headerlink" href="#ddop-datasets-load-bakery" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="ddop.datasets.load_bakery">
+<code class="sig-prename descclassname">ddop.datasets.</code><code class="sig-name descname">load_bakery</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include_prod</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">include_date</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">one_hot_encoding</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">categorical_to_continuous</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">return_X_y</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.datasets.load_bakery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load and return the bakery dataset</p>
+<p>The bakery dataset contains the demand for rolls, seeded rolls and pretzels. Moreover, it stores a
+number of demand features. A description of targets and features is given below.</p>
+<p><strong>Dataset Characteristics:</strong></p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">Number of Instances</dt>
+<dd class="field-odd"><p>1155</p>
+</dd>
+<dt class="field-even">Number of Targets</dt>
+<dd class="field-even"><p>3</p>
+</dd>
+<dt class="field-odd">Number of Features</dt>
+<dd class="field-odd"><p>6</p>
+</dd>
+<dt class="field-even">Target Information</dt>
+<dd class="field-even"><ul class="simple">
+<li><p>‘roll’ the demand for calamari</p></li>
+<li><p>‘seeded_roll’ the demand for fish</p></li>
+<li><p>‘pretzel’ the demand for shrimps</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Feature Information</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p>‘weekday’ the day of the week,</p></li>
+<li><p>‘month’ the month of the year,</p></li>
+<li><p>‘year’ the year,</p></li>
+<li><p>‘is_holiday’ whether it is a national holiday,</p></li>
+<li><p>‘rainfall’ the amount of rainfall,</p></li>
+<li><p>‘temperature’ the outdoor temperature,</p></li>
+</ul>
+</dd>
+</dl>
+<p>Note: The dataset also includes a column for the demand date. By default, the date
+is not included when loading the data. You can include it by setting the parameter
+<cite>include_date</cite> to <cite>True</cite>.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>include_prod</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">1d</span> <span class="pre">array</span></code> or list , <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – List of products to include. Valid products are {“roll”, “seeded_roll”, “pretzel”}.
+If None, all products are included</p></li>
+<li><p><strong>include_date</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>) – Whether to include the demand date</p></li>
+<li><p><strong>one_hot_encoding</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>) – Whether to one hot encode categorical features</p></li>
+<li><p><strong>categorical_to_continuous</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>) – Whether to convert categorical columns (WEEKDAY, MONTH, YEAR) to continuous.
+Will only be applied if <cite>one_hot_encoding=False</cite></p></li>
+<li><p><strong>return_X_y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">False.</span></code>) – If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
+See below for more information about the <cite>data</cite> and <cite>target</cite> object.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul>
+<li><p><strong>data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn</span> <span class="pre">Bunch</span></code>) – Dictionary-like object, with the following attributes.</p>
+<dl class="simple">
+<dt>data<span class="classifier">Pandas DataFrame of shape (760, n_features)</span></dt><dd><p>The data matrix.</p>
+</dd>
+<dt>target: Pandas DataFrame of shape (760, n_targets)</dt><dd><p>The target values.</p>
+</dd>
+<dt>frame: pandas DataFrame of shape (760, n_features+n_targets)</dt><dd><p>Only present when <cite>as_frame=True</cite>. Pandas DataFrame with <cite>data</cite> and
+<cite>target</cite>.</p>
+</dd>
+<dt>n_features: int</dt><dd><p>The number of features included</p>
+</dd>
+<dt>n_targets: int</dt><dd><p>The number of target variables included</p>
+</dd>
+<dt>DESCR: str</dt><dd><p>The full description of the dataset.</p>
+</dd>
+<dt>data_filename: str</dt><dd><p>The path to the location of the data.</p>
+</dd>
+<dt>target_filename: str</dt><dd><p>The path to the location of the target.</p>
+</dd>
+</dl>
+</li>
+<li><p><strong>(data, target)</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span> <span class="pre">if</span> <span class="pre">``return_X_y`</span></code> is True`)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../e_learning.html" class="btn btn-neutral float-right" title="E-Learning" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ddop.datasets.load_yaz.html" class="btn btn-neutral float-left" title="ddop.datasets.load_yaz" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Andreas Philippi
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

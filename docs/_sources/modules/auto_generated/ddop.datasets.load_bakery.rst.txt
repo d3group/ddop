@@ -1,0 +1,6 @@
+﻿ddop.datasets.load\_bakery
+==========================
+
+.. currentmodule:: ddop.datasets
+
+.. autofunction:: load_bakery

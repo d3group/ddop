@@ -68,7 +68,7 @@ class DeepLearningNewsvendor(BaseNewsvendor, DataDrivenMixin):
     TODO: ADD SCORE
     """
 
-    def __init__(self, cu, co, neurons=[100, 50], activations=['relu', 'linear'], optimizer='adam', epochs=100,
+    def __init__(self, cu=None, co=None, neurons=[100, 50], activations=['relu', 'relu'], optimizer='adam', epochs=100,
                  verbose=0):
         self.neurons = neurons
         self.activations = activations
