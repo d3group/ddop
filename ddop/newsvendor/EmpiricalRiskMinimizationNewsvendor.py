@@ -118,7 +118,10 @@ class EmpiricalRiskMinimizationNewsvendor(BaseNewsvendor, DataDrivenMixin):
 
             feature_weights.append(feature_weights_yk)
 
-        self.feature_weights_ = np.array(feature_weights)
+        #make sure no weight is None
+        feature_weights = np.array(feature_weights)
+        feature_weights[feature_weights == None] = 0.0
+        self.feature_weights_ = feature_weights
 
         return self
 
