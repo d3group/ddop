@@ -1,5 +1,5 @@
 from sklearn.metrics._scorer import _BaseScorer
-from ..newsvendor import SampleAverageApproximationNewsvendor as SAA
+from ..newsvendor import _SampleAverageApproximationNewsvendor as SAA
 import inspect
 import numpy as np
 

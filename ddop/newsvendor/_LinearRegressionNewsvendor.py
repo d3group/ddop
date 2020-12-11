@@ -5,7 +5,7 @@ import numpy as np
 from sklearn.utils.validation import check_array, check_is_fitted
 
 
-class EmpiricalRiskMinimizationNewsvendor(BaseNewsvendor, DataDrivenMixin):
+class LinearRegressionNewsvendor(BaseNewsvendor, DataDrivenMixin):
     """A Empirical Risk Minimization Newsvendor estimator
 
     Implements the Empirical Risk Minimization Method described in [1]
@@ -40,12 +40,12 @@ class EmpiricalRiskMinimizationNewsvendor(BaseNewsvendor, DataDrivenMixin):
     Examples
     --------
     >>> from ddop.datasets import load_yaz
-    >>> from ddop.newsvendor import EmpiricalRiskMinimizationNewsvendor
+    >>> from ddop.newsvendor import LinearRegressionNewsvendor
     >>> from sklearn.model_selection import train_test_split
     >>> X, Y = load_yaz(include_prod=['STEAK'],return_X_y=True)
     >>> cu,co = 15,10
     >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25, shuffle=False, random_state=0)
-    >>> mdl = EmpiricalRiskMinimizationNewsvendor(cu=15, co=10)
+    >>> mdl = LinearRegressionNewsvendor(cu=15, co=10)
     >>> mdl.fit(X_train, Y_train)
     >>> mdl.score(X_test, Y_test)
     TODO: ADD SCORE
@@ -68,7 +68,7 @@ class EmpiricalRiskMinimizationNewsvendor(BaseNewsvendor, DataDrivenMixin):
 
         Returns
         ----------
-        self : EmpiricalRiskMinimizationNewsvendor
+        self : LinearRegressionNewsvendor
             Fitted estimator
         """
         X, y = self._validate_data(X, y, multi_output=True)
@@ -91,6 +91,7 @@ class EmpiricalRiskMinimizationNewsvendor(BaseNewsvendor, DataDrivenMixin):
         n_features = X.shape[1]
 
         feature_weights = []
+        intercept = []
 
         # Define and solve LpProblem for each target variable
         # Then safe the calculated feature weights
@@ -115,15 +116,20 @@ class EmpiricalRiskMinimizationNewsvendor(BaseNewsvendor, DataDrivenMixin):
             opt_model.solve()
 
             feature_weights_yk = []
+            b = True
             for feature in q:
+                if b:
+                    intercept.append(q[feature].value())
+                    b = False
+                    continue
                 feature_weights_yk += [q[feature].value()]
-
             feature_weights.append(feature_weights_yk)
 
         #make sure no weight is None
         feature_weights = np.array(feature_weights)
         feature_weights[feature_weights == None] = 0.0
         self.feature_weights_ = feature_weights
+        self.intercept_ = intercept
 
         return self
 
@@ -155,15 +161,7 @@ class EmpiricalRiskMinimizationNewsvendor(BaseNewsvendor, DataDrivenMixin):
         check_is_fitted(self)
         X = self._validate_X_predict(X)
 
-        # Add intercept
-        n_samples = X.shape[0]
-        X = np.c_[np.ones(n_samples), X]
-
-        pred = []
-        for weights in self.feature_weights_:
-            pred.append(X.dot(weights))
-
-        pred = np.array(pred).T
+        pred = X.dot(self.feature_weights_.T)+self.intercept_
 
         return pred
 

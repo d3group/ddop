@@ -5,7 +5,7 @@ from sklearn.utils import Bunch
 
 
 def load_yaz(include_prod=None, include_lag=False, include_date=False, one_hot_encoding=False,
-             categorical_to_continuous=False, return_X_y=False):
+             label_encoding=False, return_X_y=False):
     """Load and return the YAZ dataset
 
     Yaz is a fast casual restaurant in Stuttgart providing good service and food at short waiting times.
@@ -56,7 +56,7 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, one_hot_e
         Whether to include the demand date
     one_hot_encoding : bool, default=False
         Whether to one hot encode categorical features
-    categorical_to_continuous : bool, default=False
+    label_encoding : bool, default=False
         Whether to convert categorical columns (WEEKDAY, MONTH, YEAR) to continuous.
         Will only be applied if `one_hot_encoding=False`
     return_X_y : bool, default=False.
@@ -179,7 +179,7 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, one_hot_e
 
 
 def load_bakery(include_prod=None, include_date=False, one_hot_encoding=False,
-             categorical_to_continuous=False, return_X_y=False):
+             label_encoding=False, return_X_y=False):
     """Load and return the bakery dataset
 
     The bakery dataset contains the demand for rolls, seeded rolls and pretzels. Moreover, it stores a
@@ -219,7 +219,7 @@ def load_bakery(include_prod=None, include_date=False, one_hot_encoding=False,
         Whether to include the demand date
     one_hot_encoding : bool, default=False
         Whether to one hot encode categorical features
-    categorical_to_continuous : bool, default=False
+    label_encoding : bool, default=False
         Whether to convert categorical columns (WEEKDAY, MONTH, YEAR) to continuous.
         Will only be applied if `one_hot_encoding=False`
     return_X_y : bool, default=False.
@@ -293,7 +293,7 @@ def load_bakery(include_prod=None, include_date=False, one_hot_encoding=False,
     if one_hot_encoding:
         data = pd.get_dummies(data, columns=["weekday", "month", "year"])
 
-    if not one_hot_encoding and categorical_to_continuous:
+    if not one_hot_encoding and label_encoding:
         data['weekday'] = data['weekday'].apply(_day_to_continuouse)
         data['month'] = data['month'].apply(_month_to_continuouse)
         data['year'] = data['year'].apply(int)
