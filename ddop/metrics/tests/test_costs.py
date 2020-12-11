@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from ddop.metrics.costs import calc_costs
+from ddop.metrics._newsvendor import calc_costs
 from numpy.testing import assert_array_equal
 
 

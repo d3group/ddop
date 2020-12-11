@@ -1,6 +1,6 @@
 from scipy.stats import norm
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
-from .base import BaseNewsvendor, ClassicMixin
+from ._base import BaseNewsvendor, ClassicMixin
 from ..utils.validation import check_cu_co, formate_hyperparameter
 from sklearn.utils.validation import check_array
 from sklearn.model_selection import train_test_split
@@ -138,6 +138,8 @@ class ExponentialSmoothingNewsvendor(BaseNewsvendor, ClassicMixin):
         if y.ndim == 1:
             y = np.reshape(y, (-1, 1))
 
+        self.X_ = X
+        self.y_ = y
         self.n_outputs_ = y.shape[1]
 
         # Check and format under- and overage costs

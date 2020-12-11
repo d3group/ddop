@@ -1,6 +1,6 @@
 from ..utils.criterion import NewsvendorCriterion
 from ..utils.validation import check_cu_co
-from ..metrics.costs import calc_avg_costs
+from ..metrics._newsvendor import calc_avg_costs
 
 import numbers
 import warnings
@@ -283,6 +283,8 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
             y = np.reshape(y, (-1, 1))
 
         self.n_outputs_ = y.shape[1]
+        self.X_ = X
+        self.y_ = y
 
         if getattr(y, "dtype", None) != DOUBLE or not y.flags.contiguous:
             y = np.ascontiguousarray(y, dtype=DOUBLE)
@@ -446,7 +448,7 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
 
         return self
 
-    def score(self, X, y, sample_weight=None):
+    def score(self, X, y):
         """
         Return the average costs of the prediction
 
@@ -466,6 +468,6 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
         """
 
         y_pred = self.predict(X)
-        return calc_avg_costs(y, y_pred, self.cu_, self.co_)
+        return calc_avg_costs(y, y_pred, self.cu_, self.co_, multioutput="uniform_average")
 
 

@@ -1,4 +1,4 @@
-from .base import BaseNewsvendor, DataDrivenMixin
+from ._base import BaseNewsvendor, DataDrivenMixin
 from ..utils.validation import check_cu_co
 import numpy as np
 from joblib import Parallel, delayed
@@ -224,6 +224,8 @@ class LightGradientBoostingNewsvendor(BaseNewsvendor, DataDrivenMixin):
         if y.ndim == 1:
             y = np.reshape(y, (-1, 1))
 
+        self.X_ = X
+        self.y_ = y
         self.n_outputs_ = y.shape[1]
 
         # Check and format under- and overage costs

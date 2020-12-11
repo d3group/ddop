@@ -6,8 +6,6 @@ import numbers
 def check_cu_co(cu, co, n_outputs):
     """Validate under- and overage costs.
 
-    Code was inspired from [1]
-
     Parameters
     ----------
     cu : {ndarray, Number or None}, shape (n_outputs,)
@@ -22,11 +20,6 @@ def check_cu_co(cu, co, n_outputs):
        Validated underage costs. It is guaranteed to be "C" contiguous.
     co : ndarray, shape (n_outputs,)
        Validated overage costs. It is guaranteed to be "C" contiguous.
-
-     References
-    ----------
-    .. [1] scikit-learn, _check_sample-weight(),
-           <https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/utils/validation.py>
     """
     costs = [[cu, "cu"], [co, "co"]]
     costs_validated = []

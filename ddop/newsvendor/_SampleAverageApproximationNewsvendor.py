@@ -1,4 +1,4 @@
-from .base import BaseNewsvendor, ClassicMixin
+from ._base import BaseNewsvendor, ClassicMixin
 from ..utils.validation import check_cu_co
 import numpy as np
 from sklearn.utils.validation import check_is_fitted, check_array

@@ -1,8 +1,8 @@
+from ._base import BaseNewsvendor, DataDrivenMixin
 import pulp
 from ..utils.validation import check_cu_co
 import numpy as np
 from sklearn.utils.validation import check_array, check_is_fitted
-from .base import BaseNewsvendor, DataDrivenMixin
 
 
 class EmpiricalRiskMinimizationNewsvendor(BaseNewsvendor, DataDrivenMixin):
@@ -77,6 +77,8 @@ class EmpiricalRiskMinimizationNewsvendor(BaseNewsvendor, DataDrivenMixin):
             y = np.reshape(y, (-1, 1))
 
         # Determine output settings
+        self.X_ = X
+        self.y_ = y
         self.n_features_ = X.shape[1]
         self.n_outputs_ = y.shape[1]
 

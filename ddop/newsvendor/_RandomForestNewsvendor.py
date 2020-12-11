@@ -1,5 +1,5 @@
-from ..metrics.costs import calc_avg_costs
-from .DecisionTreeNewsvendor import DecisionTreeNewsvendor
+from ..metrics._newsvendor import calc_avg_costs
+from ._DecisionTreeNewsvendor import DecisionTreeNewsvendor
 from sklearn.ensemble._forest import ForestRegressor
 from ..utils.validation import check_cu_co
 
@@ -262,7 +262,7 @@ class RandomForestNewsvendor(ForestRegressor):
 
         return self
 
-    def score(self, X, y, sample_weight=None):
+    def score(self, X, y):
         """
         Return the average costs of the prediction
 
@@ -281,4 +281,4 @@ class RandomForestNewsvendor(ForestRegressor):
             The average costs
         """
         y_pred = self.predict(X)
-        return calc_avg_costs(y, y_pred, self.cu_, self.co_)
+        return calc_avg_costs(y, y_pred, self.cu_, self.co_, multioutput="uniform_average")

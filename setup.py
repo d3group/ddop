@@ -23,7 +23,7 @@ def get_extensions():
 
 setup(
     name='ddop',
-    version='v0.5.6',
+    version='v0.5.7',
     url='https://andreasphilippi.github.io/ddom-kit/',
     license='MIT',
     author='Andreas Philippi',

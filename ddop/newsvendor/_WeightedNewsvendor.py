@@ -1,11 +1,11 @@
-from .base import BaseNewsvendor, DataDrivenMixin
+from ._base import BaseNewsvendor, DataDrivenMixin
 from ..utils.validation import check_cu_co
 import numpy as np
 from abc import ABC, abstractmethod
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import NearestNeighbors
 from sklearn.utils.validation import check_is_fitted, check_array
-from ddop.newsvendor.RandomForestNewsvendor import RandomForestNewsvendor
+from ddop.newsvendor._RandomForestNewsvendor import RandomForestNewsvendor
 from scipy.spatial import distance_matrix
 from ..utils.kernels import Kernel
 
@@ -36,6 +36,7 @@ class BaseWeightedNewsvendor(BaseNewsvendor, DataDrivenMixin, ABC):
 
         # Training data
         self.y_ = y
+        self.X_ = X
         self.n_samples_ = y.shape[0]
 
         # Determine output settings
@@ -303,7 +304,8 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
                  verbose=0,
                  warm_start=False,
                  ccp_alpha=0.0,
-                 max_samples=None
+                 max_samples=None,
+                 weight_function="w1"
                  ):
         self.criterion = criterion
         self.n_estimators = n_estimators
@@ -322,6 +324,7 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
         self.warm_start = warm_start
         self.ccp_alpha = ccp_alpha
         self.max_samples = max_samples
+        self.weight_function = weight_function
         super().__init__(
             cu=cu,
             co=co
@@ -355,10 +358,14 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
 
     def _calc_weights(self, sample):
         sample_leaf_indices = self.model_.apply([sample])
-        n = np.sum(sample_leaf_indices == self.train_leaf_indices_, axis=0)
-        treeWeights = (sample_leaf_indices == self.train_leaf_indices_) / n
-        weights = np.sum(treeWeights, axis=1) / self.n_estimators
-
+        if self.weight_function == "w1":
+            n = np.sum(sample_leaf_indices == self.train_leaf_indices_, axis=0)
+            treeWeights = (sample_leaf_indices == self.train_leaf_indices_) / n
+            weights = np.sum(treeWeights, axis=1) / self.n_estimators
+        else:
+            n = np.sum(sample_leaf_indices == self.train_leaf_indices_)
+            treeWeights = (sample_leaf_indices == self.train_leaf_indices_) / n
+            weights = np.sum(treeWeights, axis=1)
         return weights
 
     def fit(self, X, y):
@@ -607,16 +614,14 @@ class GaussianWeightedNewsvendor(BaseWeightedNewsvendor):
             co=co
         )
 
-    def _get_fitted_model(self, X, y=None):
+    def _get_fitted_model(self, X=None, y=None):
         self.kernel_ = Kernel("gaussian", self.kernel_bandwidth)
-        self.X_ = X
 
     def _calc_weights(self, sample):
         distances = distance_matrix(self.X_, [sample]).ravel()
         distances_kernel_weighted = np.array([self.kernel_.get_kernel_output(x) for x in distances])
         total = np.sum(distances_kernel_weighted)
         weights = distances_kernel_weighted / total
-
         return weights
 
     def fit(self, X, y):
@@ -631,7 +636,7 @@ class GaussianWeightedNewsvendor(BaseWeightedNewsvendor):
 
         Returns
         ----------
-        self : KNeighborsWeightedNewsvendor
+        self : GaussianWeightedNewsvendor
             Fitted estimator
         """
 

@@ -1,4 +1,4 @@
-from .base import BaseNewsvendor, DataDrivenMixin
+from ._base import BaseNewsvendor, DataDrivenMixin
 from ..utils.validation import check_cu_co
 from keras.models import Sequential
 from keras.layers import Dense
@@ -24,7 +24,7 @@ class DeepLearningNewsvendor(BaseNewsvendor, DataDrivenMixin):
     neurons : list, default=[100,50]
         The ith element represents the number of neurons in the ith hidden layer
         Only used when hidden_layers='custom'.
-    activations : list, default=['relu','linear']
+    activations : list, default=['relu','relu']
         The ith element of the list represents the activation function of the ith layer.
         Valid activation functions are: 'elu', 'selu', 'linear', 'tanh', 'relu', 'softmax',
         'softsign', 'softplus','sigmoid', 'hard_sigmoid', 'exponential'.
@@ -131,6 +131,8 @@ class DeepLearningNewsvendor(BaseNewsvendor, DataDrivenMixin):
             y = np.reshape(y, (-1, 1))
 
         # Determine output settings
+        self.X_ = X
+        self.y_ = y
         self.n_features_ = X.shape[1]
         self.n_outputs_ = y.shape[1]
 
