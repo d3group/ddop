@@ -7,9 +7,10 @@ from ._LightGradientBoostingNewsvendor import LightGradientBoostingNewsvendor
 from ._WeightedNewsvendor import RandomForestWeightedNewsvendor, \
     KNeighborsWeightedNewsvendor, GaussianWeightedNewsvendor
 from ._ExponentialSmoothingNewsvendor import ExponentialSmoothingNewsvendor
+from ._MLPNewsvendor import MLPNewsvendor
 
 __all__ = ["SampleAverageApproximationNewsvendor", "LinearRegressionNewsvendor",
            "DeepLearningNewsvendor", "RandomForestNewsvendor", "DecisionTreeNewsvendor",
            "LightGradientBoostingNewsvendor", "RandomForestWeightedNewsvendor",
            "KNeighborsWeightedNewsvendor", "GaussianWeightedNewsvendor",
-           "ExponentialSmoothingNewsvendor"]
+           "ExponentialSmoothingNewsvendor", "MLPNewsvendor"]
