@@ -89,7 +89,7 @@
 <li class="toctree-l3 current"><a class="reference internal" href="../../api_reference.html#empirical-risk-minimization">Empirical Risk Minimization</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.DeepLearningNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.DeepLearningNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.LightGradientBoostingNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.LightGradientBoostingNewsvendor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.EmpiricalRiskMinimizationNewsvendor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.LinearRegressionNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.LinearRegressionNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.RandomForestNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.RandomForestNewsvendor</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.DecisionTreeNewsvendor</a></li>
 </ul>
@@ -431,37 +431,37 @@ Learning”, Springer, 2009.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([cu, co, criterion, splitter, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.DecisionTreeNewsvendor.__init__" title="ddop.newsvendor.DecisionTreeNewsvendor.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([cu, co, criterion, splitter, …])</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply</span></code>(X[, check_input])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.DecisionTreeNewsvendor.apply" title="ddop.newsvendor.DecisionTreeNewsvendor.apply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply</span></code></a>(X[, check_input])</p></td>
 <td><p>Return the index of the leaf that each sample is predicted as.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cost_complexity_pruning_path</span></code>(X, y[, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.DecisionTreeNewsvendor.cost_complexity_pruning_path" title="ddop.newsvendor.DecisionTreeNewsvendor.cost_complexity_pruning_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cost_complexity_pruning_path</span></code></a>(X, y[, …])</p></td>
 <td><p>Compute the pruning path during Minimal Cost-Complexity Pruning.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">decision_path</span></code>(X[, check_input])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.DecisionTreeNewsvendor.decision_path" title="ddop.newsvendor.DecisionTreeNewsvendor.decision_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decision_path</span></code></a>(X[, check_input])</p></td>
 <td><p>Return the decision path in the tree.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X, y[, sample_weight, check_input])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.DecisionTreeNewsvendor.fit" title="ddop.newsvendor.DecisionTreeNewsvendor.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X, y[, sample_weight, check_input])</p></td>
 <td><p>Build a newsvendor decision tree regressor from the training set (X, y).</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_depth</span></code>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.DecisionTreeNewsvendor.get_depth" title="ddop.newsvendor.DecisionTreeNewsvendor.get_depth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_depth</span></code></a>()</p></td>
 <td><p>Return the depth of the decision tree.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_n_leaves</span></code>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.DecisionTreeNewsvendor.get_n_leaves" title="ddop.newsvendor.DecisionTreeNewsvendor.get_n_leaves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_n_leaves</span></code></a>()</p></td>
 <td><p>Return the number of leaves of the decision tree.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.DecisionTreeNewsvendor.get_params" title="ddop.newsvendor.DecisionTreeNewsvendor.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</p></td>
 <td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code>(X[, check_input])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.DecisionTreeNewsvendor.predict" title="ddop.newsvendor.DecisionTreeNewsvendor.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X[, check_input])</p></td>
 <td><p>Predict class or regression value for X.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code>(X, y[, sample_weight])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.DecisionTreeNewsvendor.score" title="ddop.newsvendor.DecisionTreeNewsvendor.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(X, y)</p></td>
 <td><p>Return the average costs of the prediction</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.DecisionTreeNewsvendor.set_params" title="ddop.newsvendor.DecisionTreeNewsvendor.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</p></td>
 <td><p>Set the parameters of this estimator.</p></td>
 </tr>
 </tbody>
@@ -704,7 +704,7 @@ Don’t use this parameter unless you know what you do.</p></li>
 
 <dl class="py method">
 <dt id="ddop.newsvendor.DecisionTreeNewsvendor.score">
-<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.DecisionTreeNewsvendor.score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.DecisionTreeNewsvendor.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the average costs of the prediction</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

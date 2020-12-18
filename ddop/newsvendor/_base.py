@@ -1,7 +1,7 @@
 from sklearn.base import BaseEstimator
 from sklearn.utils.validation import check_array
 from abc import ABC, abstractmethod
-from ..metrics._newsvendor import calc_avg_costs
+from ..metrics._newsvendor import average_costs
 import numpy as np
 
 
@@ -34,7 +34,7 @@ class DataDrivenMixin:
         """
 
         y_pred = self.predict(X)
-        score = calc_avg_costs(y, y_pred, self.cu_, self.co_, multioutput="uniform_average")
+        score = -average_costs(y, y_pred, self.cu_, self.co_, multioutput="uniform_average")
         return score
 
 
@@ -62,4 +62,4 @@ class ClassicMixin:
             y = np.reshape(y, (-1, 1))
 
         y_pred = self.predict(y.shape[0])
-        return calc_avg_costs(y, y_pred, self.cu_, self.co_, multioutput="uniform_average")
+        return -average_costs(y, y_pred, self.cu_, self.co_, multioutput="uniform_average")

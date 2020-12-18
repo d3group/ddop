@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor &mdash; ddom-kit  documentation</title>
+  <title>ddop.newsvendor.LinearRegressionNewsvendor &mdash; ddom-kit  documentation</title>
   
 
   
@@ -89,7 +89,7 @@
 <li class="toctree-l3 current"><a class="reference internal" href="../../api_reference.html#empirical-risk-minimization">Empirical Risk Minimization</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.DeepLearningNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.DeepLearningNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.LightGradientBoostingNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.LightGradientBoostingNewsvendor</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.EmpiricalRiskMinimizationNewsvendor</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.LinearRegressionNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.RandomForestNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.RandomForestNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.DecisionTreeNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.DecisionTreeNewsvendor</a></li>
 </ul>
@@ -151,13 +151,13 @@
         
           <li><a href="../../api_reference.html">API Reference</a> &raquo;</li>
         
-      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.EmpiricalRiskMinimizationNewsvendor</li>
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.LinearRegressionNewsvendor</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/modules/auto_generated/ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/modules/auto_generated/ddop.newsvendor.LinearRegressionNewsvendor.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -194,11 +194,11 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="ddop-newsvendor-empiricalriskminimizationnewsvendor">
-<h1><a class="reference internal" href="../../api_reference.html#module-ddop.newsvendor" title="ddop.newsvendor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code></a>.EmpiricalRiskMinimizationNewsvendor<a class="headerlink" href="#ddop-newsvendor-empiricalriskminimizationnewsvendor" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="ddop-newsvendor-linearregressionnewsvendor">
+<h1><a class="reference internal" href="../../api_reference.html#module-ddop.newsvendor" title="ddop.newsvendor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code></a>.LinearRegressionNewsvendor<a class="headerlink" href="#ddop-newsvendor-linearregressionnewsvendor" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor">
-<em class="property">class </em><code class="sig-prename descclassname">ddop.newsvendor.</code><code class="sig-name descname">EmpiricalRiskMinimizationNewsvendor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cu</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">co</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor" title="Permalink to this definition">¶</a></dt>
+<dt id="ddop.newsvendor.LinearRegressionNewsvendor">
+<em class="property">class </em><code class="sig-prename descclassname">ddop.newsvendor.</code><code class="sig-name descname">LinearRegressionNewsvendor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cu</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">co</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.LinearRegressionNewsvendor" title="Permalink to this definition">¶</a></dt>
 <dd><p>A Empirical Risk Minimization Newsvendor estimator</p>
 <p>Implements the Empirical Risk Minimization Method described in [1]</p>
 <dl class="field-list simple">
@@ -212,8 +212,8 @@ for each target variable</p></li>
 </dd>
 </dl>
 <dl class="py attribute">
-<dt id="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.n_features_">
-<code class="sig-name descname">n_features_</code><a class="headerlink" href="#ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.n_features_" title="Permalink to this definition">¶</a></dt>
+<dt id="ddop.newsvendor.LinearRegressionNewsvendor.n_features_">
+<code class="sig-name descname">n_features_</code><a class="headerlink" href="#ddop.newsvendor.LinearRegressionNewsvendor.n_features_" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of features when <code class="docutils literal notranslate"><span class="pre">fit</span></code> is performed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -223,8 +223,8 @@ for each target variable</p></li>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.n_outputs_">
-<code class="sig-name descname">n_outputs_</code><a class="headerlink" href="#ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.n_outputs_" title="Permalink to this definition">¶</a></dt>
+<dt id="ddop.newsvendor.LinearRegressionNewsvendor.n_outputs_">
+<code class="sig-name descname">n_outputs_</code><a class="headerlink" href="#ddop.newsvendor.LinearRegressionNewsvendor.n_outputs_" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of outputs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -234,8 +234,8 @@ for each target variable</p></li>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.cu_">
-<code class="sig-name descname">cu_</code><a class="headerlink" href="#ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.cu_" title="Permalink to this definition">¶</a></dt>
+<dt id="ddop.newsvendor.LinearRegressionNewsvendor.cu_">
+<code class="sig-name descname">cu_</code><a class="headerlink" href="#ddop.newsvendor.LinearRegressionNewsvendor.cu_" title="Permalink to this definition">¶</a></dt>
 <dd><p>Validated underage costs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -245,8 +245,8 @@ for each target variable</p></li>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.co_">
-<code class="sig-name descname">co_</code><a class="headerlink" href="#ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.co_" title="Permalink to this definition">¶</a></dt>
+<dt id="ddop.newsvendor.LinearRegressionNewsvendor.co_">
+<code class="sig-name descname">co_</code><a class="headerlink" href="#ddop.newsvendor.LinearRegressionNewsvendor.co_" title="Permalink to this definition">¶</a></dt>
 <dd><p>Validated overage costs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -256,8 +256,8 @@ for each target variable</p></li>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.feature_weights_">
-<code class="sig-name descname">feature_weights_</code><a class="headerlink" href="#ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.feature_weights_" title="Permalink to this definition">¶</a></dt>
+<dt id="ddop.newsvendor.LinearRegressionNewsvendor.feature_weights_">
+<code class="sig-name descname">feature_weights_</code><a class="headerlink" href="#ddop.newsvendor.LinearRegressionNewsvendor.feature_weights_" title="Permalink to this definition">¶</a></dt>
 <dd><p>The calculated feature weights</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -275,12 +275,12 @@ from Machine Learning”, 2018.</p>
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ddop.datasets</span> <span class="kn">import</span> <span class="n">load_yaz</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ddop.newsvendor</span> <span class="kn">import</span> <span class="n">EmpiricalRiskMinimizationNewsvendor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ddop.newsvendor</span> <span class="kn">import</span> <span class="n">LinearRegressionNewsvendor</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">load_yaz</span><span class="p">(</span><span class="n">include_prod</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;STEAK&#39;</span><span class="p">],</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cu</span><span class="p">,</span><span class="n">co</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span><span class="mi">10</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">Y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mdl</span> <span class="o">=</span> <span class="n">EmpiricalRiskMinimizationNewsvendor</span><span class="p">(</span><span class="n">cu</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">co</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mdl</span> <span class="o">=</span> <span class="n">LinearRegressionNewsvendor</span><span class="p">(</span><span class="n">cu</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">co</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mdl</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mdl</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">Y_test</span><span class="p">)</span>
 <span class="go">TODO: ADD SCORE</span>
@@ -293,35 +293,35 @@ from Machine Learning”, 2018.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([cu, co])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.LinearRegressionNewsvendor.__init__" title="ddop.newsvendor.LinearRegressionNewsvendor.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([cu, co])</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X, y)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.LinearRegressionNewsvendor.fit" title="ddop.newsvendor.LinearRegressionNewsvendor.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X, y)</p></td>
 <td><p>Calculate the feature weights for estimator</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.LinearRegressionNewsvendor.get_params" title="ddop.newsvendor.LinearRegressionNewsvendor.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</p></td>
 <td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code>(X)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.LinearRegressionNewsvendor.predict" title="ddop.newsvendor.LinearRegressionNewsvendor.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X)</p></td>
 <td><p>Predict value for X.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code>(X, y)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.LinearRegressionNewsvendor.score" title="ddop.newsvendor.LinearRegressionNewsvendor.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(X, y)</p></td>
 <td><p>Return the average costs of the prediction</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.LinearRegressionNewsvendor.set_params" title="ddop.newsvendor.LinearRegressionNewsvendor.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</p></td>
 <td><p>Set the parameters of this estimator.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py method">
-<dt id="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cu</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">co</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.__init__" title="Permalink to this definition">¶</a></dt>
+<dt id="ddop.newsvendor.LinearRegressionNewsvendor.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cu</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">co</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.LinearRegressionNewsvendor.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.fit" title="Permalink to this definition">¶</a></dt>
+<dt id="ddop.newsvendor.LinearRegressionNewsvendor.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.LinearRegressionNewsvendor.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the feature weights for estimator</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -334,14 +334,14 @@ from Machine Learning”, 2018.</p>
 <dd class="field-even"><p><strong>self</strong> – Fitted estimator</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor" title="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmpiricalRiskMinimizationNewsvendor</span></code></a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#ddop.newsvendor.LinearRegressionNewsvendor" title="ddop.newsvendor.LinearRegressionNewsvendor"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinearRegressionNewsvendor</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.get_params" title="Permalink to this definition">¶</a></dt>
+<dt id="ddop.newsvendor.LinearRegressionNewsvendor.get_params">
+<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.LinearRegressionNewsvendor.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -358,8 +358,8 @@ contained subobjects that are estimators.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.predict" title="Permalink to this definition">¶</a></dt>
+<dt id="ddop.newsvendor.LinearRegressionNewsvendor.predict">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.LinearRegressionNewsvendor.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Predict value for X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -375,8 +375,8 @@ contained subobjects that are estimators.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.score">
-<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.score" title="Permalink to this definition">¶</a></dt>
+<dt id="ddop.newsvendor.LinearRegressionNewsvendor.score">
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.LinearRegressionNewsvendor.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the average costs of the prediction</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -395,8 +395,8 @@ contained subobjects that are estimators.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.set_params" title="Permalink to this definition">¶</a></dt>
+<dt id="ddop.newsvendor.LinearRegressionNewsvendor.set_params">
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.LinearRegressionNewsvendor.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form

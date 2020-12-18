@@ -89,7 +89,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#empirical-risk-minimization">Empirical Risk Minimization</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.DeepLearningNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.DeepLearningNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.LightGradientBoostingNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.LightGradientBoostingNewsvendor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.EmpiricalRiskMinimizationNewsvendor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.LinearRegressionNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.LinearRegressionNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.RandomForestNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.RandomForestNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.DecisionTreeNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.DecisionTreeNewsvendor</a></li>
 </ul>
@@ -108,9 +108,11 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ddop-metrics-evaluation-metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.metrics</span></code>: Evaluation metrics</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="modules/auto_generated/ddop.metrics.calc_costs.html">ddop.metrics.calc_costs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="modules/auto_generated/ddop.metrics.calc_total_costs.html">ddop.metrics.calc_total_costs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="modules/auto_generated/ddop.metrics.calc_avg_costs.html">ddop.metrics.calc_avg_costs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/auto_generated/ddop.metrics.total_costs.html">ddop.metrics.total_costs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/auto_generated/ddop.metrics.average_costs.html">ddop.metrics.average_costs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/auto_generated/ddop.metrics.prescriptiveness_score.html">ddop.metrics.prescriptiveness_score</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/auto_generated/ddop.metrics.make_scorer.html">ddop.metrics.make_scorer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/auto_generated/ddop.metrics.pairwise_costs.html">ddop.metrics.pairwise_costs</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ddop-dataset-datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.dataset</span></code>: Datasets</a><ul>
@@ -241,7 +243,7 @@ decision making.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.LightGradientBoostingNewsvendor.html#ddop.newsvendor.LightGradientBoostingNewsvendor" title="ddop.newsvendor.LightGradientBoostingNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.LightGradientBoostingNewsvendor</span></code></a>([…])</p></td>
 <td><p>A newsvendor based on light gradient boosting.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.html#ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor" title="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.EmpiricalRiskMinimizationNewsvendor</span></code></a>([…])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.LinearRegressionNewsvendor.html#ddop.newsvendor.LinearRegressionNewsvendor" title="ddop.newsvendor.LinearRegressionNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.LinearRegressionNewsvendor</span></code></a>([cu, co])</p></td>
 <td><p>A Empirical Risk Minimization Newsvendor estimator</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.RandomForestNewsvendor.html#ddop.newsvendor.RandomForestNewsvendor" title="ddop.newsvendor.RandomForestNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.RandomForestNewsvendor</span></code></a>([cu, co, …])</p></td>
@@ -293,21 +295,47 @@ decision making.</p>
 </div>
 <div class="section" id="ddop-metrics-evaluation-metrics">
 <span id="metrics-ref"></span><h2><a class="reference internal" href="#module-ddop.metrics" title="ddop.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.metrics</span></code></a>: Evaluation metrics<a class="headerlink" href="#ddop-metrics-evaluation-metrics" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">ddop.metrics</span></code> module contains different evaluation metrics</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">ddop.metrics</span></code> module includes different performance metrics that can be used for model selection and
+evaluation.</p>
 <span class="target" id="module-ddop.metrics"></span><table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="modules/auto_generated/ddop.metrics.calc_costs.html#ddop.metrics.calc_costs" title="ddop.metrics.calc_costs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_costs</span></code></a>(y_true, y_pred, cu, co)</p></td>
-<td><p>Compute pairwise costs based on the the difference between y_true and y_pred and the given underage and overage costs.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="modules/auto_generated/ddop.metrics.calc_total_costs.html#ddop.metrics.calc_total_costs" title="ddop.metrics.calc_total_costs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_total_costs</span></code></a>(y_true, y_pred, cu, co)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="modules/auto_generated/ddop.metrics.total_costs.html#ddop.metrics.total_costs" title="ddop.metrics.total_costs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">total_costs</span></code></a>(y_true, y_pred, cu, co[, …])</p></td>
 <td><p>Compute total costs based on the the difference between y_true and y_pred and the given underage and overage costs.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="modules/auto_generated/ddop.metrics.calc_avg_costs.html#ddop.metrics.calc_avg_costs" title="ddop.metrics.calc_avg_costs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_avg_costs</span></code></a>(y_true, y_pred, cu, co)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="modules/auto_generated/ddop.metrics.average_costs.html#ddop.metrics.average_costs" title="ddop.metrics.average_costs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">average_costs</span></code></a>(y_true, y_pred, cu, co[, …])</p></td>
 <td><p>Compute average costs based on the the difference between y_true and y_pred and the given underage and overage costs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="modules/auto_generated/ddop.metrics.prescriptiveness_score.html#ddop.metrics.prescriptiveness_score" title="ddop.metrics.prescriptiveness_score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prescriptiveness_score</span></code></a>(y_true, y_pred, …)</p></td>
+<td><p>Compute the coefficient of prescriptiveness that is defined as (1 - u/v), where u are the average costs between the true and predicted values (y_true,y_pred), and v are the average costs between the true values and the predictions obtained by SAA (y_pred_saa, y_pred).</p></td>
+</tr>
+</tbody>
+</table>
+<p>All performance metrics can also be used with scikit-learn model selection tools. However, therefore
+a proper scoring object has to be generated by using the make_scorer function.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="modules/auto_generated/ddop.metrics.make_scorer.html#ddop.metrics.make_scorer" title="ddop.metrics.make_scorer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_scorer</span></code></a>(score_func[, greater_is_better])</p></td>
+<td><p>Make a scorer from a performance metric or loss function.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Moreover, the module contains a function to calculate the pairwise costs.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="modules/auto_generated/ddop.metrics.pairwise_costs.html#ddop.metrics.pairwise_costs" title="ddop.metrics.pairwise_costs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pairwise_costs</span></code></a>(y_true, y_pred, cu, co)</p></td>
+<td><p>Compute pairwise costs based on the the difference between y_true and y_pred and the given underage and overage costs.</p></td>
 </tr>
 </tbody>
 </table>

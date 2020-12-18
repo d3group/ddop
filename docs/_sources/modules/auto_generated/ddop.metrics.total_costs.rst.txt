@@ -1,0 +1,6 @@
+﻿ddop.metrics.total\_costs
+=========================
+
+.. currentmodule:: ddop.metrics
+
+.. autofunction:: total_costs

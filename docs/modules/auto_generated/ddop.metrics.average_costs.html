@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ddop.metrics.calc_avg_costs &mdash; ddom-kit  documentation</title>
+  <title>ddop.metrics.average_costs &mdash; ddom-kit  documentation</title>
   
 
   
@@ -37,8 +37,8 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="ddop.datasets.load_yaz" href="ddop.datasets.load_yaz.html" />
-    <link rel="prev" title="ddop.metrics.calc_total_costs" href="ddop.metrics.calc_total_costs.html" /> 
+    <link rel="next" title="ddop.metrics.prescriptiveness_score" href="ddop.metrics.prescriptiveness_score.html" />
+    <link rel="prev" title="ddop.metrics.total_costs" href="ddop.metrics.total_costs.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -87,9 +87,11 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../api_reference.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../api_reference.html#ddop-newsvendor-newsvendor-decision-making"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>: Newsvendor decision making</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../api_reference.html#ddop-metrics-evaluation-metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.metrics</span></code>: Evaluation metrics</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="ddop.metrics.calc_costs.html">ddop.metrics.calc_costs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ddop.metrics.calc_total_costs.html">ddop.metrics.calc_total_costs</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">ddop.metrics.calc_avg_costs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ddop.metrics.total_costs.html">ddop.metrics.total_costs</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ddop.metrics.average_costs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ddop.metrics.prescriptiveness_score.html">ddop.metrics.prescriptiveness_score</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ddop.metrics.make_scorer.html">ddop.metrics.make_scorer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ddop.metrics.pairwise_costs.html">ddop.metrics.pairwise_costs</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../api_reference.html#ddop-dataset-datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.dataset</span></code>: Datasets</a></li>
@@ -144,13 +146,13 @@
         
           <li><a href="../../api_reference.html">API Reference</a> &raquo;</li>
         
-      <li>ddop.metrics.calc_avg_costs</li>
+      <li>ddop.metrics.average_costs</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/modules/auto_generated/ddop.metrics.calc_avg_costs.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/modules/auto_generated/ddop.metrics.average_costs.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -187,11 +189,11 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="ddop-metrics-calc-avg-costs">
-<h1>ddop.metrics.calc_avg_costs<a class="headerlink" href="#ddop-metrics-calc-avg-costs" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="ddop-metrics-average-costs">
+<h1>ddop.metrics.average_costs<a class="headerlink" href="#ddop-metrics-average-costs" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="ddop.metrics.calc_avg_costs">
-<code class="sig-prename descclassname">ddop.metrics.</code><code class="sig-name descname">calc_avg_costs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y_true</span></em>, <em class="sig-param"><span class="n">y_pred</span></em>, <em class="sig-param"><span class="n">cu</span></em>, <em class="sig-param"><span class="n">co</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.metrics.calc_avg_costs" title="Permalink to this definition">¶</a></dt>
+<dt id="ddop.metrics.average_costs">
+<code class="sig-prename descclassname">ddop.metrics.</code><code class="sig-name descname">average_costs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y_true</span></em>, <em class="sig-param"><span class="n">y_pred</span></em>, <em class="sig-param"><span class="n">cu</span></em>, <em class="sig-param"><span class="n">co</span></em>, <em class="sig-param"><span class="n">multioutput</span><span class="o">=</span><span class="default_value">'raw_values'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.metrics.average_costs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute average costs based on the the difference between y_true and y_pred
 and the given underage and overage costs.</p>
 <dl class="field-list simple">
@@ -201,13 +203,25 @@ and the given underage and overage costs.</p>
 <li><p><strong>y_pred</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code>) – The predicted vales</p></li>
 <li><p><strong>cu</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – the underage costs per unit.</p></li>
 <li><p><strong>co</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – the overage costs per unit.</p></li>
+<li><p><strong>multioutput</strong> (<code class="docutils literal notranslate"><span class="pre">{&quot;raw_values&quot;,</span> <span class="pre">&quot;uniform_average&quot;}</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">&quot;raw_values&quot;</span></code>) – <dl class="simple">
+<dt>Defines aggregating of multiple output values. Default is “raw_values”.</dt><dd><dl class="simple">
+<dt>’raw_values’ :</dt><dd><p>Returns a full set of cost values in case of multioutput input.</p>
+</dd>
+</dl>
+</dd>
+<dt>’uniform_average’ :</dt><dd><p>Costs of all outputs are averaged with uniform weight.</p>
+</dd>
+</dl>
+</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>avg_costs</strong></p>
+<dd class="field-even"><p><strong>costs</strong> – The average costs. If multioutput is ‘raw_values’, then the average costs are returned for each
+output separately. If multioutput is ‘uniform_average’, then the average of all output costs is
+returned. The average costs are non-negative floating points. The best value is 0.0.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">floating</span> <span class="pre">point</span> <span class="pre">values.</span></code></p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">floats</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -222,10 +236,10 @@ and the given underage and overage costs.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="ddop.datasets.load_yaz.html" class="btn btn-neutral float-right" title="ddop.datasets.load_yaz" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="ddop.metrics.prescriptiveness_score.html" class="btn btn-neutral float-right" title="ddop.metrics.prescriptiveness_score" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="ddop.metrics.calc_total_costs.html" class="btn btn-neutral float-left" title="ddop.metrics.calc_total_costs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="ddop.metrics.total_costs.html" class="btn btn-neutral float-left" title="ddop.metrics.total_costs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -1,0 +1,6 @@
+﻿ddop.metrics.prescriptiveness\_score
+====================================
+
+.. currentmodule:: ddop.metrics
+
+.. autofunction:: prescriptiveness_score

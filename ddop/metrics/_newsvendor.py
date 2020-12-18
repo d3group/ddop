@@ -47,7 +47,7 @@ def _multiply_cost_weights(x, cu, co):
         return x * co
 
 
-def calc_costs(y_true, y_pred, cu, co):
+def pairwise_costs(y_true, y_pred, cu, co):
     """ Compute pairwise costs based on the the difference between y_true and y_pred
     and the given underage and overage costs.
 
@@ -64,7 +64,7 @@ def calc_costs(y_true, y_pred, cu, co):
 
     Returns
     -------
-    costs : array of floating point values.
+    costs : array of floating point values
     """
     y_true, y_pred = _check_newsvendor_targets(y_true, y_pred)
     y_diff = y_pred - y_true
@@ -74,7 +74,7 @@ def calc_costs(y_true, y_pred, cu, co):
     return costs
 
 
-def calc_total_costs(y_true, y_pred, cu, co, multioutput="raw_values"):
+def total_costs(y_true, y_pred, cu, co, multioutput="raw_values"):
     """ Compute total costs based on the the difference between y_true and y_pred
     and the given underage and overage costs.
 
@@ -94,14 +94,14 @@ def calc_total_costs(y_true, y_pred, cu, co, multioutput="raw_values"):
             Returns a full set of cost values in case of multioutput input.
         'uniform_average' :
             Costs of all outputs are averaged with uniform weight.
-
     Returns
     -------
     total_costs :  float or ndarray of floats
-        A non-negative floating point value (the best value is 0.0), or an
-        array of floating point values, one for each individual target.
+        The total costs. If multioutput is ‘raw_values’, then the total costs are returned for each
+        output separately. If multioutput is ‘uniform_average’, then the average of all output costs
+        is returned. The total costs are non-negative floating points. The best value is 0.0.
     """
-    costs = calc_costs(y_true, y_pred, cu, co)
+    costs = pairwise_costs(y_true, y_pred, cu, co)
     total_costs = np.sum(costs, axis=0)
 
     if multioutput == "raw_values":
@@ -110,7 +110,7 @@ def calc_total_costs(y_true, y_pred, cu, co, multioutput="raw_values"):
     return np.average(total_costs)
 
 
-def calc_avg_costs(y_true, y_pred, cu, co, multioutput="raw_values"):
+def average_costs(y_true, y_pred, cu, co, multioutput="raw_values"):
     """ Compute average costs based on the the difference between y_true and y_pred
     and the given underage and overage costs.
 
@@ -133,24 +133,26 @@ def calc_avg_costs(y_true, y_pred, cu, co, multioutput="raw_values"):
 
     Returns
     -------
-    avg_costs :  float or ndarray of floats
-        A non-negative floating point value (the best value is 0.0), or an
-        array of floating point values, one for each individual target.
+    costs :  float or ndarray of floats
+        The average costs. If multioutput is ‘raw_values’, then the average costs are returned for each
+        output separately. If multioutput is ‘uniform_average’, then the average of all output costs is
+        returned. The average costs are non-negative floating points. The best value is 0.0.
     """
     y_true, y_pred = _check_newsvendor_targets(y_true, y_pred)
-    total_costs = calc_total_costs(y_true, y_pred, cu, co)
-    avg_costs = total_costs / y_true.shape[0]
+    total = total_costs(y_true, y_pred, cu, co)
+    average_costs = total / y_true.shape[0]
 
     if multioutput == "raw_values":
-        return avg_costs
+        return average_costs
 
-    return np.average(avg_costs)
+    return np.average(average_costs)
 
 
 def prescriptiveness_score(y_true, y_pred, y_pred_saa, cu, co, multioutput="raw_values"):
-    """ The prescriptiveness score is defined as (1 - u/v), where u are the average costs between y_true and y_pred,
-    and v are the average costs between the y_pred_saa and y_pred. The best possible score is 1.0 and
-    it can be negative (because the model can be arbitrarily worse).
+    """ Compute the coefficient of prescriptiveness that is defined as (1 - u/v), where u are the average
+    costs between the true and predicted values (y_true,y_pred), and v are the average costs between the
+    true values and the predictions obtained by SAA (y_pred_saa, y_pred). The best possible score
+    is 1.0 and it can be negative (because the model can be arbitrarily worse).
 
     Parameters
     ----------
@@ -179,8 +181,8 @@ def prescriptiveness_score(y_true, y_pred, y_pred_saa, cu, co, multioutput="raw_
     y_true, y_pred = _check_newsvendor_targets(y_true, y_pred)
     y_true, y_pred_saa = _check_newsvendor_targets(y_true, y_pred_saa)
 
-    numerator = calc_avg_costs(y_true, y_pred, cu, co)
-    denominator = calc_avg_costs(y_true, y_pred_saa, cu, co)
+    numerator = average_costs(y_true, y_pred, cu, co)
+    denominator = average_costs(y_true, y_pred_saa, cu, co)
 
     nonzero_denominator = denominator != 0
     nonzero_numerator = numerator != 0
@@ -192,46 +194,6 @@ def prescriptiveness_score(y_true, y_pred, y_pred_saa, cu, co, multioutput="raw_
     # y_true is not interesting for scoring a regression anyway
     # output_scores[nonzero_numerator & ~nonzero_denominator] = 0.
 
-    if multioutput == "raw_values":
-        return output_scores
-
-    return np.average(output_scores)
-
-
-def saa_improvement_score(y_true, y_pred, y_pred_saa, cu, co, multioutput="raw_values"):
-    """ Computes the percentage average cost improvement relativ to SAA.
-
-    Parameters
-    ----------
-    y_true : array-like
-        The true values
-    y_pred : array-like
-        The predicted vales
-    y_pred_saa: array-like
-        The predicted values by SAA
-    cu : int or float
-        the underage costs per unit.
-    co : int or float
-        the overage costs per unit.
-    multioutput: {"raw_values", "uniform_average"}, default="raw_values"
-        Defines aggregating of multiple output scores. Default is “uniform_average”.
-         'raw_values' :
-            Returns a full set of scores in case of multioutput input.
-        'uniform_average' :
-            Scores of all outputs are averaged with uniform weight.
-
-    Returns
-    -------
-    score:  float or ndarray of floats
-        The saa improvement score or ndarray of scores if 'multioutput' is
-        'raw_values'.
-    """
-    y_true, y_pred = _check_newsvendor_targets(y_true, y_pred)
-    y_true, y_pred_saa = _check_newsvendor_targets(y_true, y_pred_saa)
-
-    score = calc_avg_costs(y_true, y_pred, cu, co)
-    saa_score = calc_avg_costs(y_true, y_pred_saa, cu, co)
-    output_scores = (saa_score - score) / saa_score
     if multioutput == "raw_values":
         return output_scores
 

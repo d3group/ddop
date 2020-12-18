@@ -89,7 +89,7 @@
 <li class="toctree-l3 current"><a class="reference internal" href="../../api_reference.html#empirical-risk-minimization">Empirical Risk Minimization</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.DeepLearningNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.LightGradientBoostingNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.LightGradientBoostingNewsvendor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.EmpiricalRiskMinimizationNewsvendor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.LinearRegressionNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.LinearRegressionNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.RandomForestNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.RandomForestNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.DecisionTreeNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.DecisionTreeNewsvendor</a></li>
 </ul>
@@ -209,7 +209,7 @@ for each target variable</p></li>
 for each target variable</p></li>
 <li><p><strong>neurons</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>, <em>default</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">[100,50]</span></code>) – The ith element represents the number of neurons in the ith hidden layer
 Only used when hidden_layers=’custom’.</p></li>
-<li><p><strong>activations</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>, <em>default</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">[``</span></code>’relu’<code class="docutils literal notranslate"><span class="pre">:class:`,`</span></code>’linear’<a href="#id1"><span class="problematic" id="id2">``</span></a><code class="xref py py-class docutils literal notranslate"><span class="pre">]</span></code>) – The ith element of the list represents the activation function of the ith layer.
+<li><p><strong>activations</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>, <em>default</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">[``</span></code>’relu’<code class="docutils literal notranslate"><span class="pre">:class:`,`</span></code>’relu’<a href="#id1"><span class="problematic" id="id2">``</span></a><code class="xref py py-class docutils literal notranslate"><span class="pre">]</span></code>) – The ith element of the list represents the activation function of the ith layer.
 Valid activation functions are: ‘elu’, ‘selu’, ‘linear’, ‘tanh’, ‘relu’, ‘softmax’,
 ‘softsign’, ‘softplus’,’sigmoid’, ‘hard_sigmoid’, ‘exponential’.
 Only used when hidden_layers=’custom’.</p></li>
@@ -301,22 +301,22 @@ Only used when hidden_layers=’custom’.</p></li>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([cu, co, neurons, activations, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.DeepLearningNewsvendor.__init__" title="ddop.newsvendor.DeepLearningNewsvendor.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([cu, co, neurons, activations, …])</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X, y)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.DeepLearningNewsvendor.fit" title="ddop.newsvendor.DeepLearningNewsvendor.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X, y)</p></td>
 <td><p>Fit the model to the training set (X, y).</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.DeepLearningNewsvendor.get_params" title="ddop.newsvendor.DeepLearningNewsvendor.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</p></td>
 <td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code>(X)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.DeepLearningNewsvendor.predict" title="ddop.newsvendor.DeepLearningNewsvendor.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X)</p></td>
 <td><p>Predict values for X.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code>(X, y)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.DeepLearningNewsvendor.score" title="ddop.newsvendor.DeepLearningNewsvendor.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(X, y)</p></td>
 <td><p>Return the average costs of the prediction</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.DeepLearningNewsvendor.set_params" title="ddop.newsvendor.DeepLearningNewsvendor.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</p></td>
 <td><p>Set the parameters of this estimator.</p></td>
 </tr>
 </tbody>

@@ -1,6 +1,6 @@
 from ..utils.criterion import NewsvendorCriterion
 from ..utils.validation import check_cu_co
-from ..metrics._newsvendor import calc_avg_costs
+from ..metrics._newsvendor import average_costs
 
 import numbers
 import warnings
@@ -468,6 +468,6 @@ class DecisionTreeNewsvendor(DecisionTreeRegressor):
         """
 
         y_pred = self.predict(X)
-        return calc_avg_costs(y, y_pred, self.cu_, self.co_, multioutput="uniform_average")
+        return -average_costs(y, y_pred, self.cu_, self.co_, multioutput="uniform_average")
 
 

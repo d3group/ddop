@@ -1,0 +1,6 @@
+﻿ddop.metrics.pairwise\_costs
+============================
+
+.. currentmodule:: ddop.metrics
+
+.. autofunction:: pairwise_costs

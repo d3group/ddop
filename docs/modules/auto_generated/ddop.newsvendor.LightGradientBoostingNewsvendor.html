@@ -37,7 +37,7 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor" href="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.html" />
+    <link rel="next" title="ddop.newsvendor.LinearRegressionNewsvendor" href="ddop.newsvendor.LinearRegressionNewsvendor.html" />
     <link rel="prev" title="ddop.newsvendor.DeepLearningNewsvendor" href="ddop.newsvendor.DeepLearningNewsvendor.html" /> 
 </head>
 
@@ -89,7 +89,7 @@
 <li class="toctree-l3 current"><a class="reference internal" href="../../api_reference.html#empirical-risk-minimization">Empirical Risk Minimization</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.DeepLearningNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.DeepLearningNewsvendor</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.LightGradientBoostingNewsvendor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.EmpiricalRiskMinimizationNewsvendor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.LinearRegressionNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.LinearRegressionNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.RandomForestNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.RandomForestNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.DecisionTreeNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.DecisionTreeNewsvendor</a></li>
 </ul>
@@ -310,22 +310,22 @@ If ‘gain’, result contains total gains of splits which use the feature.</p><
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([cu, co, boosting_type, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.LightGradientBoostingNewsvendor.__init__" title="ddop.newsvendor.LightGradientBoostingNewsvendor.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([cu, co, boosting_type, …])</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code>(X, y[, sample_weight])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.LightGradientBoostingNewsvendor.fit" title="ddop.newsvendor.LightGradientBoostingNewsvendor.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X, y[, sample_weight])</p></td>
 <td><p>Fit model with training set (X, y).</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.LightGradientBoostingNewsvendor.get_params" title="ddop.newsvendor.LightGradientBoostingNewsvendor.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</p></td>
 <td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code>(X)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.LightGradientBoostingNewsvendor.predict" title="ddop.newsvendor.LightGradientBoostingNewsvendor.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X)</p></td>
 <td><p>Predict values for X.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code>(X, y)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.LightGradientBoostingNewsvendor.score" title="ddop.newsvendor.LightGradientBoostingNewsvendor.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(X, y)</p></td>
 <td><p>Return the average costs of the prediction</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.LightGradientBoostingNewsvendor.set_params" title="ddop.newsvendor.LightGradientBoostingNewsvendor.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</p></td>
 <td><p>Set the parameters of this estimator.</p></td>
 </tr>
 </tbody>
@@ -449,7 +449,7 @@ component of a nested object.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor.html" class="btn btn-neutral float-right" title="ddop.newsvendor.EmpiricalRiskMinimizationNewsvendor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="ddop.newsvendor.LinearRegressionNewsvendor.html" class="btn btn-neutral float-right" title="ddop.newsvendor.LinearRegressionNewsvendor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="ddop.newsvendor.DeepLearningNewsvendor.html" class="btn btn-neutral float-left" title="ddop.newsvendor.DeepLearningNewsvendor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

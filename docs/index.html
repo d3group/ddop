@@ -188,20 +188,33 @@ lines of code. Moreover ddom-kit’s interface allows to easily adapt an algorit
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install ddop
 </pre></div>
 </div>
-<p>Note: The package is actively being developed and some features may
-not be stable yet. Use an empty viral environment to avoid installation conflicts.</p>
+<p>The installation requires the following dependencies:</p>
+<ul class="simple">
+<li><p>cython==0.29.91</p></li>
+<li><p>numpy==1.18.2</p></li>
+<li><p>scipy==1.4.1</p></li>
+<li><p>pandas==1.1.4</p></li>
+<li><p>statsmodels==0.12.1</p></li>
+<li><p>scikit-learn==0.23.0</p></li>
+<li><p>tensorflow==2.1.0</p></li>
+<li><p>keras==2.3.1</p></li>
+<li><p>pulp==2.0</p></li>
+<li><p>lightgbm==2.3.1</p></li>
+</ul>
+<p>Note: The package is actively being developed and some features may not be stable yet.
+To avoid any installation conflicts we therefore recommend to install the package in an
+empty environment with the above mentioned dependencies</p>
 </div>
 <div class="section" id="quickstart">
 <h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="newsvendor-decision-making">
 <h3>Newsvendor decision making<a class="headerlink" href="#newsvendor-decision-making" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ddop.datasets</span> <span class="kn">import</span> <span class="n">load_data</span>
-<span class="kn">from</span> <span class="nn">ddop.newsvendor</span> <span class="kn">import</span> <span class="n">EmpiricalRiskMinimizationNewsvendor</span>
+<span class="kn">from</span> <span class="nn">ddop.newsvendor</span> <span class="kn">import</span> <span class="n">LinearRegressionNewsvendor</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">load_yaz</span><span class="p">(</span><span class="n">include_prod</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;STEAK&#39;</span><span class="p">],</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">cu</span><span class="p">,</span><span class="n">co</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span><span class="mi">10</span>
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">Y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">mdl</span> <span class="o">=</span> <span class="n">EmpiricalRiskMinimizationNewsvendor</span><span class="p">(</span><span class="n">cu</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">co</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">mdl</span> <span class="o">=</span> <span class="n">LinearRegressionNewsvendor</span><span class="p">(</span><span class="n">cu</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">co</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">mdl</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
 <span class="n">mdl</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">Y_test</span><span class="p">)</span>
 </pre></div>

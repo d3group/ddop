@@ -1,0 +1,6 @@
+﻿ddop.metrics.make\_scorer
+=========================
+
+.. currentmodule:: ddop.metrics
+
+.. autofunction:: make_scorer

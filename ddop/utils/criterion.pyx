@@ -13,13 +13,10 @@ np.import_array()
 
 cdef class NewsvendorCriterion(Criterion):
     """Newsvendor impurity criterion, which minimizes the following loss function:
-
     Loss(q(x),D) = sum_{i=1}^{N} co(q(x)-d)^+ + cu(d-q(x))^+
     Here, excess quantity (i.e., if (q(x)-d) > 0) is considered with co in the
     loss function, whereas missing quantities ((q(x)-d) < 0) are weighted with co.
-
     The code was inspired by [1]
-
     References
     ----------
     .. [1] sklearn, criterion,
@@ -317,3 +314,4 @@ cdef class NewsvendorCriterion(Criterion):
 
         for k in range(self.n_outputs):
             dest[k] = self.sum_total[k] / self.weighted_n_node_samples
+

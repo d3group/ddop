@@ -1,0 +1,6 @@
+﻿ddop.metrics.average\_costs
+===========================
+
+.. currentmodule:: ddop.metrics
+
+.. autofunction:: average_costs

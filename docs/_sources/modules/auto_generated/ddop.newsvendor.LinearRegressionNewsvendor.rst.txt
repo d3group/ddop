@@ -1,0 +1,21 @@
+﻿:mod:`ddop.newsvendor`.LinearRegressionNewsvendor
+========================================================
+
+.. currentmodule:: ddop.newsvendor
+
+.. autoclass:: LinearRegressionNewsvendor
+
+   
+    
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~LinearRegressionNewsvendor.__init__
+      ~LinearRegressionNewsvendor.fit
+      ~LinearRegressionNewsvendor.get_params
+      ~LinearRegressionNewsvendor.predict
+      ~LinearRegressionNewsvendor.score
+      ~LinearRegressionNewsvendor.set_params
+   
+   

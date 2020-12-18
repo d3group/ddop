@@ -37,8 +37,8 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="E-Learning" href="../../e_learning.html" />
-    <link rel="prev" title="ddop.metrics.calc_avg_costs" href="ddop.metrics.calc_avg_costs.html" /> 
+    <link rel="next" title="ddop.datasets.load_bakery" href="ddop.datasets.load_bakery.html" />
+    <link rel="prev" title="ddop.metrics.pairwise_costs" href="ddop.metrics.pairwise_costs.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -90,6 +90,7 @@
 <li class="toctree-l2 current"><a class="reference internal" href="../../api_reference.html#ddop-dataset-datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.dataset</span></code>: Datasets</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="../../api_reference.html#loaders">Loaders</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">ddop.datasets.load_yaz</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ddop.datasets.load_bakery.html">ddop.datasets.load_bakery</a></li>
 </ul>
 </li>
 </ul>
@@ -192,7 +193,7 @@
 <h1>ddop.datasets.load_yaz<a class="headerlink" href="#ddop-datasets-load-yaz" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="ddop.datasets.load_yaz">
-<code class="sig-prename descclassname">ddop.datasets.</code><code class="sig-name descname">load_yaz</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include_prod</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">include_lag</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">include_date</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">one_hot_encoding</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">categorical_to_continuous</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">return_X_y</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.datasets.load_yaz" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">ddop.datasets.</code><code class="sig-name descname">load_yaz</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include_prod</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">include_lag</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">include_date</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">one_hot_encoding</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">label_encoding</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">return_X_y</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.datasets.load_yaz" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load and return the YAZ dataset</p>
 <p>Yaz is a fast casual restaurant in Stuttgart providing good service and food at short waiting times.
 The dataset contains the demand for the main ingredients for the meals at YAZ. Moreover, it stores a
@@ -247,7 +248,7 @@ by setting the parameter <cite>include_lag</cite>/<cite>include_date</cite> to <
 <li><p><strong>include_lag</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>) – Whether to include lag features</p></li>
 <li><p><strong>include_date</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>) – Whether to include the demand date</p></li>
 <li><p><strong>one_hot_encoding</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>) – Whether to one hot encode categorical features</p></li>
-<li><p><strong>categorical_to_continuous</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>) – Whether to convert categorical columns (WEEKDAY, MONTH, YEAR) to continuous.
+<li><p><strong>label_encoding</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>) – Whether to convert categorical columns (WEEKDAY, MONTH, YEAR) to continuous.
 Will only be applied if <cite>one_hot_encoding=False</cite></p></li>
 <li><p><strong>return_X_y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">False.</span></code>) – If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
 See below for more information about the <cite>data</cite> and <cite>target</cite> object.</p></li>
@@ -293,10 +294,10 @@ See below for more information about the <cite>data</cite> and <cite>target</cit
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../e_learning.html" class="btn btn-neutral float-right" title="E-Learning" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="ddop.datasets.load_bakery.html" class="btn btn-neutral float-right" title="ddop.datasets.load_bakery" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="ddop.metrics.calc_avg_costs.html" class="btn btn-neutral float-left" title="ddop.metrics.calc_avg_costs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="ddop.metrics.pairwise_costs.html" class="btn btn-neutral float-left" title="ddop.metrics.pairwise_costs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

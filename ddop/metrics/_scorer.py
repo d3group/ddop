@@ -42,12 +42,12 @@ class _NewsvendorScorer(_BaseScorer):
             return self._sign * self._score_func(y_true, y_pred, cu, co, **self._kwargs)
 
 
-def make_newsvendor_scorer(score_func, greater_is_better=True, **kwargs):
+def make_scorer(score_func, greater_is_better=True, **kwargs):
     """Make a scorer from a performance metric or loss function.
     This factory function wraps scoring functions for use in
-    sklearn.model_selection.GridSearchCV` and
-    sklearn.model_selection.cross_val_score.
-    It takes a score function from ddop.metrics, such as ddop.metrics.total_costs,
+    `sklearn.model_selection.GridSearchCV` and
+    `sklearn.model_selection.cross_val_score`.
+    It takes a score function from `ddop.metrics`, such as `ddop.metrics.total_costs`,
     and returns a callable that scores an estimator's output.
     The signature of the call is `(estimator, X, y)` where `estimator`
     is the model to be evaluated, `X` is the data and `y` is the

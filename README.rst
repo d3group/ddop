@@ -21,8 +21,22 @@ ddom-kit is available via PyPI using:
 
     pip install ddop
 
-Note: The package is actively being developed and some features may
-not be stable yet. Use an empty viral environment to avoid installation conflicts.
+The installation requires the following dependencies:
+
+- cython==0.29.91
+- numpy==1.18.2
+- scipy==1.4.1
+- pandas==1.1.4
+- statsmodels==0.12.1
+- scikit-learn==0.23.0
+- tensorflow==2.1.0
+- keras==2.3.1
+- pulp==2.0
+- lightgbm==2.3.1
+
+Note: The package is actively being developed and some features may not be stable yet.
+To avoid any installation conflicts we therefore recommend to install the package in an
+empty environment with the above mentioned dependencies
 
 Quickstart
 ----------
@@ -33,12 +47,11 @@ Newsvendor decision making
 .. code-block:: python
 
     from ddop.datasets import load_data
-    from ddop.newsvendor import EmpiricalRiskMinimizationNewsvendor
+    from ddop.newsvendor import LinearRegressionNewsvendor
     from sklearn.model_selection import train_test_split
     X, Y = load_yaz(include_prod=['STEAK'],return_X_y=True)
-    cu,co = 15,10
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25, shuffle=False)
-    mdl = EmpiricalRiskMinimizationNewsvendor(cu=15, co=10)
+    mdl = LinearRegressionNewsvendor(cu=15, co=10)
     mdl.fit(X_train, Y_train)
     mdl.score(X_test, Y_test)
 
