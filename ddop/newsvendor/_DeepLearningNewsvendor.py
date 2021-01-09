@@ -11,7 +11,9 @@ ACTIVATIONS = ['elu', 'selu', 'linear', 'tanh', 'relu', 'softmax', 'softsign', '
 
 
 class DeepLearningNewsvendor(BaseNewsvendor, DataDrivenMixin):
-    """A newsvendor based on deep learning
+    """A Deep-Learning model to solve the Newsvendor problem.
+
+    This class implements the approach described in [1].
 
     Parameters
     ----------

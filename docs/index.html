@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to ddom-kit! &mdash; ddom-kit  documentation</title>
+  <title>Welcome to ddop! &mdash; ddop  documentation</title>
   
 
   
@@ -51,7 +51,7 @@
           
 
           
-            <a href="#" class="icon icon-home" alt="Documentation Home"> ddom-kit
+            <a href="#" class="icon icon-home" alt="Documentation Home"> ddop
           
 
           
@@ -84,7 +84,7 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="e_learning.html">E-Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 </ul>
 
             
@@ -100,7 +100,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">ddom-kit</a>
+          <a href="#">ddop</a>
         
       </nav>
 
@@ -131,7 +131,7 @@
     
       <li><a href="#" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Welcome to ddom-kit!</li>
+      <li>Welcome to ddop!</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -174,13 +174,16 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="welcome-to-ddom-kit">
-<h1>Welcome to ddom-kit!<a class="headerlink" href="#welcome-to-ddom-kit" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="welcome-to-ddop">
+<h1>Welcome to ddop!<a class="headerlink" href="#welcome-to-ddop" title="Permalink to this headline">¶</a></h1>
 <a class="reference internal image-reference" href="_images/logo.png"><img alt="_images/logo.png" src="_images/logo.png" style="width: 300px;" /></a>
-<p>ddom-kit is a Python toolkit for data-driven operations management. The goal of ddom-kit is to provide access to
-a variety of algorithms for decision making. Thus, one can run and compare the available approaches with only a few
-lines of code. Moreover ddom-kit’s interface allows to easily adapt an algorithm for one task to another.</p>
-<p>Currently supported are different algorithms for newsvendor decision making.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ddop</span></code> is a Python library for data-driven operations management. The goal of <code class="docutils literal notranslate"><span class="pre">ddop</span></code> is to provide well-established
+data-driven operations management tools within a programming environment that is accessible and easy to use even
+for non-experts. At the current state <code class="docutils literal notranslate"><span class="pre">ddop</span></code> contains well known data-driven newsvendor models, a set of
+performance metrics that can be used for model evaluation and selection, as well as datasets that are useful to
+quickly illustrate the behavior of the various algorithms implemented in <code class="docutils literal notranslate"><span class="pre">ddop</span></code> or as benchmark for testing new
+models. Through its consistent and easy-to-use interface one can run and compare provided models with only a few
+lines of code.</p>
 <hr class="docutils" />
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
@@ -190,7 +193,6 @@ lines of code. Moreover ddom-kit’s interface allows to easily adapt an algorit
 </div>
 <p>The installation requires the following dependencies:</p>
 <ul class="simple">
-<li><p>cython==0.29.91</p></li>
 <li><p>numpy==1.18.2</p></li>
 <li><p>scipy==1.4.1</p></li>
 <li><p>pandas==1.1.4</p></li>
@@ -201,43 +203,57 @@ lines of code. Moreover ddom-kit’s interface allows to easily adapt an algorit
 <li><p>pulp==2.0</p></li>
 <li><p>lightgbm==2.3.1</p></li>
 </ul>
-<p>Note: The package is actively being developed and some features may not be stable yet.
-To avoid any installation conflicts we therefore recommend to install the package in an
-empty environment with the above mentioned dependencies</p>
+<p>Note: The package is actively developed and conflicts with other packages may occur during
+installation. To avoid any installation conflicts we therefore recommend to install the
+package in an empty environment with the above mentioned dependencies</p>
 </div>
 <div class="section" id="quickstart">
 <h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="newsvendor-decision-making">
-<h3>Newsvendor decision making<a class="headerlink" href="#newsvendor-decision-making" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ddop.datasets</span> <span class="kn">import</span> <span class="n">load_data</span>
-<span class="kn">from</span> <span class="nn">ddop.newsvendor</span> <span class="kn">import</span> <span class="n">LinearRegressionNewsvendor</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
-<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">load_yaz</span><span class="p">(</span><span class="n">include_prod</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;STEAK&#39;</span><span class="p">],</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">Y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">mdl</span> <span class="o">=</span> <span class="n">LinearRegressionNewsvendor</span><span class="p">(</span><span class="n">cu</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">co</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">mdl</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
-<span class="n">mdl</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">Y_test</span><span class="p">)</span>
+<p><code class="docutils literal notranslate"><span class="pre">ddop</span></code> provides a varity of newsvendor models. The following example
+shows how to use one of these models for decision making. It assumes
+a very basic knowledge of data-driven operations management practices.</p>
+<p>As first step we initialize the model we want to use. In this example
+<a class="reference external" href="https://andreasphilippi.github.io/ddom-kit/modules/auto_generated/ddop.newsvendor.LinearRegressionNewsvendor.html#ddop.newsvendor.LinearRegressionNewsvendor">LinearRegressionNewsvendor</a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ddop.newsvendor</span> <span class="kn">import</span> <span class="n">LinearRegressionNewsvendor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mdl</span> <span class="o">=</span> <span class="n">LinearRegressionNewsvendor</span><span class="p">(</span><span class="n">cu</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">co</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>For more details, check out our <a class="reference external" href="https://andreasphilippi.github.io/ddom-kit/e_learning.html">E-Learning</a>.</p>
+<p>A model can take a set of parameters, each describing the model or the optimization
+problem it tries to solve. Here we set the underage costs <code class="docutils literal notranslate"><span class="pre">cu</span></code> to 2 and
+the overage costs <code class="docutils literal notranslate"><span class="pre">co</span></code> to 1.</p>
+<p>As next step we load the <a class="reference external" href="https://andreasphilippi.github.io/ddom-kit/modules/auto_generated/ddop.datasets.load_yaz.html#ddop.datasets.load_yaz">Yaz Dataset</a> and split it into train and test set.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ddop.datasets</span> <span class="kn">import</span> <span class="n">load_yaz</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_yaz</span><span class="p">(</span><span class="n">one_hot_encoding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>After the model is initialized, the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method can be used to learn a decision model from the training data <code class="docutils literal notranslate"><span class="pre">X_train</span></code>, <code class="docutils literal notranslate"><span class="pre">y_train</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mdl</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can then use the <code class="docutils literal notranslate"><span class="pre">predict</span></code> method to make a decision for new data samples.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mdl</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">array</span><span class="p">([[</span> <span class="mf">8.32</span><span class="o">..</span><span class="p">,</span>  <span class="mf">7.34</span><span class="o">..</span><span class="p">,</span> <span class="mf">16.92</span><span class="o">..</span><span class="p">,</span> <span class="o">..</span><span class="p">]])</span>
+</pre></div>
+</div>
+<p>To get a representation of the model’s decision quality we can use the <code class="docutils literal notranslate"><span class="pre">score</span></code> function, which takes as input
+<code class="docutils literal notranslate"><span class="pre">X_test</span></code> and  <code class="docutils literal notranslate"><span class="pre">y_test</span></code>. The score function makes a decision for each sample in <code class="docutils literal notranslate"><span class="pre">X_test</span></code> and calculates
+the negated average costs with respect to the true values <code class="docutils literal notranslate"><span class="pre">y_test</span></code> and the overage and underage costs.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mdl</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">)</span>
+<span class="go">-7.05..</span>
+</pre></div>
 </div>
 </div>
 <hr class="docutils" />
-<div class="section" id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>Read the <a class="reference external" href="https://andreasphilippi.github.io/ddom-kit/api_reference.html">API reference</a> for detailed class and function information.</p></li>
-<li><p>Check out our <a class="reference external" href="https://andreasphilippi.github.io/ddom-kit/e_learning.html">E-Learning</a>.</p></li>
-</ul>
-</div>
-<hr class="docutils" />
-<div class="section" id="navigation">
-<h2>Navigation<a class="headerlink" href="#navigation" title="Permalink to this headline">¶</a></h2>
-<p>Frome here, you can navigate to:</p>
+<div class="section" id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<p>Follow the <a class="reference external" href="https://andreasphilippi.github.io/ddom-kit/api_reference.html">API reference</a> to get an overview of available functionalities and for detailed class and function information.
+To get familiar with <code class="docutils literal notranslate"><span class="pre">ddop</span></code> and to learn more about data-driven operations management check out our <a class="reference external" href="https://andreasphilippi.github.io/ddom-kit/tutorial.html">Tutorials</a>.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="e_learning.html">E-Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 </ul>
 </div>
 </div>

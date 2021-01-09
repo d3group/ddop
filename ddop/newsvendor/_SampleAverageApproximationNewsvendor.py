@@ -5,7 +5,7 @@ from sklearn.utils.validation import check_is_fitted, check_array
 
 
 class SampleAverageApproximationNewsvendor(BaseNewsvendor, ClassicMixin):
-    """A SAA newsvendor
+    """ A sample average approximation model to solve the newsvendor problem
 
     Parameters
     ----------
@@ -38,8 +38,8 @@ class SampleAverageApproximationNewsvendor(BaseNewsvendor, ClassicMixin):
 
     References
     ----------
-    .. [1] Bertsimas, Dimitris, and Nathan Kallus, "From predictive to prescriptive analytics."
-           arXiv preprint arXiv:1402.5481 (2014).
+    .. [1] Levi, Retsef, Georgia Perakis, and Joline Uichanco. "The data-driven newsvendor problem: new bounds and insights."
+           Operations Research 63.6 (2015): 1294-1306.
 
     Examples
     --------

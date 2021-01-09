@@ -14,7 +14,7 @@ class Kernel:
         return k_w
 
     def _gaussian_kernel(self, u):
-        k_w = 1 / math.sqrt(2 * math.pi) * math.pow(math.e, -0.5 * math.pow(u / self.kernel_bandwidth, 2))
+        k_w = 1  * math.pow(math.e, -0.5 * math.pow(u / self.kernel_bandwidth, 2))
         return k_w/self.kernel_bandwidth
 
     def get_kernel_output(self, u):

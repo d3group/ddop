@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ddop.newsvendor.KNeighborsWeightedNewsvendor &mdash; ddom-kit  documentation</title>
+  <title>ddop.newsvendor.KNeighborsWeightedNewsvendor &mdash; ddop  documentation</title>
   
 
   
@@ -52,7 +52,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> ddom-kit
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> ddop
           
 
           
@@ -89,6 +89,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../api_reference.html#empirical-risk-minimization">Empirical Risk Minimization</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../api_reference.html#weighted-optimization">Weighted Optimization</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.SampleAverageApproximationNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.SampleAverageApproximationNewsvendor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.DecisionTreeWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.DecisionTreeWeightedNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.RandomForestWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.RandomForestWeightedNewsvendor</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.KNeighborsWeightedNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.GaussianWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.GaussianWeightedNewsvendor</a></li>
@@ -101,7 +102,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../api_reference.html#ddop-dataset-datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.dataset</span></code>: Datasets</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../e_learning.html">E-Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
 </ul>
 
             
@@ -117,7 +118,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">ddom-kit</a>
+          <a href="../../index.html">ddop</a>
         
       </nav>
 
@@ -198,8 +199,10 @@
 <dl class="py class">
 <dt id="ddop.newsvendor.KNeighborsWeightedNewsvendor">
 <em class="property">class </em><code class="sig-prename descclassname">ddop.newsvendor.</code><code class="sig-name descname">KNeighborsWeightedNewsvendor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cu</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">co</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_neighbors</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="n">radius</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">algorithm</span><span class="o">=</span><span class="default_value">'auto'</span></em>, <em class="sig-param"><span class="n">leaf_size</span><span class="o">=</span><span class="default_value">30</span></em>, <em class="sig-param"><span class="n">metric</span><span class="o">=</span><span class="default_value">'minkowski'</span></em>, <em class="sig-param"><span class="n">p</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">metric_params</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_jobs</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.KNeighborsWeightedNewsvendor" title="Permalink to this definition">¶</a></dt>
-<dd><p>A k-nearest-neighbor weighted SAA newsvendor</p>
-<p>This class implements the approach described in [1] with kNN as weight function.</p>
+<dd><p>A k-nearest-neighbor weighted SAA model to solve the newsvendor problem</p>
+<p>This class implements the approach described in [3] with a weight function
+based k-nearest-neighbor regression. To determine the k-nearest-neighbors
+NearestNeighbors from scikit-learn is used [4].</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -320,10 +323,6 @@ equivalent to using manhattan_distance (l1), and euclidean_distance
 </dl>
 </dd></dl>
 
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p><code class="xref py py-class docutils literal notranslate"><span class="pre">NearestNeighbors</span></code></p>
-</div>
 <p class="rubric">References</p>
 <dl class="footnote brackets">
 <dt class="label" id="id1"><span class="brackets">1</span></dt>

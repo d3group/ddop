@@ -4,7 +4,7 @@ import inspect
 import numpy as np
 
 
-class _NewsvendorScorer(_BaseScorer):
+class _Scorer(_BaseScorer):
     def _score(self, method_caller, estimator, X, y_true):
         """Evaluate predicted target values for X relative to y_true.
         Parameters
@@ -71,6 +71,6 @@ def make_scorer(score_func, greater_is_better=True, **kwargs):
     """
     sign = 1 if greater_is_better else -1
 
-    cls = _NewsvendorScorer
+    cls = _Scorer
 
     return cls(score_func, sign, kwargs)

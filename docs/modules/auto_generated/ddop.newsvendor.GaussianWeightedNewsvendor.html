@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ddop.newsvendor.GaussianWeightedNewsvendor &mdash; ddom-kit  documentation</title>
+  <title>ddop.newsvendor.GaussianWeightedNewsvendor &mdash; ddop  documentation</title>
   
 
   
@@ -52,7 +52,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> ddom-kit
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> ddop
           
 
           
@@ -89,6 +89,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../api_reference.html#empirical-risk-minimization">Empirical Risk Minimization</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../api_reference.html#weighted-optimization">Weighted Optimization</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.SampleAverageApproximationNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.SampleAverageApproximationNewsvendor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.DecisionTreeWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.DecisionTreeWeightedNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.RandomForestWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.RandomForestWeightedNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ddop.newsvendor.KNeighborsWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.KNeighborsWeightedNewsvendor</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.GaussianWeightedNewsvendor</a></li>
@@ -101,7 +102,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../api_reference.html#ddop-dataset-datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.dataset</span></code>: Datasets</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../e_learning.html">E-Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
 </ul>
 
             
@@ -117,7 +118,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">ddom-kit</a>
+          <a href="../../index.html">ddop</a>
         
       </nav>
 
@@ -198,8 +199,8 @@
 <dl class="py class">
 <dt id="ddop.newsvendor.GaussianWeightedNewsvendor">
 <em class="property">class </em><code class="sig-prename descclassname">ddop.newsvendor.</code><code class="sig-name descname">GaussianWeightedNewsvendor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cu</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">co</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">kernel_bandwidth</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor" title="Permalink to this definition">¶</a></dt>
-<dd><p>A gaussian weighted SAA newsvendor.</p>
-<p>This class implements the Gaussian Kernel Optimization (KO) Method as described in [1].</p>
+<dd><p>A gaussian kernel weighted SAA model to solve the newsvendor problem</p>
+<p>This class implements the approach described in [1] with a gaussian kernel weight function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">

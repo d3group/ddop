@@ -4,6 +4,8 @@
 API Reference
 =============
 
+This is the class and function reference of ddop.
+
 .. autosummary::
     :toctree: modules/auto_generated/
 
@@ -30,10 +32,7 @@ Empirical Risk Minimization
     :template: class.rst
 
     newsvendor.DeepLearningNewsvendor
-    newsvendor.LightGradientBoostingNewsvendor
     newsvendor.LinearRegressionNewsvendor
-    newsvendor.RandomForestNewsvendor
-    newsvendor.DecisionTreeNewsvendor
 
 
 Weighted Optimization
@@ -44,6 +43,7 @@ Weighted Optimization
     :template: class.rst
 
     newsvendor.SampleAverageApproximationNewsvendor
+    newsvendor.DecisionTreeWeightedNewsvendor
     newsvendor.RandomForestWeightedNewsvendor
     newsvendor.KNeighborsWeightedNewsvendor
     newsvendor.GaussianWeightedNewsvendor

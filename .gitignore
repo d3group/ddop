@@ -7,7 +7,7 @@ dist/
 # Shinx documentation
 docsrc/_build/
 docsrc/modules/
-docsrc/e_learning_modules/notebooks/.ipynb_checkpoints
+docsrc/tutorial_modules/notebooks/.ipynb_checkpoints
 
 *.c
 *.pyd

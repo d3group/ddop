@@ -15,7 +15,7 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../'))
 
 # -- Project information -----------------------------------------------------
-project = 'ddom-kit'
+project = 'ddop'
 copyright = '2020, Andreas Philippi'
 author = 'Andreas Philippi'
 

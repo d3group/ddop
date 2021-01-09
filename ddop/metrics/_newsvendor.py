@@ -64,7 +64,19 @@ def pairwise_costs(y_true, y_pred, cu, co):
 
     Returns
     -------
-    costs : array of floating point values
+    costs : ndarray of shape (n_samples, n_outputs)
+
+    Examples
+    --------
+    >>> from ddop.metrics import pairwise_costs
+    >>> y_true = [[2,2], [2,4], [3,6]]
+    >>> y_pred = [[1,2], [3,3], [4,7]]
+    >>> cu = [2,4]
+    >>> co = [1,1]
+    >>> pairwise_costs(y_true, y_pred, cu, co)
+    array([[2., 0.],
+           [1., 4.]
+           [1., 1.])
     """
     y_true, y_pred = _check_newsvendor_targets(y_true, y_pred)
     y_diff = y_pred - y_true
@@ -92,7 +104,7 @@ def total_costs(y_true, y_pred, cu, co, multioutput="raw_values"):
         Defines aggregating of multiple output values. Default is "raw_values".
          'raw_values' :
             Returns a full set of cost values in case of multioutput input.
-        'uniform_average' :
+         'uniform_average' :
             Costs of all outputs are averaged with uniform weight.
     Returns
     -------
@@ -100,6 +112,18 @@ def total_costs(y_true, y_pred, cu, co, multioutput="raw_values"):
         The total costs. If multioutput is ‘raw_values’, then the total costs are returned for each
         output separately. If multioutput is ‘uniform_average’, then the average of all output costs
         is returned. The total costs are non-negative floating points. The best value is 0.0.
+
+    Examples
+    --------
+    >>> from ddop.metrics import total_costs
+    >>> y_true = [[2,2], [2,4], [3,6]]
+    >>> y_pred = [[1,2], [3,3], [4,7]]
+    >>> cu = [2,4]
+    >>> co = [1,1]
+    >>> total_costs(y_true, y_pred, cu, co, multioutput="raw_values")
+    array([4,5])
+    >>> total_costs(y_true, y_pred, cu, co, multioutput="uniform_average")
+    4.5
     """
     costs = pairwise_costs(y_true, y_pred, cu, co)
     total_costs = np.sum(costs, axis=0)
@@ -128,7 +152,7 @@ def average_costs(y_true, y_pred, cu, co, multioutput="raw_values"):
         Defines aggregating of multiple output values. Default is "raw_values".
          'raw_values' :
             Returns a full set of cost values in case of multioutput input.
-        'uniform_average' :
+         'uniform_average' :
             Costs of all outputs are averaged with uniform weight.
 
     Returns
@@ -137,6 +161,18 @@ def average_costs(y_true, y_pred, cu, co, multioutput="raw_values"):
         The average costs. If multioutput is ‘raw_values’, then the average costs are returned for each
         output separately. If multioutput is ‘uniform_average’, then the average of all output costs is
         returned. The average costs are non-negative floating points. The best value is 0.0.
+
+    Examples
+    --------
+    >>> from ddop.metrics import average_costs
+    >>> y_true = [[2,2], [2,4], [3,6]]
+    >>> y_pred = [[1,2], [3,3], [4,7]]
+    >>> cu = [2,4]
+    >>> co = [1,1]
+    >>> average_costs(y_true, y_pred, cu, co, multioutput="raw_values")
+    array([1.33.., 1.66..])
+    >>> average_costs(y_true, y_pred, cu, co, multioutput="uniform_average")
+    1.5
     """
     y_true, y_pred = _check_newsvendor_targets(y_true, y_pred)
     total = total_costs(y_true, y_pred, cu, co)
@@ -168,7 +204,7 @@ def prescriptiveness_score(y_true, y_pred, y_pred_saa, cu, co, multioutput="raw_
         Defines aggregating of multiple output scores. Default is “uniform_average”.
          'raw_values' :
             Returns a full set of scores in case of multioutput input.
-        'uniform_average' :
+         'uniform_average' :
             Scores of all outputs are averaged with uniform weight.
 
     Returns
@@ -176,6 +212,19 @@ def prescriptiveness_score(y_true, y_pred, y_pred_saa, cu, co, multioutput="raw_
     score :  float or ndarray of floats
         The prescriptiveness score or ndarray of scores if 'multioutput' is
         'raw_values'.
+
+    Examples
+    --------
+    >>> from ddop.metrics import prescriptiveness_score
+    >>> y_true = [[2,2], [2,4], [3,6]]
+    >>> y_pred = [[1,2], [3,3], [4,7]]
+    >>> y_pred_saa = [[4,5],[4,5],[4,5]]
+    >>> cu = [2,4]
+    >>> co = [1,1]
+    >>> prescriptiveness_score(y_true, y_pred, cu, co, multioutput="raw_values")
+    array([0.2, 0.375])
+    >>> prescriptiveness_score(y_true, y_pred, cu, co, multioutput="uniform_average")
+    0.2875
     """
 
     y_true, y_pred = _check_newsvendor_targets(y_true, y_pred)
@@ -191,7 +240,7 @@ def prescriptiveness_score(y_true, y_pred, y_pred_saa, cu, co, multioutput="raw_
     output_scores[valid_score] = 1 - (numerator[valid_score] /
                                       denominator[valid_score])
     # arbitrary set to zero to avoid -inf scores, having a constant
-    # y_true is not interesting for scoring a regression anyway
+    # y_true is not interesting for scoring anyway
     # output_scores[nonzero_numerator & ~nonzero_denominator] = 0.
 
     if multioutput == "raw_values":

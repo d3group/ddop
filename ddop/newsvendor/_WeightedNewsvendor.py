@@ -4,8 +4,8 @@ import numpy as np
 from abc import ABC, abstractmethod
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import NearestNeighbors
+from sklearn.tree import DecisionTreeRegressor
 from sklearn.utils.validation import check_is_fitted, check_array
-from ddop.newsvendor._RandomForestNewsvendor import RandomForestNewsvendor
 from scipy.spatial import distance_matrix
 from ..utils.kernels import Kernel
 
@@ -106,13 +106,12 @@ class BaseWeightedNewsvendor(BaseNewsvendor, DataDrivenMixin, ABC):
         return pred
 
 
-class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
-    """A random forest weighted SAA newsvendor.
+class DecisionTreeWeightedNewsvendor(BaseWeightedNewsvendor):
+    """A decision tree weighted SAA model to solve the newsvendor problem.
 
-    Tis class implements a quantile regression forest as described in [5].
-    However, if the criterion is set to "newsvendor", the trees will be build
-    by minimizing the newsvendor-loss function which is then equivalent to
-    the approach described in [6].
+    This class implements the approach described in [5] with a weight function
+    based on decision tree regression. To build the tree the
+    DecisionTreeRegressor from scikit-learn is used [6].
 
     Parameters
     ----------
@@ -122,21 +121,252 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
     co : {array-like of shape (n_outputs,), Number or None}, default=None
         The overage costs per unit. If None, then overage costs are one
         for each target variable
-    criterion: {"newsvendor", "mse", "friedman_mse, "mae"}, default="mse"
+    criterion : {"mse", "friedman_mse", "mae"}, default="mse"
         The function to measure the quality of a split. Supported criteria
         are "mse" for the mean squared error, which is equal to variance
         reduction as feature selection criterion and minimizes the L2 loss
         using the mean of each terminal node, "friedman_mse", which uses mean
         squared error with Friedman's improvement score for potential splits,
         and "mae" for the mean absolute error, which minimizes the L1 loss
-        using the median of each terminal node while "newsvendor" minimizes
-        the newsvendor-loss function.
+        using the median of each terminal node.
+    splitter : {"best", "random"}, default="best"
+        The strategy used to choose the split at each node. Supported
+        strategies are "best" to choose the best split and "random" to choose
+        the best random split.
+    max_depth : int, default=None
+        The maximum depth of the tree. If None, then nodes are expanded until
+        all leaves are pure or until all leaves contain less than
+        min_samples_split samples.
+    min_samples_split : int or float, default=2
+        The minimum number of samples required to split an internal node:
+        - If int, then consider `min_samples_split` as the minimum number.
+        - If float, then `min_samples_split` is a fraction and
+          `ceil(min_samples_split * n_samples)` are the minimum
+          number of samples for each split.
+    min_samples_leaf : int or float, default=1
+        The minimum number of samples required to be at a leaf node.
+        A split point at any depth will only be considered if it leaves at
+        least ``min_samples_leaf`` training samples in each of the left and
+        right branches.  This may have the effect of smoothing the model,
+        especially in regression.
+        - If int, then consider `min_samples_leaf` as the minimum number.
+        - If float, then `min_samples_leaf` is a fraction and
+          `ceil(min_samples_leaf * n_samples)` are the minimum
+          number of samples for each node.
+    min_weight_fraction_leaf : float, default=0.0
+        The minimum weighted fraction of the sum total of weights (of all
+        the input samples) required to be at a leaf node. Samples have
+        equal weight when sample_weight is not provided.
+    max_features : int, float or {"auto", "sqrt", "log2"}, default=None
+        The number of features to consider when looking for the best split:
+        - If int, then consider `max_features` features at each split.
+        - If float, then `max_features` is a fraction and
+          `int(max_features * n_features)` features are considered at each
+          split.
+        - If "auto", then `max_features=n_features`.
+        - If "sqrt", then `max_features=sqrt(n_features)`.
+        - If "log2", then `max_features=log2(n_features)`.
+        - If None, then `max_features=n_features`.
+        Note: the search for a split does not stop until at least one
+        valid partition of the node samples is found, even if it requires to
+        effectively inspect more than ``max_features`` features.
+    random_state : int, RandomState instance or None, default=None
+        Controls the randomness of the estimator. The features are always
+        randomly permuted at each split, even if ``splitter`` is set to
+        ``"best"``. When ``max_features < n_features``, the algorithm will
+        select ``max_features`` at random at each split before finding the best
+        split among them. But the best found split may vary across different
+        runs, even if ``max_features=n_features``. That is the case, if the
+        improvement of the criterion is identical for several splits and one
+        split has to be selected at random. To obtain a deterministic behaviour
+        during fitting, ``random_state`` has to be fixed to an integer.
+        See :term:`Glossary <random_state>` for details.
+    max_leaf_nodes : int, default=None
+        Grow a tree with ``max_leaf_nodes`` in best-first fashion.
+        Best nodes are defined as relative reduction in impurity.
+        If None then unlimited number of leaf nodes.
+    min_impurity_decrease : float, default=0.0
+        A node will be split if this split induces a decrease of the impurity
+        greater than or equal to this value.
+        The weighted impurity decrease equation is the following::
+            N_t / N * (impurity - N_t_R / N_t * right_impurity
+                                - N_t_L / N_t * left_impurity)
+        where ``N`` is the total number of samples, ``N_t`` is the number of
+        samples at the current node, ``N_t_L`` is the number of samples in the
+        left child, and ``N_t_R`` is the number of samples in the right child.
+        ``N``, ``N_t``, ``N_t_R`` and ``N_t_L`` all refer to the weighted sum,
+        if ``sample_weight`` is passed.
+    ccp_alpha : non-negative float, default=0.0
+        Complexity parameter used for Minimal Cost-Complexity Pruning. The
+        subtree with the largest cost complexity that is smaller than
+        ``ccp_alpha`` will be chosen. By default, no pruning is performed. See
+        :ref:`minimal_cost_complexity_pruning` for details.
+
+    Attributes
+    ---------
+    train_leaf_indices_ : array of shape (n_samples,)
+        The leaf indices of the training samples
+    y_ : array of shape (n_samples, n_outputs)
+        The y training data
+    cu_ : ndarray, shape (n_outputs,)
+        Validated underage costs.
+    co_ : ndarray, shape (n_outputs,)
+        Validated overage costs.
+    n_features_ : int
+        The number of features when ``fit`` is performed.
+    n_outputs_ : int
+        The number of outputs when ``fit`` is performed.
+    n_samples_ : int
+        The number of samples when ``fit`` is performed.
+    model_ : DecisionTreeRegressor
+        The DecisionTreeRegressor used to calculate the sample weights
+
+    Notes
+    -----
+    The default values for the parameters controlling the size of the trees
+    (e.g. ``max_depth``, ``min_samples_leaf``, etc.) lead to fully grown and
+    unpruned trees which can potentially be very large on some data sets. To
+    reduce memory consumption, the complexity and size of the trees should be
+    controlled by setting those parameter values.
+
+
+    References
+    ----------
+    .. [1] https://en.wikipedia.org/wiki/Decision_tree_learning
+    .. [2] L. Breiman, J. Friedman, R. Olshen, and C. Stone, "Classification
+           and Regression Trees", Wadsworth, Belmont, CA, 1984.
+    .. [3] T. Hastie, R. Tibshirani and J. Friedman. "Elements of Statistical
+           Learning", Springer, 2009.
+    .. [4] L. Breiman, and A. Cutler, "Random Forests",
+           https://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm
+    .. [5] Bertsimas, Dimitris, and Nathan Kallus, "From predictive to prescriptive analytics."
+           arXiv preprint arXiv:1402.5481 (2014).
+    .. [6] scikit-learn, RandomForestRegressor,
+           <https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/tree/_classes.py>
+
+    Examples
+    --------
+    >>> from ddop.datasets import load_yaz
+    >>> from ddop.newsvendor import DecisionTreeWeightedNewsvendor
+    >>> from sklearn.model_selection import train_test_split
+    >>> X, Y = load_yaz(include_prod=['STEAK'],return_X_y=True)
+    >>> cu,co = 15,10
+    >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.25, shuffle=False, random_state=0)
+    >>> mdl = DecisionTreeWeightedNewsvendor(cu, co, random_state=0)
+    >>> mdl.fit(X_train, Y_train)
+    >>> score(X_test, Y_test)
+    TODO: Add output
+    """
+
+    def __init__(self,
+                 cu=None,
+                 co=None,
+                 criterion="mse",
+                 splitter="best",
+                 max_depth=None,
+                 min_samples_split=2,
+                 min_samples_leaf=1,
+                 min_weight_fraction_leaf=0.,
+                 max_features=None,
+                 random_state=None,
+                 max_leaf_nodes=None,
+                 min_impurity_decrease=0.,
+                 ccp_alpha=0.0):
+        self.criterion = criterion
+        self.splitter = splitter
+        self.max_depth = max_depth
+        self.min_samples_split = min_samples_split
+        self.min_samples_leaf = min_samples_leaf
+        self.min_weight_fraction_leaf = min_weight_fraction_leaf
+        self.max_features = max_features
+        self.max_leaf_nodes = max_leaf_nodes
+        self.min_impurity_decrease = min_impurity_decrease
+        self.random_state = random_state
+        self.ccp_alpha = ccp_alpha
+        super().__init__(
+            cu=cu,
+            co=co
+        )
+
+    def _get_fitted_model(self, X, y):
+        model = DecisionTreeRegressor(
+            criterion=self.criterion,
+            splitter=self.splitter,
+            max_depth=self.max_depth,
+            min_samples_split=self.min_samples_split,
+            min_samples_leaf=self.min_samples_leaf,
+            min_weight_fraction_leaf=self.min_weight_fraction_leaf,
+            max_features=self.max_features,
+            max_leaf_nodes=self.max_leaf_nodes,
+            min_impurity_decrease=self.min_impurity_decrease,
+            random_state=self.random_state,
+            ccp_alpha=self.ccp_alpha,
+        )
+
+        self.model_ = model.fit(X, y)
+        self.train_leaf_indices_ = model.apply(X)
+
+    def _calc_weights(self, sample):
+        sample_leaf_indices = self.model_.apply([sample])
+        n = np.sum(sample_leaf_indices == self.train_leaf_indices_, axis=0)
+        weights = (sample_leaf_indices == self.train_leaf_indices_) / n
+
+        return weights
+
+    def fit(self, X, y):
+        """ Fit the estimator from the training set (X,y)
+
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_features)
+            The training input samples.
+        y : array-like of shape (n_samples, n_features)
+            The target values.
+
+        Returns
+        ----------
+        self : DecisionTreeWeightedNewsvendor
+            Fitted estimator
+        """
+
+        super().fit(X, y)
+
+        return self
+
+
+class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
+    """A random forest weighted SAA model to solve the newsvendor problem.
+
+    This class implements the approach described in [3] with a weight function
+    based on random forest regression. To build the random forest the
+    RandomForestRegressor from scikit-learn is used [4].
+
+    Parameters
+    ----------
+    cu : {array-like of shape (n_outputs,), Number or None}, default=None
+        The underage costs per unit. If None, then underage costs are one
+        for each target variable
+    co : {array-like of shape (n_outputs,), Number or None}, default=None
+        The overage costs per unit. If None, then overage costs are one
+        for each target variable
+    criterion: {"mse", "friedman_mse, "mae"}, default="mse"
+        The function to measure the quality of a split. Supported criteria
+        are "mse" for the mean squared error, which is equal to variance
+        reduction as feature selection criterion and minimizes the L2 loss
+        using the mean of each terminal node, "friedman_mse", which uses mean
+        squared error with Friedman's improvement score for potential splits,
+        and "mae" for the mean absolute error, which minimizes the L1 loss
+        using the median of each terminal node.
     n_estimators : int, default=100
         The number of trees in the forest.
     max_depth : int, default=None
         The maximum depth of the tree. If None, then nodes are expanded until
         all leaves are pure or until all leaves contain less than
         min_samples_split samples.
+    weight_function : {"w1", "w2"}, default="w1"
+        Indicates how to determine the sample weights. If set to "w1" the weight
+        function corresponds to the one described in [3]. If set to "w2" the
+        weight function described in [5] will be used.
     min_samples_split : int or float, default=2
         The minimum number of samples required to split an internal node:
         - If int, then consider `min_samples_split` as the minimum number.
@@ -236,11 +466,7 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
     n_samples_ : int
         The number of samples when ``fit`` is performed.
     model_ : RandomForestRegressor
-        The underlying model used to calculate the sample weights
-
-    See Also
-    --------
-    DecisionTreeNewsvendor, ForestRegressor [4]
+        The RandomForestRegressor used to calculate the sample weights
 
     Notes
     -----
@@ -264,12 +490,10 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
            trees", Machine Learning, 63(1), 3-42, 2006.
     .. [3] Bertsimas, Dimitris, and Nathan Kallus, "From predictive to prescriptive analytics."
            arXiv preprint arXiv:1402.5481 (2014).
-    .. [4] scikit-learn, ForestRegressor,
+    .. [4] scikit-learn, RandomForestRegressor,
            <https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/ensemble/_forest.py>
-    .. [5] N. Meinshausen, "Quantile regression forests." Journal of Machine Learning
-           Research 7.Jun (2006): 983-999.
-    .. [6] J. Meller and F. Taigel "Machine Learning for Inventory Management:
-            Analyzing Two Concepts to Get From Data to Decisions",
+    .. [5] Scornet, Erwan. "Random forests and kernel methods."
+           IEEE Transactions on Information Theory 62.3 (2016): 1485-1500.
 
     Examples
     --------
@@ -331,9 +555,7 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
         )
 
     def _get_fitted_model(self, X, y):
-        model = RandomForestNewsvendor(
-            cu=self.cu,
-            co=self.co,
+        model = RandomForestRegressor(
             criterion=self.criterion,
             n_estimators=self.n_estimators,
             max_depth=self.max_depth,
@@ -390,9 +612,11 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
 
 
 class KNeighborsWeightedNewsvendor(BaseWeightedNewsvendor):
-    """A k-nearest-neighbor weighted SAA newsvendor
+    """A k-nearest-neighbor weighted SAA model to solve the newsvendor problem
 
-    This class implements the approach described in [1] with kNN as weight function.
+    This class implements the approach described in [3] with a weight function
+    based k-nearest-neighbor regression. To determine the k-nearest-neighbors
+    NearestNeighbors from scikit-learn is used [4].
 
     Parameters
     ----------
@@ -457,10 +681,6 @@ class KNeighborsWeightedNewsvendor(BaseWeightedNewsvendor):
         The number of samples when ``fit`` is performed.
     model_ : NearestNeighbors
         The underlying model used to calculate the sample weights
-
-    See Also
-    --------
-    NearestNeighbors [2]
 
     References
     ----------
@@ -549,10 +769,9 @@ class KNeighborsWeightedNewsvendor(BaseWeightedNewsvendor):
 
 
 class GaussianWeightedNewsvendor(BaseWeightedNewsvendor):
-    """A gaussian weighted SAA newsvendor.
+    """A gaussian kernel weighted SAA model to solve the newsvendor problem
 
-    This class implements the Gaussian Kernel Optimization (KO) Method as described in [1].
-
+    This class implements the approach described in [1] with a gaussian kernel weight function.
 
     Parameters
     ----------

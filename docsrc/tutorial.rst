@@ -1,4 +1,4 @@
-E-Learning
+Tutorial
 ============
 
 In progress
@@ -6,4 +6,4 @@ In progress
 .. toctree::
     :maxdepth: 2
 
-    e_learning_modules/newsvendor
+    tutorial_modules

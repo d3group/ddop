@@ -6,9 +6,9 @@ from sklearn.utils.validation import check_array, check_is_fitted
 
 
 class LinearRegressionNewsvendor(BaseNewsvendor, DataDrivenMixin):
-    """A Empirical Risk Minimization Newsvendor estimator
+    """A linear regression model to solve the Newsvendor problem
 
-    Implements the Empirical Risk Minimization Method described in [1]
+    This class implements the approach described in [1].
 
     Parameters
     ----------

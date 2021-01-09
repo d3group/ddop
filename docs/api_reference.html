@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>API Reference &mdash; ddom-kit  documentation</title>
+  <title>API Reference &mdash; ddop  documentation</title>
   
 
   
@@ -38,7 +38,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="ddop.newsvendor.DeepLearningNewsvendor" href="modules/auto_generated/ddop.newsvendor.DeepLearningNewsvendor.html" />
-    <link rel="prev" title="Welcome to ddom-kit!" href="index.html" /> 
+    <link rel="prev" title="Welcome to ddop!" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -52,7 +52,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> ddom-kit
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> ddop
           
 
           
@@ -88,14 +88,12 @@
 <li class="toctree-l2"><a class="reference internal" href="#ddop-newsvendor-newsvendor-decision-making"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>: Newsvendor decision making</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#empirical-risk-minimization">Empirical Risk Minimization</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.DeepLearningNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.DeepLearningNewsvendor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.LightGradientBoostingNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.LightGradientBoostingNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.LinearRegressionNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.LinearRegressionNewsvendor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.RandomForestNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.RandomForestNewsvendor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.DecisionTreeNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.DecisionTreeNewsvendor</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#weighted-optimization">Weighted Optimization</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.SampleAverageApproximationNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.SampleAverageApproximationNewsvendor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.DecisionTreeWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.DecisionTreeWeightedNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.RandomForestWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.RandomForestWeightedNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.KNeighborsWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.KNeighborsWeightedNewsvendor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.GaussianWeightedNewsvendor.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code>.GaussianWeightedNewsvendor</a></li>
@@ -125,7 +123,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="e_learning.html">E-Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 </ul>
 
             
@@ -141,7 +139,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">ddom-kit</a>
+          <a href="index.html">ddop</a>
         
       </nav>
 
@@ -217,6 +215,7 @@
 </style>
 <div class="section" id="api-reference">
 <span id="id1"></span><h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+<p>This is the class and function reference of ddop.</p>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -238,19 +237,10 @@ decision making.</p>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.DeepLearningNewsvendor.html#ddop.newsvendor.DeepLearningNewsvendor" title="ddop.newsvendor.DeepLearningNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.DeepLearningNewsvendor</span></code></a>([cu, co, …])</p></td>
-<td><p>A newsvendor based on deep learning</p></td>
+<td><p>A Deep-Learning model to solve the Newsvendor problem.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.LightGradientBoostingNewsvendor.html#ddop.newsvendor.LightGradientBoostingNewsvendor" title="ddop.newsvendor.LightGradientBoostingNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.LightGradientBoostingNewsvendor</span></code></a>([…])</p></td>
-<td><p>A newsvendor based on light gradient boosting.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.LinearRegressionNewsvendor.html#ddop.newsvendor.LinearRegressionNewsvendor" title="ddop.newsvendor.LinearRegressionNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.LinearRegressionNewsvendor</span></code></a>([cu, co])</p></td>
-<td><p>A Empirical Risk Minimization Newsvendor estimator</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.RandomForestNewsvendor.html#ddop.newsvendor.RandomForestNewsvendor" title="ddop.newsvendor.RandomForestNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.RandomForestNewsvendor</span></code></a>([cu, co, …])</p></td>
-<td><p>A Random Rorest Regressor.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.DecisionTreeNewsvendor.html#ddop.newsvendor.DecisionTreeNewsvendor" title="ddop.newsvendor.DecisionTreeNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.DecisionTreeNewsvendor</span></code></a>([cu, co, …])</p></td>
-<td><p>A Decision Tree Regressor</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.LinearRegressionNewsvendor.html#ddop.newsvendor.LinearRegressionNewsvendor" title="ddop.newsvendor.LinearRegressionNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.LinearRegressionNewsvendor</span></code></a>([cu, co])</p></td>
+<td><p>A linear regression model to solve the Newsvendor problem</p></td>
 </tr>
 </tbody>
 </table>
@@ -264,16 +254,19 @@ decision making.</p>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.SampleAverageApproximationNewsvendor.html#ddop.newsvendor.SampleAverageApproximationNewsvendor" title="ddop.newsvendor.SampleAverageApproximationNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.SampleAverageApproximationNewsvendor</span></code></a>([…])</p></td>
-<td><p>A SAA newsvendor</p></td>
+<td><p>A sample average approximation model to solve the newsvendor problem</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.RandomForestWeightedNewsvendor.html#ddop.newsvendor.RandomForestWeightedNewsvendor" title="ddop.newsvendor.RandomForestWeightedNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.RandomForestWeightedNewsvendor</span></code></a>([…])</p></td>
-<td><p>A random forest weighted SAA newsvendor.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.DecisionTreeWeightedNewsvendor.html#ddop.newsvendor.DecisionTreeWeightedNewsvendor" title="ddop.newsvendor.DecisionTreeWeightedNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.DecisionTreeWeightedNewsvendor</span></code></a>([…])</p></td>
+<td><p>A decision tree weighted SAA model to solve the newsvendor problem.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.KNeighborsWeightedNewsvendor.html#ddop.newsvendor.KNeighborsWeightedNewsvendor" title="ddop.newsvendor.KNeighborsWeightedNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.KNeighborsWeightedNewsvendor</span></code></a>([…])</p></td>
-<td><p>A k-nearest-neighbor weighted SAA newsvendor</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.RandomForestWeightedNewsvendor.html#ddop.newsvendor.RandomForestWeightedNewsvendor" title="ddop.newsvendor.RandomForestWeightedNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.RandomForestWeightedNewsvendor</span></code></a>([…])</p></td>
+<td><p>A random forest weighted SAA model to solve the newsvendor problem.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.GaussianWeightedNewsvendor.html#ddop.newsvendor.GaussianWeightedNewsvendor" title="ddop.newsvendor.GaussianWeightedNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.GaussianWeightedNewsvendor</span></code></a>([cu, …])</p></td>
-<td><p>A gaussian weighted SAA newsvendor.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.KNeighborsWeightedNewsvendor.html#ddop.newsvendor.KNeighborsWeightedNewsvendor" title="ddop.newsvendor.KNeighborsWeightedNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.KNeighborsWeightedNewsvendor</span></code></a>([…])</p></td>
+<td><p>A k-nearest-neighbor weighted SAA model to solve the newsvendor problem</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="modules/auto_generated/ddop.newsvendor.GaussianWeightedNewsvendor.html#ddop.newsvendor.GaussianWeightedNewsvendor" title="ddop.newsvendor.GaussianWeightedNewsvendor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newsvendor.GaussianWeightedNewsvendor</span></code></a>([cu, …])</p></td>
+<td><p>A gaussian kernel weighted SAA model to solve the newsvendor problem</p></td>
 </tr>
 </tbody>
 </table>
@@ -375,7 +368,7 @@ a proper scoring object has to be generated by using the make_scorer function.</
         <a href="modules/auto_generated/ddop.newsvendor.DeepLearningNewsvendor.html" class="btn btn-neutral float-right" title="ddop.newsvendor.DeepLearningNewsvendor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to ddom-kit!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to ddop!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
