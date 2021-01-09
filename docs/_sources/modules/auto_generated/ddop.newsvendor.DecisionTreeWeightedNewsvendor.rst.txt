@@ -1,0 +1,21 @@
+﻿:mod:`ddop.newsvendor`.DecisionTreeWeightedNewsvendor
+============================================================
+
+.. currentmodule:: ddop.newsvendor
+
+.. autoclass:: DecisionTreeWeightedNewsvendor
+
+   
+    
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~DecisionTreeWeightedNewsvendor.__init__
+      ~DecisionTreeWeightedNewsvendor.fit
+      ~DecisionTreeWeightedNewsvendor.get_params
+      ~DecisionTreeWeightedNewsvendor.predict
+      ~DecisionTreeWeightedNewsvendor.score
+      ~DecisionTreeWeightedNewsvendor.set_params
+   
+   
