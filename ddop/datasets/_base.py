@@ -158,7 +158,7 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, one_hot_e
     if one_hot_encoding:
         data = pd.get_dummies(data, columns=["WEEKDAY", "MONTH", "YEAR"])
 
-    if not one_hot_encoding and categorical_to_continuous:
+    if not one_hot_encoding and label_encoding:
         data['WEEKDAY'] = data['WEEKDAY'].apply(_day_to_continuouse)
         data['MONTH'] = data['MONTH'].apply(_month_to_continuouse)
         data['YEAR'] = data['YEAR'].apply(int)
