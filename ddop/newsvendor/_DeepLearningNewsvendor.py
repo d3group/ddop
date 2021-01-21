@@ -140,7 +140,6 @@ class DeepLearningNewsvendor(BaseNewsvendor, DataDrivenMixin):
 
         # Check and format under- and overage costs
         self.cu_, self.co_ = check_cu_co(self.cu, self.co, self.n_outputs_)
-
         model = self._create_model()
         model.fit(X, y, epochs=self.epochs, verbose=self.verbose)
         self.model_ = model

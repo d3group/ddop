@@ -9,6 +9,7 @@ This is the class and function reference of ddop.
 .. autosummary::
     :toctree: modules/auto_generated/
 
+------------------------------------------------------------
 
 .. _newsvendor_ref:
 
@@ -22,42 +23,42 @@ decision making.
     :no-members:
     :no-inherited-members:
 
-.. currentmodule:: ddop
+.. currentmodule:: ddop.newsvendor
 
-Empirical Risk Minimization
-----------------------------
+Sample Average Approximation (SAA)
+-----------------------------------
 
 .. autosummary::
     :toctree: modules/auto_generated/
     :template: class.rst
 
-    newsvendor.DeepLearningNewsvendor
-    newsvendor.LinearRegressionNewsvendor
+    SampleAverageApproximationNewsvendor
 
 
-Weighted Optimization
+Weighted SAA (wSAA)
 ----------------------
 
 .. autosummary::
     :toctree: modules/auto_generated/
     :template: class.rst
 
-    newsvendor.SampleAverageApproximationNewsvendor
-    newsvendor.DecisionTreeWeightedNewsvendor
-    newsvendor.RandomForestWeightedNewsvendor
-    newsvendor.KNeighborsWeightedNewsvendor
-    newsvendor.GaussianWeightedNewsvendor
+    DecisionTreeWeightedNewsvendor
+    RandomForestWeightedNewsvendor
+    KNeighborsWeightedNewsvendor
+    GaussianWeightedNewsvendor
 
 
-Parametric
------------
+Empirical Risk Minimization (ERM)
+----------------------------
 
 .. autosummary::
     :toctree: modules/auto_generated/
     :template: class.rst
 
-    newsvendor.ExponentialSmoothingNewsvendor
+    DeepLearningNewsvendor
+    LinearRegressionNewsvendor
 
+------------------------------------------------------------
 
 .. _metrics_ref:
 
@@ -96,9 +97,11 @@ Moreover, the module contains a function to calculate the pairwise costs.
     pairwise_costs
 
 
+------------------------------------------------------------
+
 .. _datasets_ref:
 
-:mod:`ddop.dataset`: Datasets
+:mod:`ddop.datasets`: Datasets
 ==============================
 
 ``ddop`` comes with a few default datasets that can be loaded using the ``ddop.datasets`` module.

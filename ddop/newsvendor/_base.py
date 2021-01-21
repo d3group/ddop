@@ -16,6 +16,7 @@ class BaseNewsvendor(BaseEstimator, ABC):
 
 
 class DataDrivenMixin:
+    _estimator_type = "regressor"
     def score(self, X, y):
         """
         Return the average costs of the prediction
@@ -39,6 +40,7 @@ class DataDrivenMixin:
 
 
 class ClassicMixin:
+    _estimator_type = "regressor"
     def score(self, y, X=None):
         """
         Return the average costs of the prediction

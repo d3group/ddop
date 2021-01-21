@@ -4,6 +4,6 @@ Tutorial
 In progress
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
-    tutorial_modules
+    tutorial_modules/tutorial.ipynb
