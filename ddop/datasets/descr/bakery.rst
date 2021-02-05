@@ -9,18 +9,18 @@ pretzels. Moreover, it stores a number of demand features. A description of targ
 
 **Dataset Characteristics:**
 
-  :Number of Instances: 1155
+    :Number of Instances: 1155
 
-  :Number of Targets: 3
+    :Number of Targets: 3
 
-  :Number of Features: 6
+    :Number of Features: 6
 
-  :Target Information:
+    :Target Information:
     - 'roll' the demand for calamari
     - 'seeded_roll' the demand for fish
     - 'pretzel' the demand for shrimps
 
-  :Feature Information:
+    :Feature Information:
     - 'weekday' the day of the week,
     - 'month' the month of the year,
     - 'year' the year,
@@ -28,9 +28,9 @@ pretzels. Moreover, it stores a number of demand features. A description of targ
     - 'rainfall' the amount of rainfall,
     - 'temperature' the outdoor temperature,
 
-Note: The dataset also includes a column for the demand date. By default, the date
-is not included when loading the data. You can include it by setting the parameter
-`include_date` to `True`.
+    Note: The dataset also includes demand lag features as well as a column for the demand date.
+    By default, those features are not included when loading the data. You can include them
+    by setting the parameter `include_lag`/`include_date` to `True`.
 
 
 

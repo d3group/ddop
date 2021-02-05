@@ -88,21 +88,23 @@
 <li class="toctree-l1"><a class="reference internal" href="../api_reference.html">API Reference</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">The Data Driven Newsvendor</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Example">Example</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Getting-Started">Getting Started</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Data">Data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#The-classical-Newsvendor-Problem">The classical Newsvendor Problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Getting-started">Getting started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#The-Newsvendor-Problem-at-Yaz">The Newsvendor Problem at Yaz</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Data-and-Pre-processing">Data and Pre-processing</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#Parametric-Approach">Parametric Approach</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#Summary">Summary</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#Data-Driven-Approach">Data Driven Approach</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Data-Driven-Approach">Data-Driven Approach</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#Sample-Average-Approximation">Sample Average Approximation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Weighted-Sample-Average-Approximation">Weighted Sample Average Approximation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Empirical-Risk-Minimization">Empirical Risk Minimization</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id1">Summary</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#A-Final-Note">A Final Note</a></li>
 </ul>
 </li>
 </ul>
@@ -431,48 +433,12 @@ div.rendered_html tbody tr:hover {
 </style>
 <div class="section" id="The-Data-Driven-Newsvendor">
 <h1>The Data Driven Newsvendor<a class="headerlink" href="#The-Data-Driven-Newsvendor" title="Permalink to this headline">¶</a></h1>
-<p>The newsvendor problem is a classical single period inventory problem, which involves making decisions on order quantities under uncertainty in demand. The traditional way to solve the problem assumes knowledge of the probability distribution of demand. However, in practice, the decision maker does not know the true demand distribution.</p>
-<p>In this tutorial you will learn how to solve the newsvendor problem when the underlying demand distribution is unknown but the decision maker has access to historical demand observations. For this purpose the tutorial is structured as follows:</p>
-<ul class="simple">
-<li><p>In the first part, we will recap the classical newsvendor problem</p></li>
-<li><p>In the second part, we will see how to solve the problem by applying the traditional parametric approach</p></li>
-<li><p>Finally, in the third part we will cover different data-driven approaches to solve the newsvendor problem.</p></li>
-</ul>
-<p>Moreover, you will learn how to use our <code class="docutils literal notranslate"><span class="pre">ddop</span></code> python API to apply the different approaches on a real world dataset.</p>
-<div class="section" id="Example">
-<h2>Example<a class="headerlink" href="#Example" title="Permalink to this headline">¶</a></h2>
-<p>In the following, we will consider the real world problem of YAZ. YAZ is a fast casual restaurant in Stuttgart providing great oriental cuisine. The main ingredients for the meals at YAZ, e.g. steak, lamb, fish etc. are prepared at a central factory and are deep-frozen to achieve longer shelf lives. Depending on the estimated demand for the next day, the restaurant manager has to decide how much of the ingredients to defrost over night. These defrosted ingredients/meals then have to be sold
-within the following day. If the defrosted quantity was to low to meet the demand this will incur underage cost of <span class="math notranslate nohighlight">\(cu\)</span>. On the other hand, if the quantity was to high, unsold ingredients have to be disposed which in turn will lead to overage cost of <span class="math notranslate nohighlight">\(co\)</span>. Therefore, the store manager wants to choose the order quantity that minimizes the sum of the expected costs. So as you can see, YAZ is facing a typical single period inventory problem (newsvendor problem)</p>
-<p><img alt="image1" src="https://drive.google.com/uc?export=view&amp;id=1UPRyUC56wMVd554iHsvOks-MBJaXYwMf" /></p>
-</div>
-<div class="section" id="Getting-Started">
-<h2>Getting Started<a class="headerlink" href="#Getting-Started" title="Permalink to this headline">¶</a></h2>
-<p>Before we are ready to start we have to load the libraries we will need in the following.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.tree import DecisionTreeRegressor
-from ddop.datasets import load_yaz
-from ddop.metrics import average_costs
-from ddop.newsvendor import SampleAverageApproximationNewsvendor
-from ddop.newsvendor import RandomForestWeightedNewsvendor
-from ddop.newsvendor import KNeighborsWeightedNewsvendor
-from ddop.newsvendor import LinearRegressionNewsvendor
-from ddop.newsvendor import DeepLearningNewsvendor
-from matplotlib import pyplot as plt
-import seaborn as sns
-import numpy as np
-import pandas as pd
-import scipy
-from scipy.stats import norm
-</pre></div>
-</div>
-</div>
-<p>You can install missing packages by uncommenting and executing the following cell:</p>
+<p>The newsvendor problem is the classical single period inventory problem that refers to a situation in which a seller (the newsvendor) has to determine the order quantity of perishable goods for the next selling period under uncertainty in demand. The traditional way to solve the problem assumes that the demand distribution is known. In practice, however, we almost never know the true demand distribution.</p>
+<p>In the following tutorial, you will get to know different approaches to solve the newsvendor problem when the underlying demand distribution is unknown, but the decision maker has access to past demand observations. In this context, we consider the real-world problem of Yaz, a fast-casual restaurant in Stuttgart. In addition, you will learn how to apply these approaches using our Python library <code class="docutils literal notranslate"><span class="pre">ddop</span></code>.</p>
+<div class="section" id="Getting-started">
+<h2>Getting started<a class="headerlink" href="#Getting-started" title="Permalink to this headline">¶</a></h2>
+<p>Before jumping into the tutorial, you should know the basics of Python and be familiar with well known libraries like numpy, pandas, and scikit-learn. Make sure you have an empty Python virtual environment installed on your computer. Alternatively, you can use <a class="reference external" href="https://colab.research.google.com/">Google Colab</a>, which allows you to write and execute arbitrary python code through the browse. Once you are ready to start, you can install and load the libraries that we are going to need in the
+course of this tutorial:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -482,21 +448,74 @@ from scipy.stats import norm
 </pre></div>
 </div>
 </div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
 </div>
-<div class="section" id="Data">
-<h2>Data<a class="headerlink" href="#Data" title="Permalink to this headline">¶</a></h2>
-<p>As mentioned in the beginning, we we will consider the real world problem of Yaz within this tutorial. Therefore, we will use the Yaz dataset that is already included in <code class="docutils literal notranslate"><span class="pre">ddop</span></code>. The dataset stores the demand data for seven main ingredients (calamari, fish, shrimp, chicken, koefte, lamb and steak) over 760 days. In addition, it comes with a bunch of different demand features that we expect to be korrelated to the demand. These features include information about the day, month, year, weather
-conditions and more. You can load the dataset using the <code class="docutils literal notranslate"><span class="pre">load_yaz</span></code> function:</p>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>from ddop.metrics import average_costs
+from ddop.newsvendor import SampleAverageApproximationNewsvendor
+from ddop.newsvendor import RandomForestWeightedNewsvendor
+from ddop.newsvendor import KNeighborsWeightedNewsvendor
+from ddop.newsvendor import LinearRegressionNewsvendor
+from ddop.newsvendor import DeepLearningNewsvendor
+from scipy.stats import norm
+from matplotlib import pyplot as plt
+import seaborn as sns
+import numpy as np
+import pandas as pd
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Using TensorFlow backend.
+/usr/local/lib/python3.6/dist-packages/statsmodels/tools/_testing.py:19: FutureWarning: pandas.util.testing is deprecated. Use the functions in the public API at pandas.testing instead.
+  import pandas.util.testing as tm
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="The-Newsvendor-Problem-at-Yaz">
+<h2>The Newsvendor Problem at Yaz<a class="headerlink" href="#The-Newsvendor-Problem-at-Yaz" title="Permalink to this headline">¶</a></h2>
+<p>Let’s now start by introducing the real world problem of Yaz. Yaz is a fast casual restaurant in Stuttgart providing great oriental cuisine. The main ingredients for the meals, such as steak, lamb, fish, etc., are prepared at a central factory and are deep-frozen to achieve longer shelf lives. Depending on the estimated demand for the next day, the restaurant manager has to decide how much of the ingredients to defrost over night. These defrosted ingredients/meals then have to be sold within the
+following day. If the defrosted quantity was too low, each unit of demand that cannot be satisfied incurs underage cost of <span class="math notranslate nohighlight">\(cu\)</span>. On the other hand, if the quantity was too high, unsold ingredients must be disposed of at overage cost of <span class="math notranslate nohighlight">\(co\)</span>. Therefore, the store manager wants to choose the order quantity that minimizes the sum of the expected costs.</p>
+<p><img alt="image1" src="https://drive.google.com/uc?export=view&amp;id=1UPRyUC56wMVd554iHsvOks-MBJaXYwMf" /></p>
+<p>More formally, the problem that the store manager is trying to solve is given by:</p>
+<p><span class="math">\begin{equation}
+\min_{q\geq 0} = E_D[cu(D-q)^+ + co(q-D)^+],
+\tag{1}
+\end{equation}</span></p>
+<p>where <span class="math notranslate nohighlight">\(D\)</span> is the uncertain future demand, <span class="math notranslate nohighlight">\(q\)</span> is the order quantity, <span class="math notranslate nohighlight">\(cu\)</span> and <span class="math notranslate nohighlight">\(co\)</span> are the per-unit under and overage costs, and <span class="math notranslate nohighlight">\((\cdot)^+ := \max\{0,\cdot\}\)</span> is a function that returns 0 if its argument is negative, and else its argument. The optimization problem at hand is what is known as the newsvendor problem. If the demand distribution is known, then the optimal decision can be calculated as follows:</p>
+<p><span class="math">\begin{equation}
+q^*=F^{-1}\biggl(\frac{cu}{cu+co}\biggl)=F^{-1}(\alpha),
+\tag{2}
+\end{equation}</span></p>
+<p>where <span class="math notranslate nohighlight">\(F^{-1}(\cdot)\)</span> is the inverse cumulative density function of the demand distribution, and <span class="math notranslate nohighlight">\(\alpha\)</span> is the service level. Unfortunately, the store manager can not directly solve equation (2) since he does not know the true demand distribution <span class="math notranslate nohighlight">\(D\)</span>. However, he has collected past demand data that he can use for decision making.</p>
+<div class="section" id="Data-and-Pre-processing">
+<h3>Data and Pre-processing<a class="headerlink" href="#Data-and-Pre-processing" title="Permalink to this headline">¶</a></h3>
+<p>The dataset collected by the restaurant manager includes the demand for seven main ingredients (calamari, fish, shrimp, chicken, koefte, lamb, and steak) over 760 days. In addition it provides a number of demand features including calendar information (day, month, year), weather conditions and more. In the following, we will use this dataset to solve the newsvendor problem when the underlying demand distribution is unknown. Note that for now we will only look at one product, steak. The dataset
+is available via <code class="docutils literal notranslate"><span class="pre">ddop</span></code>. To load it we can use the <code class="docutils literal notranslate"><span class="pre">load_yaz</span></code> function:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>yaz = load_yaz(one_hot_encoding=True)
+<span></span>from ddop.datasets import load_yaz
+yaz = load_yaz(include_prod=[&quot;steak&quot;])
 </pre></div>
 </div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">load_yaz</span></code> will return an object containing the feature data, the target variables as well as the whole dataframe. You can access the dataframe using the <code class="docutils literal notranslate"><span class="pre">frame</span></code> attribute:</p>
+<p><code class="docutils literal notranslate"><span class="pre">load_yaz</span></code> will return an dictionary-like object, which contains the following attributes:</p>
+<ul class="simple">
+<li><p>frame: The whole data frame</p></li>
+<li><p>data: The feature matrix</p></li>
+<li><p>target: The target variables (in this example the demand targets for steak)</p></li>
+<li><p>DESCR: The full description of the dataset.</p></li>
+</ul>
+<p>To access the data frame, we use the <code class="docutils literal notranslate"><span class="pre">frame</span></code> attribute.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
@@ -530,47 +549,25 @@ df
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>ISHOLIDAY</th>
-      <th>WEEKEND</th>
-      <th>WIND</th>
-      <th>CLOUDS</th>
-      <th>RAINFALL</th>
-      <th>HOURS_OF_SUNSHINE</th>
-      <th>TEMPERATURE</th>
-      <th>WEEKDAY_FRI</th>
-      <th>WEEKDAY_MON</th>
-      <th>WEEKDAY_SAT</th>
-      <th>WEEKDAY_SUN</th>
-      <th>WEEKDAY_THU</th>
-      <th>WEEKDAY_TUE</th>
-      <th>WEEKDAY_WED</th>
-      <th>MONTH_APR</th>
-      <th>MONTH_AUG</th>
-      <th>MONTH_DEC</th>
-      <th>MONTH_FEB</th>
-      <th>MONTH_JAN</th>
-      <th>MONTH_JUL</th>
-      <th>MONTH_JUN</th>
-      <th>MONTH_MAR</th>
-      <th>MONTH_MAY</th>
-      <th>MONTH_NOV</th>
-      <th>MONTH_OCT</th>
-      <th>MONTH_SEP</th>
-      <th>YEAR_2013</th>
-      <th>YEAR_2014</th>
-      <th>YEAR_2015</th>
-      <th>CALAMARI</th>
-      <th>FISH</th>
-      <th>SHRIMP</th>
-      <th>CHICKEN</th>
-      <th>KOEFTE</th>
-      <th>LAMB</th>
-      <th>STEAK</th>
+      <th>weekday</th>
+      <th>month</th>
+      <th>year</th>
+      <th>isholiday</th>
+      <th>weekend</th>
+      <th>wind</th>
+      <th>clouds</th>
+      <th>rainfall</th>
+      <th>sunshine</th>
+      <th>temperature</th>
+      <th>steak</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
+      <td>FRI</td>
+      <td>OCT</td>
+      <td>2013</td>
       <td>0</td>
       <td>0</td>
       <td>1.9</td>
@@ -578,38 +575,13 @@ df
       <td>0.1</td>
       <td>150</td>
       <td>15.9</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>6</td>
-      <td>6</td>
-      <td>12</td>
-      <td>40</td>
-      <td>23</td>
-      <td>50</td>
       <td>36</td>
     </tr>
     <tr>
       <th>1</th>
+      <td>SAT</td>
+      <td>OCT</td>
+      <td>2013</td>
       <td>0</td>
       <td>1</td>
       <td>2.7</td>
@@ -617,38 +589,13 @@ df
       <td>10.7</td>
       <td>0</td>
       <td>13.2</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>8</td>
-      <td>8</td>
-      <td>5</td>
-      <td>44</td>
-      <td>36</td>
-      <td>37</td>
       <td>30</td>
     </tr>
     <tr>
       <th>2</th>
+      <td>SUN</td>
+      <td>OCT</td>
+      <td>2013</td>
       <td>0</td>
       <td>1</td>
       <td>1.4</td>
@@ -656,38 +603,13 @@ df
       <td>0.4</td>
       <td>0</td>
       <td>10.6</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>6</td>
-      <td>5</td>
-      <td>11</td>
-      <td>19</td>
-      <td>12</td>
-      <td>22</td>
       <td>16</td>
     </tr>
     <tr>
       <th>3</th>
+      <td>MON</td>
+      <td>OCT</td>
+      <td>2013</td>
       <td>0</td>
       <td>0</td>
       <td>2.3</td>
@@ -695,38 +617,13 @@ df
       <td>0.0</td>
       <td>176</td>
       <td>13.3</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>4</td>
-      <td>4</td>
-      <td>2</td>
-      <td>28</td>
-      <td>13</td>
-      <td>28</td>
       <td>22</td>
     </tr>
     <tr>
       <th>4</th>
+      <td>TUE</td>
+      <td>OCT</td>
+      <td>2013</td>
       <td>0</td>
       <td>0</td>
       <td>1.7</td>
@@ -734,34 +631,6 @@ df
       <td>0.0</td>
       <td>0</td>
       <td>13.5</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>7</td>
-      <td>4</td>
-      <td>9</td>
-      <td>22</td>
-      <td>18</td>
-      <td>29</td>
       <td>29</td>
     </tr>
     <tr>
@@ -777,34 +646,12 @@ df
       <td>...</td>
       <td>...</td>
       <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
     </tr>
     <tr>
       <th>755</th>
+      <td>TUE</td>
+      <td>NOV</td>
+      <td>2015</td>
       <td>0</td>
       <td>0</td>
       <td>1.6</td>
@@ -812,38 +659,13 @@ df
       <td>0.0</td>
       <td>0</td>
       <td>3.5</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>2</td>
-      <td>0</td>
-      <td>8</td>
-      <td>47</td>
-      <td>30</td>
-      <td>32</td>
       <td>32</td>
     </tr>
     <tr>
       <th>756</th>
+      <td>WED</td>
+      <td>NOV</td>
+      <td>2015</td>
       <td>0</td>
       <td>0</td>
       <td>1.8</td>
@@ -851,38 +673,13 @@ df
       <td>0.0</td>
       <td>362</td>
       <td>14.6</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>13</td>
-      <td>38</td>
-      <td>31</td>
-      <td>14</td>
       <td>38</td>
     </tr>
     <tr>
       <th>757</th>
+      <td>THU</td>
+      <td>NOV</td>
+      <td>2015</td>
       <td>0</td>
       <td>0</td>
       <td>1.8</td>
@@ -890,38 +687,13 @@ df
       <td>0.0</td>
       <td>405</td>
       <td>14.7</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>8</td>
-      <td>11</td>
-      <td>47</td>
-      <td>32</td>
-      <td>42</td>
       <td>24</td>
     </tr>
     <tr>
       <th>758</th>
+      <td>FRI</td>
+      <td>NOV</td>
+      <td>2015</td>
       <td>0</td>
       <td>0</td>
       <td>1.9</td>
@@ -929,38 +701,13 @@ df
       <td>0.0</td>
       <td>44</td>
       <td>16.0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>3</td>
-      <td>6</td>
-      <td>9</td>
-      <td>50</td>
-      <td>40</td>
-      <td>44</td>
       <td>32</td>
     </tr>
     <tr>
       <th>759</th>
+      <td>SAT</td>
+      <td>NOV</td>
+      <td>2015</td>
       <td>0</td>
       <td>1</td>
       <td>1.9</td>
@@ -968,142 +715,108 @@ df
       <td>0.0</td>
       <td>46</td>
       <td>17.3</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>2</td>
-      <td>2</td>
-      <td>45</td>
-      <td>25</td>
-      <td>6</td>
       <td>20</td>
     </tr>
   </tbody>
 </table>
-<p>760 rows × 36 columns</p>
+<p>760 rows × 11 columns</p>
 </div></div>
 </div>
-<p>Similarly, you can access the feature data using the <code class="docutils literal notranslate"><span class="pre">data</span></code> attribute and the targets with the <code class="docutils literal notranslate"><span class="pre">target</span></code> attribute.</p>
+<p>Note: For more detailed information about individual columns, you can print the full description of the dataset using the ‘DESCR’ attribute.</p>
+<p>Similarly, we can access the feature data using the <code class="docutils literal notranslate"><span class="pre">data</span></code> attribute and the target variables with the <code class="docutils literal notranslate"><span class="pre">target</span></code> attribute.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span># the feature data
+<span></span># the feature matrix
 X = yaz.data
 
-# the target data
+# the target variables
 y = yaz.target
 </pre></div>
 </div>
 </div>
-<p>As we want to built and compare different models in the course of this tutorial, we have to split the data into train- and test set. While we use the training set to build a model, we need the test set to evaluate it on unknown data.</p>
+<p>As we want to compare different models in the course of this tutorial, we have to split the data into training and test set. While we use the training set to build a model, we need the test set to evaluate it on unknown data.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.75, shuffle=False)
+<span></span>from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.75, shuffle=False)
 </pre></div>
 </div>
 </div>
-<p>Since some models that we are going to consider are sensitive to the variance in the data, we have to normalize the feature values. We therefore use the <code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code> from sklearn. We fit the scaler on the train set and transform both, train- and test data.</p>
+<p>Note that some models that we are going to use cannot handle categorical features. For this reason, we also load a one-hot encoded version of feature matrix <span class="math notranslate nohighlight">\(X\)</span>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>scaler = StandardScaler()
-scaler.fit(X_train)
-X_train_scaled = scaler.transform(X_train)
-X_test_scaled = scaler.transform(X_test)
+<span></span>X_preprocessed = load_yaz(include_prod=[&quot;steak&quot;], one_hot_encoding=True).data
+X_train_preprocessed, X_test_preprocessed = train_test_split(X_preprocessed, train_size=0.75, shuffle=False)
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="The-classical-Newsvendor-Problem">
-<h2>The classical Newsvendor Problem<a class="headerlink" href="#The-classical-Newsvendor-Problem" title="Permalink to this headline">¶</a></h2>
-<p>Now that we are ready to start, let us first recap the newsvendor problem: The newsvendor problem is a single period inventory problem that refers to a situation in which a seller has to determine the order quantity of perishable goods for the next selling period, after which left-over stock becomes worthless. Hence, at the end of the selling period each unit of unsold stock incurs overage costs of <span class="math notranslate nohighlight">\(co\)</span> and each unit of demand that cannot be satisfied incurs underage costs of <span class="math notranslate nohighlight">\(cu\)</span>.
-Therefore, the newsvendor wants to choose the order quantity that minimizes the sum of the expected costs mentioned above.</p>
-<p>Given this background, the optimal order quantity for the newsvendor problem can be formulated as follows:</p>
-<p><span class="math">\begin{equation}
-\min_{q\geq 0} = E_D[cu(D-q)^+ + co(q-D)^+],
-\tag{1}
-\end{equation}</span></p>
-<p>where <span class="math notranslate nohighlight">\(D\)</span> is the random future demand, <span class="math notranslate nohighlight">\(q\)</span> is the order quantity, <span class="math notranslate nohighlight">\(cu\)</span> and <span class="math notranslate nohighlight">\(co\)</span> are the per-unit under- and overage costs and <span class="math notranslate nohighlight">\((\cdot)^+ := \max\{0,\cdot\}\)</span> is a function that returns 0 if its argument is negative, and else its argument. If the demand distribution is known, then the optimal decision can be obtained as:</p>
-<p><span class="math">\begin{equation}
-q^*=F^{-1}\biggl(\frac{cu}{cu+co}\biggl)=F^{-1}(\alpha),
-\tag{2}
-\end{equation}</span></p>
-<p>where <span class="math notranslate nohighlight">\(F^{-1}(\cdot)\)</span> is the inverse cumulative density function of the demand distribution, and <span class="math notranslate nohighlight">\(\alpha\)</span> is the service level.</p>
-</div>
-<div class="section" id="Parametric-Approach">
-<h2>Parametric Approach<a class="headerlink" href="#Parametric-Approach" title="Permalink to this headline">¶</a></h2>
-<p>Now let us go back to our example of YAZ where we want to determine how many ingredients to defrost overnight. If we knew the probability distribution for demand we could simply solve the initial optimization problem <span class="math notranslate nohighlight">\((2)\)</span>. Unfortunately, we don’t know the probability distribution. However, we have access to historical demand samples which we can use to approximate the demand distribution. One way to do this is to fit a parametric distribution to our samples. So let’s do this for a single
-product e.g. steak. We start by exploring the data with a histogram. For plotting we are useing <code class="docutils literal notranslate"><span class="pre">seaborn</span></code> - a Python data visualization libary.</p>
-<div class="nbinput docutils container">
+<p>In addition, we normalize the feature matrix, since some models may be sensitive to variance in the data.</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span># get the demand samples for steak
-steak_demand = y_train[&quot;STEAK&quot;]
-
-# print a histogram
-sns.distplot(steak_demand, hist=True, norm_hist=False, kde=False,
-             hist_kws={&#39;edgecolor&#39;:&#39;black&#39;})
-
-plt.ylabel(&#39;Frequnecy&#39;)
-plt.xlabel(&#39;Demand&#39;)
-
-plt.show(sns)
+<span></span>from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+scaler.fit(X_train_preprocessed)
+X_train_preprocessed = scaler.transform(X_train_preprocessed)
+X_test_preprocessed = scaler.transform(X_test_preprocessed)
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/tutorial_modules_tutorial_22_0.png" src="../_images/tutorial_modules_tutorial_22_0.png" />
 </div>
 </div>
-<p>This reminds of a normal distribution, doesn’t it? So let us fit a normal distribution to our data by estimation the parameters <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span>:</p>
+<div class="section" id="Parametric-Approach">
+<h2>Parametric Approach<a class="headerlink" href="#Parametric-Approach" title="Permalink to this headline">¶</a></h2>
+<p>Let us now use the Yaz dataset to determine the optimal inventory quantity of steak for a given day. One way we can use the data is to estimate the true demand distribution based on the past demand samples. To do this, we first explore the data with a simple histogram. For plotting we use <code class="docutils literal notranslate"><span class="pre">seaborn</span></code> - a Python data visualization library.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span># plot a histogram
+sns.distplot(y_train, hist=True, norm_hist=False, kde=False,
+             hist_kws={&#39;edgecolor&#39;:&#39;black&#39;})
+
+plt.ylabel(&#39;Frequency&#39;)
+plt.xlabel(&#39;Demand&#39;)
+plt.show(sns)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_modules_tutorial_25_0.png" src="../_images/tutorial_modules_tutorial_25_0.png" />
+</div>
+</div>
+<p>This reminds of a normal distribution, doesn’t it? So we fit a normal distribution to the data by determining mean <span class="math notranslate nohighlight">\(\mu\)</span> and standard deviation <span class="math notranslate nohighlight">\(\sigma\)</span>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span># determine mean and standard deviation
-mean = round(y_train[&quot;STEAK&quot;].mean(),2)
-std = round(y_train[&quot;STEAK&quot;].std(),2)
+mean = round(y_train.mean(),2)
+std = round(y_train.std(),2)
 
 # plot histogram and fit a normal distribution to it
-sns.distplot(steak_demand, hist=True, fit=scipy.stats.norm, norm_hist=False,
+sns.distplot(y_train, hist=True, norm_hist=False, fit=norm,
              kde=False, hist_kws={&#39;edgecolor&#39;:&#39;black&#39;})
 
 plt.ylabel(&#39;Empirical probability&#39;)
 plt.xlabel(&#39;Demand&#39;)
-plt.title(&quot;Fit result: mean = %.2f,  std = %.2f&quot; % (mean, std))
+plt.title(&quot;Normal distribution with mean = %.2f and std = %.2f&quot; % (mean, std))
 
 plt.show(sns)
 </pre></div>
@@ -1113,12 +826,12 @@ plt.show(sns)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorial_modules_tutorial_24_0.png" src="../_images/tutorial_modules_tutorial_24_0.png" />
+<img alt="../_images/tutorial_modules_tutorial_27_0.png" src="../_images/tutorial_modules_tutorial_27_0.png" />
 </div>
 </div>
-<p>So now we have a normal distribution with mean = 23.37 and standard deviation = 10.24 fitted to the data. Instead of using the true demand distribution (which we do not know), we use this distribution to determine how many steaks to defrost. But before we have to define the under- and overage costs for steak. The steak manager tells us, that each unit of unsold steak costs Yaz 5€, and each unit of demand that cannot be met because Yaz has run out of inventory costs 15€.</p>
+<p>In the next step, we can use this distribution to determine how many steaks to defrost for each day. But before we have to define the under- and overage costs for steak. The store manager tells us, that each unit of unsold steak costs 5€, and each unit of demand that cannot be met costs 15€.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
@@ -1127,20 +840,20 @@ co = 5
 </pre></div>
 </div>
 </div>
-<p>Using these information, the newsvendor problem then tells us how many steaks to defrost overnight.</p>
+<p>Finally, we can implement equation (2) which then tells us how many steaks to defrost overnight (the optimal inventory quantity <span class="math notranslate nohighlight">\(q\)</span>).</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span># determine optimal inventory quantity
-q = round(norm(mean, std).ppf(cu/(cu+co)))
-q
+q = norm(mean,std).ppf(cu/(cu+co))[0]
+round(q)
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1148,126 +861,147 @@ q
 30
 </pre></div></div>
 </div>
-<p>We call this the traditional parametric approach, we first assume the demand falls in a family of parametric distributions, estimate its parameters, and then solve the initial optimization problem.</p>
-<p>To see how good this approach works we can calculate the average costs on the training set associated with our decision. Therefore, we use the <code class="docutils literal notranslate"><span class="pre">average_costs</span></code> function implemented in <code class="docutils literal notranslate"><span class="pre">ddop</span></code>. The function takes four arguments in the following order - the true values, the predicted values, the underage costs and the overage costs.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
-</pre></div>
-</div>
-<div class="input_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span># create array with lenght of the test set and inventory quantity q
-y_pred = np.full(y_test[&quot;STEAK&quot;].shape[0],q)
-
-# calculate and print average costs
-avg_costs = average_costs(y_test[&quot;STEAK&quot;], y_pred, cu, co)
-print(&quot;Average costs: &quot;+str(avg_costs))
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Average costs: [65.60526316]
-</pre></div></div>
-</div>
-<p>As you can see we have average cost of 65.61€ associated with our decision. Now the question is whether we can do better. To answer this question let us go back to our data. So far we only used historical steak demand samples. However, we have access to exogenous features that we expect to have predictive power for demand. So, what we are doing next is to look if we can find a feature that correlates with the demand. We can for example inspect if the day of the week has an impact. Therefore, we
-estimate the mean demand for steak for each weekday.</p>
+<p>We call this the traditional parametric approach, we first assume the demand falls in a family of parametric distributions, estimate its parameters based on past demand samples, and then solve the initial optimization problem (2).</p>
+<p>To see how good this approach works, we can calculate the average costs associated with our decision on the test set. For this, we use the <code class="docutils literal notranslate"><span class="pre">average_costs</span></code> function implemented in <code class="docutils literal notranslate"><span class="pre">ddop</span></code>. The function takes four arguments: the true values, the predicted values, the underage costs and the overage costs.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>days = [&#39;MON&#39;,&#39;TUE&#39;,&#39;WED&#39;,&#39;THU&#39;,&#39;FRI&#39;,&#39;SAT&#39;,&#39;SUN&#39;]
-mean_per_day = []
-for day in days:
-  data = pd.concat([X_train, y_train], axis=1)
-  mean = data[data[&quot;WEEKDAY_&quot;+day] == 1][&quot;STEAK&quot;].mean()
-  mean_per_day.append(mean)
-  print(day,&quot;: &quot;,round(mean,2))
+<span></span># create array with length equal to number of observations in test set filled with the value of the inventory quantity q
+y_pred = np.full(y_test.shape[0],q)
+
+# calculate average costs
+average_costs(y_true=y_test, y_pred=y_pred, cu=cu, co=co)
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-MON :  18.79
-TUE :  20.27
-WED :  21.8
-THU :  21.89
-FRI :  26.43
-SAT :  37.8
-SUN :  16.55
+array([66.4647225])
 </pre></div></div>
 </div>
-<p>As we can see the demand varies a lot depending on the day of the week. While the most steak is sold on Saturdays, the least is sold on Sundays and Mondays. One way to take this information into consideration is to fit a normal distribution for each weekday.</p>
+<p>As you can see, we have average costs of 65.61€ associated with our decision. But can we do better? To answer this, let us go back to our data. So far we only used past steak demand samples. However, we have access to exogenous features that may have predictive power for demand. So next, we examine whether we can find a feature that correlates with the demand. For example, we can check whether the day of the week has an impact by estimating mean and standard deviation for each weekday.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span># determine standard deviation for each weekday
-std_per_day = []
-for day in days:
-  data = pd.concat([X_train, y_train], axis=1)
-  std = data[data[&quot;WEEKDAY_&quot;+day] == 1][&quot;STEAK&quot;].std()
-  std_per_day.append(std)
-  print(day,&quot;: &quot;,round(std,2))
+<span></span># group demand by weekday
+data = pd.concat([X_train, y_train], axis=1)
+data_by_weekday = data.groupby(&quot;weekday&quot;)[&quot;steak&quot;]
+
+# determine mean and standard deviation for each weekday
+mean_by_weekday = data_by_weekday.mean()
+std_by_weekday = data_by_weekday.std()
+d = {&#39;Mean&#39;:mean_by_weekday, &#39;Std&#39;:std_by_weekday}
+mean_and_std_by_weekday = pd.DataFrame(d).round(2)
+mean_and_std_by_weekday
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-MON :  7.44
-TUE :  6.33
-WED :  6.54
-THU :  6.79
-FRI :  8.06
-SAT :  12.21
-SUN :  6.08
-</pre></div></div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Mean</th>
+      <th>Std</th>
+    </tr>
+    <tr>
+      <th>weekday</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>FRI</th>
+      <td>26.43</td>
+      <td>8.06</td>
+    </tr>
+    <tr>
+      <th>MON</th>
+      <td>18.79</td>
+      <td>7.44</td>
+    </tr>
+    <tr>
+      <th>SAT</th>
+      <td>37.80</td>
+      <td>12.21</td>
+    </tr>
+    <tr>
+      <th>SUN</th>
+      <td>16.55</td>
+      <td>6.08</td>
+    </tr>
+    <tr>
+      <th>THU</th>
+      <td>21.89</td>
+      <td>6.79</td>
+    </tr>
+    <tr>
+      <th>TUE</th>
+      <td>20.27</td>
+      <td>6.33</td>
+    </tr>
+    <tr>
+      <th>WED</th>
+      <td>21.80</td>
+      <td>6.54</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
 </div>
+<p>Look, the demand varies a lot depending on the day of the week. While the most steak is sold on Saturdays, the least is sold on Sundays and Mondays. One way to take this information into account is to fit a normal distribution for the samples of each weekday, respectively. As before, we can then use these distributions to determine the optimal inventory quantity by solving equation (2).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span># plot
-fig, ((ax1, ax2, ax3), (ax4, ax5, ax6),
-      (ax7, ax8, ax9)) = plt.subplots(3, 3, figsize=(12,12))
-
-for i in range(9):
-  if i&lt;=6:
-    steak_demand_day = df[df[&#39;WEEKDAY_&#39;+days[i]]==1][&#39;STEAK&#39;]
-
-    sns.distplot(steak_demand_day, ax=fig.axes[i],
-                 fit=scipy.stats.norm,kde=False, hist_kws={&#39;edgecolor&#39;:&#39;black&#39;})
-    fig.axes[i].set_title(&quot;%s: mean = %.2f,  std = %.2f&quot; % (days[i], mean_per_day[i], std_per_day[i]))
-
-  else:
-    fig.axes[i].set_frame_on(False)
-    fig.axes[i].get_yaxis().set_visible(False)
-
-  fig.axes[i].set_ylabel(&#39;Empirical probability&#39;)
-  fig.axes[i].set_xlabel(&#39;Demand&#39;)
-  fig.axes[i].label_outer()
+<span></span>days = [&#39;MON&#39;,&#39;TUE&#39;,&#39;WED&#39;,&#39;THU&#39;,&#39;FRI&#39;,&#39;SAT&#39;,&#39;SUN&#39;]
+q_by_weekday = {}
+for day in days:
+  mean = mean_and_std_by_weekday.loc[day][&#39;Mean&#39;]
+  std = mean_and_std_by_weekday.loc[day][&#39;Std&#39;]
+  q_by_weekday[day] = round(norm(mean, std).ppf(cu/(cu+co)))
+q_by_weekday
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorial_modules_tutorial_35_0.png" src="../_images/tutorial_modules_tutorial_35_0.png" />
+<div class="highlight"><pre>
+{&#39;FRI&#39;: 32, &#39;MON&#39;: 24, &#39;SAT&#39;: 46, &#39;SUN&#39;: 21, &#39;THU&#39;: 26, &#39;TUE&#39;: 25, &#39;WED&#39;: 26}
+</pre></div></div>
 </div>
-</div>
-<p>Given these distributions, we can write a simple predict function that solves the newsvendor problem depending on the weekday:</p>
+<p>Given the optimal decision for each weekday, we can write a simple predict function.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
@@ -1275,53 +1009,29 @@ for i in range(9):
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>def predict(X):
   &quot;&quot;&quot;
-  For each row in X, check which day of the week it is, get the mean and
-  standard deviation of the corresponding  distribution and then calculate
-  the optimal inventory quantity.
+  Get the decision for each sample in X depending on the weekday.
 
   Parameters
   ----------
   X : Pandas DataFrame of shape (n_samples, n_features)
-      The input samples to predict.
+      The input samples.
 
   Returns
   ----------
   y : array of shape (n_samples,)
-      The predicted values
+      The predicted values.
   &quot;&quot;&quot;
 
   pred = []
-  for index, row in X.iterrows():
-    if row[&#39;WEEKDAY_MON&#39;]==1:
-      mean = mean_per_day[0]
-      std = std_per_day[0]
-    elif row[&#39;WEEKDAY_TUE&#39;]==1:
-      mean = mean_per_day[1]
-      std = std_per_day[1]
-    elif row[&#39;WEEKDAY_WED&#39;]==1:
-      mean = mean_per_day[2]
-      std = std_per_day[2]
-    elif row[&#39;WEEKDAY_THU&#39;]==1:
-      mean = mean_per_day[3]
-      std = std_per_day[3]
-    elif row[&#39;WEEKDAY_FRI&#39;]==1:
-      mean = mean_per_day[4]
-      std = std_per_day[4]
-    elif row[&#39;WEEKDAY_SAT&#39;]==1:
-      mean = mean_per_day[5]
-      std = std_per_day[5]
-    else:
-      mean = mean_per_day[6]
-      std = std_per_day[6]
-
-    q = round(norm(mean, std).ppf(cu/(cu+co)))
-    pred.append(q)
+  for index, sample in X.iterrows():
+    day = sample[&#39;weekday&#39;]
+    pred.append(q_by_weekday[day])
 
   return np.array(pred)
 </pre></div>
 </div>
 </div>
-<p>Then we apply the function to the test data and calculate the average costs again.</p>
+<p>We apply the function to the test set and calculate the average costs.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
@@ -1330,28 +1040,29 @@ for i in range(9):
 <span></span># predict optimal inventory quantity
 y_pred = predict(X_test)
 
-# calculate and print average costs
-avg_costs = average_costs(y_test[&quot;STEAK&quot;], y_pred, cu, co)
-print(&quot;Average costs: &quot;+str(avg_costs))
+# calculate average costs
+average_costs(y_test, y_pred, cu, co)
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Average costs: [54.07894737]
+array([54.07894737])
 </pre></div></div>
 </div>
-<p>Now look, we were able to reduce the average cost from 65.61€ to 54.08€. That is a great improvment! But maybe we can do even better by considering the other features of the dataset as well. To do this, we can fit a distribution for samples with the same features - like we did before but now for more features than just the weekday. But this has two main drawbacks: 1. Let us say we just have two features, the weekday and the month. If we would like to fit a distribution for each feature
-combination we would have to fit 7*12=84 distributions. This sounds like a lot of work, doesn’t it? 2. Now consider the case where it is monday and january. As you can see below we only have 8 samples with the same feature attributes. Such a small number of samples makes it hard to fit a meaningful distribution. Moreover, with increasing number of features we may not have a single sample with the same values.</p>
+<p>Now look, we were able to reduce the average costs from 65.61€ to 54.08€. That is a great improvement! But maybe we can do even better by considering the other features of the dataset as well. To do this, we can group observations with same feature values and then estimate a normal distribution for each group - like we did before but now with more features than just the weekday. But this has two main drawbacks: 1. Imagine we just have two features, the weekday and the month. If we were to
+estimate a distribution for each feature combination (group), we would have to fit a total of 7*12=84 distributions. That sounds like a lot of work, doesn’t it? 2. To stay with the example: We consider the case where it is monday and january. As you can see below, we only have 8 samples with the same feature values. Such a small number of samples makes it hard to fit a meaningful distribution. Moreover, with increasing number of features we may not have a single sample with the same feature
+values.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>X_train[(X_train[&#39;WEEKDAY_MON&#39;]==1)&amp;(X_train[&#39;MONTH_JAN&#39;]==1)].shape[0]
+<span></span>X_train[(X_train[&#39;weekday&#39;]==&#39;MON&#39;)&amp;(X_train[&#39;month&#39;]==&quot;JAN&quot;)].shape[0]
 </pre></div>
 </div>
 </div>
@@ -1364,124 +1075,130 @@ combination we would have to fit 7*12=84 distributions. This sounds like a lot o
 8
 </pre></div></div>
 </div>
-<p>Instead of fitting a distribution for samples with the same features, we can fit a machine-learning model to predict the demand. For example we can use a decision tree. We therefore use the <code class="docutils literal notranslate"><span class="pre">DecisionTreeRegressor</span></code> from <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>.</p>
-<div class="nbinput docutils container">
+<p>Instead of estimating a distribution for each group of samples with the same feature values, we can train a machine learning model to predict the demand. For example, we can use the <code class="docutils literal notranslate"><span class="pre">DecisionTreeRegressor</span></code> from <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>. Note that we set the maximum depth of the tree to ten to avoid overfitting.</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span># train a decision tree regressor
-mdl = DecisionTreeRegressor(max_depth=5, random_state=1)
-mdl.fit(X_train,y_train[&quot;STEAK&quot;])
+<span></span>from sklearn.tree import DecisionTreeRegressor
+# train a decision tree regressor and predict demand on the test set
+DT = DecisionTreeRegressor(max_depth=10,random_state=1)
+DT.fit(X_train_preprocessed,y_train)
+pred = DT.predict(X_test_preprocessed)
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-DecisionTreeRegressor(max_depth=5, random_state=1)
-</pre></div></div>
-</div>
-<p>Of course we cannot assume the model to be perfect: first because of the model error itself, and second, because of the uncertainty in demand. For this reason, we need to adjust the predictions for uncertainty to obtain optimal decisions. We can get a representation of the remaining uncertainty by evaluating the distribution of the prediction error on the training data. Assuming the error to be distributed normal, we estimate its parameters <span class="math notranslate nohighlight">\(\mu_{e}\)</span> and <span class="math notranslate nohighlight">\(\sigma_{e}\)</span>.</p>
+<p>Of course we cannot assume the model to be perfect: first because of the model error itself, and second, because of the uncertainty in demand. For this reason, we need to adjust the predictions for uncertainty to obtain optimal decisions. We can get a representation of the remaining uncertainty by evaluating the distribution of the prediction error on the training set. Assuming the error to be normally distributed, we estimate its parameters <span class="math notranslate nohighlight">\(\mu_{e}\)</span> and <span class="math notranslate nohighlight">\(\sigma_{e}\)</span>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span># predict on training data
-train_predicitons = mdl.predict(X_train)
+train_predictions = DT.predict(X_train_preprocessed)
 
 # estimate mean and standard deviation of the model error
-error = y_train[&quot;STEAK&quot;]-train_predicitons
+error = y_train[&quot;steak&quot;]-train_predictions
 error_mean = error.mean()
 error_std = error.std()
 </pre></div>
 </div>
 </div>
-<p>We then pass the error distribution to the initial optimization problem to determine an additional safety stock. The final order decision is then the sum of both the prediction generated by our model and the safety stock. More formally, the newsvendor problem can then be described as:</p>
-<p><span class="math">\begin{equation}
-q(x)^{*} = \mu(x)+\Phi^{-1}(\alpha),
-\tag{3}
-\end{equation}</span></p>
-<p>where <span class="math notranslate nohighlight">\(\mu(\cdot)\)</span> is the function of the machine-learning model that maps from the feature vector <span class="math notranslate nohighlight">\(x\)</span> to demand level, and <span class="math notranslate nohighlight">\(\Phi^{-1}\)</span> the inverse cdf of the error distribution with mean <span class="math notranslate nohighlight">\(\mu_{e}\)</span> and <span class="math notranslate nohighlight">\(\sigma_{e}\)</span>.</p>
-<div class="nbinput docutils container">
+<p>Next, we pass the error distribution to equation (2) to determine an additional safety stock that adjusts the predictions based on the forecast error by balancing the expected overage and underage costs.</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span># determine safety buffer
 safety_buffer = norm(error_mean, error_std).ppf(cu/(cu+co))
-
-# predict test data
-pred = mdl.predict(X_test)
-
-# add safety buffer prediction from model
-pred = pred + safety_buffer
-
-# calculate and print average costs
-avg_costs = average_costs(y_test[&quot;STEAK&quot;], pred, cu, co)
-print(&quot;Average costs: &quot;+str(avg_costs))
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Average costs: [45.5082525]
-</pre></div></div>
-</div>
-<p>Again, we were able to reduce our average cost from 51.97€ to 45.51€.</p>
-<div class="section" id="Summary">
-<h3>Summary<a class="headerlink" href="#Summary" title="Permalink to this headline">¶</a></h3>
-<p>Let us now summarize what we have learned so far:</p>
-<ul class="simple">
-<li><p>In case we don’t know the demand distribution, but have access to historical demand observations, we can fit a distribution to the historical samples and then solve the initial problem.</p></li>
-<li><p>We can improve our inventory decision by taking into account features. To do this, we can fit a distribution for samples with the same features. However, this does not work well for a big number of features.</p></li>
-<li><p>Instead, we can fit a machine-learning model to predict demand and, given its error distribution, calculate an additional safety stock. The optimal decision is then the sum of prediction and safety stock.</p></li>
-</ul>
-</div>
-</div>
-<div class="section" id="Data-Driven-Approach">
-<h2>Data Driven Approach<a class="headerlink" href="#Data-Driven-Approach" title="Permalink to this headline">¶</a></h2>
-<p>In this part of the tutorial, we introduce different <strong>“data driven”</strong> approaches to solve the newsvendor problem. In contrast to the traditional way of first estimating the demand and then solving the initial optimization problem, these approches directly prescribes decisions from data.</p>
-<div class="section" id="Sample-Average-Approximation">
-<h3>Sample Average Approximation<a class="headerlink" href="#Sample-Average-Approximation" title="Permalink to this headline">¶</a></h3>
-<p>In the case, where only historical demand data is available, a sensible data-driven approach is to substitute the true expectation with a sample average expectations and solve the resulting optimization problem:</p>
-<p><span class="math">\begin{equation}q^{*}=\min _{q \geq 0} \frac{1}{n} \sum_{i=1}^{n}\left[c u\left(d_{i}-q\right)^{+}+c o\left(q-d_{i}\right)^{+}\right]
-\tag{4}
-\end{equation}</span></p>
-<p>where <span class="math notranslate nohighlight">\(n\)</span> is the total number of samples and <span class="math notranslate nohighlight">\(d_i\)</span> is the ith demand observation. This approach is called <strong>sample average approximation (SAA)</strong>. To fully understand how this approach works, lets go through a simple example.</p>
-<p><strong>Example:</strong> Determine how many steaks to defrost applying <strong>SAA</strong>. The historic demand for steak is given by: <span class="math notranslate nohighlight">\(D=[27,29,30]\)</span>. You can sell steak in your restaurant for 15€ (underage costs). Unsold units incur overage costs of 5€.</p>
-<p>Let’s now try to minimize the optimization problem:</p>
+<p>The final order decision is then the sum of both the prediction generated by our model and the safety stock. More formally, the solution to the newsvendor problem can then be stated as:</p>
 <p><span class="math">\begin{equation}
-.....\\
-q=27: \frac{1}{3}\Bigl[15*(27-27)+15*(29-27)+15*(30-27)\Bigl]=\frac{1}{3}(15*0+15*2+5*3)=25\\
-q=28: \frac{1}{3}\Bigl[5*(28-27)+15*(29-28)+15*(30-28)\Bigl]=\frac{1}{3}(5*1+15*1+15*2)=16,67\\
-q=29: \frac{1}{3}\Bigl[5*(29-27)+15*(29-29)+15*(30-29)\Bigl]=\frac{1}{3}(5*2+15*0+15*1)=8,33\\
-q=30: \frac{1}{3}\Bigl[5*(30-27)+5*(30-29)+15*(30-30)\Bigl]=\frac{1}{3}(5*3+5*1+15*0)=6,67\\
-q=31: \frac{1}{3}\Bigl[5*(31-27)+5*(31-29)+5*(31-30)\Bigl]=\frac{1}{3}(5*4+5*2+5*1)=11,67\\
-.....
+q(x)^{*} = \mu(x)+\Phi^{-1}(\alpha),
+\tag{3}
 \end{equation}</span></p>
-<p>As you can see, we are trying to find the decision <span class="math notranslate nohighlight">\(q\)</span> that minimizes the average costs on our historical samples. Consequently, in this case the optimal decision is given by <span class="math notranslate nohighlight">\(q=30\)</span>.</p>
-<p>Now that we know how SAA works let us apply the approach on our dataset. We can therefore use the <code class="docutils literal notranslate"><span class="pre">SampleAverageApproximationNewsvendor</span></code> class from <code class="docutils literal notranslate"><span class="pre">ddop</span></code>. To initialize the model we just have to pass the under- and overage costs. Then we can fit the model to the historical demand samples and predict the optimal decision.</p>
-<div class="nbinput docutils container">
+<p>where <span class="math notranslate nohighlight">\(\mu(\cdot)\)</span> is the function of the machine-learning model that predicts the demand given feature vector <span class="math notranslate nohighlight">\(x\)</span>, and is <span class="math notranslate nohighlight">\(\Phi^{-1}\)</span> the inverse cdf of the error distribution with parameter <span class="math notranslate nohighlight">\(\mu_{e}\)</span> and <span class="math notranslate nohighlight">\(\sigma_{e}\)</span>. Consequently, in the next step, we add the safety stock to the predictions to obtain optimal inventory quantities.</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span># add safety buffer to the model&#39;s predictions
+pred = pred + safety_buffer
+</pre></div>
+</div>
+</div>
+<p>Finally, we calculate the corresponding average costs.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span># calculate average costs
+average_costs(y_test, pred, cu, co)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([51.66844915])
+</pre></div></div>
+</div>
+<p>Again, we were able to reduce our average costs from 54.08€ to 51.67€.</p>
+<div class="section" id="Summary">
+<h3>Summary<a class="headerlink" href="#Summary" title="Permalink to this headline">¶</a></h3>
+<p>Let us now summarize what we have learned so far:</p>
+<ul class="simple">
+<li><p>In case we don’t know the demand distribution, we can estimate the distribution based on past demand samples and then solve equation (2) to determine the optimal inventory quantity.</p></li>
+<li><p>We can improve the decision by taking features into account. To do this, we group the data based on their feature values and estimate a distribution for each group.. However, this does not work well if only a few samples fall into the groups with the same feature values.</p></li>
+<li><p>Instead, we can use a machine-learning model to predict demand and, given its error distribution, calculate an additional safety stock. The optimal decision is then the sum of prediction and safety stock.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="Data-Driven-Approach">
+<h2>Data-Driven Approach<a class="headerlink" href="#Data-Driven-Approach" title="Permalink to this headline">¶</a></h2>
+<p>So far we have only considered the traditional parametric way to solve the newsvendor problem. In this part of the tutorial, we introduce different <strong>“data-driven”</strong> approaches to solve the newsvendor problem. In contrast to the traditional way of first estimating the demand distribution and then solving the initial optimization problem, these approaches directly prescribe decisions from data.</p>
+<div class="section" id="Sample-Average-Approximation">
+<h3>Sample Average Approximation<a class="headerlink" href="#Sample-Average-Approximation" title="Permalink to this headline">¶</a></h3>
+<p>The simplest <strong>data-driven</strong> approach to solve the newsvendor problem is called <strong>Sample Average Approximation (SAA)</strong>. The idea behind <strong>SAA</strong> is to determine the optimal inventory quantity by finding the decision <span class="math notranslate nohighlight">\(q\)</span> that minimizes the average cost on past demand samples. Formally, the optimization problem can be stated as follows:</p>
+<p><span class="math">\begin{equation}q^{*}=\min _{q \geq 0} \frac{1}{n} \sum_{i=1}^{n}\left[c u\left(d_{i}-q\right)^{+}+c o\left(q-d_{i}\right)^{+}\right]
+\tag{4}
+\end{equation}</span></p>
+<p>where <span class="math notranslate nohighlight">\(n\)</span> is the total number of samples and <span class="math notranslate nohighlight">\(d_i\)</span> is the i-th demand observation. Moreover, <span class="math notranslate nohighlight">\((\cdot)^+\)</span> is a function that returns <span class="math notranslate nohighlight">\(0\)</span> if its argument is negative, and else its argument. Using this function we ensure that we multiply missing units by the underage costs and excess units by the overage costs. To fully understand how <strong>SAA</strong> works, we go through a simple example.</p>
+<p><strong>Example:</strong> Determine how many steaks to defrost by applying <strong>SAA</strong>. The past demand for steak is given by: <span class="math notranslate nohighlight">\(D=[27,29,30]\)</span>. You can sell steak in your restaurant for 15€ (underage costs), while unsold units incur overage costs of 5€.</p>
+<p>In the following, we try to minimize the optimization problem (4). For simplicity, we do not write down both terms <span class="math notranslate nohighlight">\(cu(d_i-q)^+\)</span> and <span class="math notranslate nohighlight">\(co(q-d_i)^+\)</span>, since one of them is always zero because we can have either missing units or excess units.</p>
+<p><span class="math">\begin{equation}
+.....\\
+q=27: \frac{1}{3}\Bigl[15*(27-27)+15*(29-27)+15*(30-27)\Bigl]=25\\
+q=28: \frac{1}{3}\Bigl[5*(28-27)+15*(29-28)+15*(30-28)\Bigl]=16,67\\
+q=29: \frac{1}{3}\Bigl[5*(29-27)+15*(29-29)+15*(30-29)\Bigl]=8,33\\
+q=30: \frac{1}{3}\Bigl[5*(30-27)+5*(30-29)+15*(30-30)\Bigl]=6,67\\
+q=31: \frac{1}{3}\Bigl[5*(31-27)+5*(31-29)+5*(31-30)\Bigl]=11,67\\
+.....
+\end{equation}</span></p>
+<p>Based on our calculation, the optimal decision is given by <span class="math notranslate nohighlight">\(q=30\)</span>.</p>
+<p>Now that we know how <strong>SAA</strong> works we can apply the approach on the Yaz dataset by using the class <code class="docutils literal notranslate"><span class="pre">SampleAverageApproximationNewsvendor</span></code> from <code class="docutils literal notranslate"><span class="pre">ddop</span></code>. To initialize the model we pass the under- and overage costs to the constructor. Subsequently, we fit the model to the past demand samples and determine the optimal decision using the predict method.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>SAA = SampleAverageApproximationNewsvendor(cu,co)
-SAA.fit(y_train[&quot;STEAK&quot;])
+SAA.fit(y_train)
 SAA.predict()
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1489,47 +1206,45 @@ SAA.predict()
 array([[28]])
 </pre></div></div>
 </div>
-<p>We see, the optimal decision is 28. To calculate the average cost on the training data, we can use the model’s score function.</p>
+<p>Based on <strong>SAA</strong> the optimal decision is 28. To get a representation of the model performance, we use the model’s <code class="docutils literal notranslate"><span class="pre">score</span></code> function. Just like the <code class="docutils literal notranslate"><span class="pre">average_costs</span></code> function, the <code class="docutils literal notranslate"><span class="pre">score</span></code> method calculates the average cost. The advantage is that we can directly calculate the costs without having to predict all training samples first.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>SAA.score(y_test[&quot;STEAK&quot;])
+<span></span>-SAA.score(y_test)
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
--60.23684210526316
+60.23684210526316
 </pre></div></div>
 </div>
+<p>With average cost of 60.24€, <strong>SAA</strong> performs better compared to the traditional parametric approach without features (65.61€). In contrast, <strong>SAA</strong> performs worse compared to the parametric approach with features (51.67€). However, this is not really surprising since we already know that exogenous features can improve decision making.</p>
 </div>
 <div class="section" id="Weighted-Sample-Average-Approximation">
 <h3>Weighted Sample Average Approximation<a class="headerlink" href="#Weighted-Sample-Average-Approximation" title="Permalink to this headline">¶</a></h3>
-<p>Eventhough SAA is a common and effective approach, it only considers historical demand data. However, in the first part of the tutorial we have seen that demand depends on exogenous factors such as the day. As first step, we therefore fitted a distribution for each weekday. We can now do the same here by fitting a SAA model for each weekday. This means that we are trying to find the decision <span class="math notranslate nohighlight">\(q\)</span> that minimizes the average cost for only samples with the same day instead of trying to find
-the decision <span class="math notranslate nohighlight">\(q\)</span> that minimizes the average cost for all historical samples.</p>
+<p>Even though <strong>SAA</strong> is a common and effective approach, it only considers past demand samples. However, in the first part of the tutorial we have seen that we can improve our decision by taking into account features, such as the weekday. Consequently, we now want to do the same here. One way we can do this is to determine the optimal <strong>SAA</strong> decision for each weekday separately.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>days = [&#39;MON&#39;,&#39;TUE&#39;,&#39;WED&#39;,&#39;THU&#39;,&#39;FRI&#39;,&#39;SAT&#39;,&#39;SUN&#39;]
-
-pred = []
+<span></span>q_by_weekday = {}
 
 SAA = SampleAverageApproximationNewsvendor(cu,co)
 
 for day in days:
-  steak_demand_day = df[df[&#39;WEEKDAY_&#39;+day]==1][&#39;STEAK&#39;]
-  SAA.fit(steak_demand_day)
-  pred.append(SAA.predict().item(0))
+  demand = data_by_weekday.get_group(day)
+  SAA.fit(demand)
+  q_by_weekday[day] = SAA.predict().item(0)
 
-print(pred)
+print(q_by_weekday)
 </pre></div>
 </div>
 </div>
@@ -1538,12 +1253,12 @@ print(pred)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[21, 23, 26, 25, 30, 44, 21]
+{&#39;MON&#39;: 21, &#39;TUE&#39;: 24, &#39;WED&#39;: 26, &#39;THU&#39;: 26, &#39;FRI&#39;: 31, &#39;SAT&#39;: 45, &#39;SUN&#39;: 20}
 </pre></div></div>
 </div>
-<p>Now ginve the optimla decision for each day, we can write a new prediction function.</p>
+<p>Now given the optimal decision for each day, we can write a new prediction function.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
@@ -1554,30 +1269,18 @@ print(pred)
   Parameters
   ----------
   X : Pandas DataFrame of shape (n_samples, n_features)
-      The input samples to predict.
+      The input samples.
 
   Returns
   ----------
   y : array of shape (n_samples,)
-      The predicted values
+      The predicted values.
   &quot;&quot;&quot;
 
   pred = []
-  for index, row in X.iterrows():
-    if row[&quot;WEEKDAY_MON&quot;]==1:
-      pred.append(21)
-    elif row[&quot;WEEKDAY_TUE&quot;]==1:
-      pred.append(23)
-    elif row[&quot;WEEKDAY_WED&quot;]==1:
-      pred.append(26)
-    elif row[&quot;WEEKDAY_THU&quot;]==1:
-      pred.append(25)
-    elif row[&quot;WEEKDAY_FRI&quot;]==1:
-      pred.append(30)
-    elif row[&quot;WEEKDAY_SAT&quot;]==1:
-      pred.append(44)
-    else:
-      pred.append(21)
+  for index, sample in X.iterrows():
+    day = sample[&#39;weekday&#39;]
+    pred.append(q_by_weekday[day])
 
   return np.array(pred)
 </pre></div>
@@ -1585,27 +1288,27 @@ print(pred)
 </div>
 <p>We can then apply the function on the test set and calculate the average costs:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>pred = predict(X_test)
-average_costs(y_test[&quot;STEAK&quot;],pred,cu,co)
+average_costs(y_test,pred,cu,co)
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-array([50.5])
+array([52.23684211])
 </pre></div></div>
 </div>
-<p>Look, again we were able to reduce the average cost from 60.24€ to 50.50€ by taking into account the weekday. We could now go a step further, by fitting a model for samples with the same features. However, as we have seen in part 1, this is not the best way. Another way to take the feature information into account is to give higher weights to samples whose features are similar to those of a new instance. In other words, we can determine a weight for each historical observation based on the
-similarity to a new instance, and optimize the initial problem against a re-weighting of the data. To determine the sample weights we can use machine-learning techniques - for example a regression tree. To see how we can do this let us consider a small example.</p>
-<p>Let’s say we have the following historical samples with two features (Weekend,Temperature) and we want to calculate their weights (representing the similarity) based on a new sample <span class="math notranslate nohighlight">\(x=(0,18)\)</span>.</p>
+<p>Again, we were able to reduce the average costs from 60.24€ to 52.24€ by taking into account the weekday. We could now go a step further, by considering more features. To do this, we would again need to use a separate model for the samples with the same feature values. However, as we have seen in the traditional parametric approach, this can become problematic when we have only a small number of samples with the same feature values. Another way to take the feature information into account is to
+give higher weights to samples whose feature values are similar to those of a new instance. In other words, we can determine a weight for each sample based on the similarity to a new instance, and optimize the initial problem against a re-weighting of the data. To determine the sample weights, we can use different machine learning techniques, such as a regression tree. For a better understanding, consider the following example.</p>
+<p><strong>Example:</strong> Say we have the following past demand samples with feature vector <span class="math notranslate nohighlight">\(x_i=(Weekend, Temperature)\)</span> and we want to calculate their weights based on a new sample <span class="math notranslate nohighlight">\(x=(0,18)\)</span>.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 16%" />
@@ -1658,65 +1361,61 @@ similarity to a new instance, and optimize the initial problem against a re-weig
 </tr>
 </tbody>
 </table>
-<p>First, we fit a regression tree on the historical samples, which gives us the following result:</p>
-<p><img alt="26e0dc56d9ed45298e1641bded5798fb" class="no-scaled-link" src="https://drive.google.com/uc?export=view&amp;id=1fXW6PV2bUcnZSNByTde39k8hEgRB_5aV" style="width: 450px;" /></p>
-<p>As we can see, the regression tree splits our data into four leafs based on the two features. In the next step we can use this tree to determine the sample weights. Therefore, we look to which leaf the new instance <span class="math notranslate nohighlight">\(x=(0,18)\)</span> belongs. In the first level of the tree we follow the right path since it is no weekend. Then, given the temperature forecast of <span class="math notranslate nohighlight">\(18°\)</span> we end up in leaf 1 together with sample 1,6 and 7, which means that these observations are most similar to <span class="math notranslate nohighlight">\(x\)</span>. Using
-this information we assign a weight of <span class="math notranslate nohighlight">\(\frac{1}{3}\)</span> to each of the three samples falling into the same leaf. The sample weights are then given by:</p>
+<p>First, we train a regression tree to predict the demand given the features weekday and temperature. The resulting tree looks like this:</p>
+<p><img alt="8ac69624d9a3435a9e8ffe605f306c69" class="no-scaled-link" src="https://drive.google.com/uc?export=view&amp;id=1fXW6PV2bUcnZSNByTde39k8hEgRB_5aV" style="width: 450px;" /></p>
+<p>The regression tree splits our data into four leafs based on the two features. In the next step we can use this tree to determine the sample weights. Therefore, we look to which leaf the new instance <span class="math notranslate nohighlight">\(x=(0,26)\)</span> belongs. In the first level of the tree we follow the right path since it is no weekend. Then, given the temperature forecast of <span class="math notranslate nohighlight">\(18°\)</span>, we end up in leaf 2 together with sample 4 and 7. This means that these observations are most similar to <span class="math notranslate nohighlight">\(x\)</span>. Using this information,
+we assign a weight of <span class="math notranslate nohighlight">\(\frac{1}{2}\)</span> to each of the three samples falling into the same leaf. The sample weights are then given by:</p>
 <p><span class="math">\begin{equation}
-w_1=1/3,\:w_2=0,\:w_3=0,\:w_4=0,\:w_5=0,\:w_6=1/3,\:w_7=1/3
+w_1=\frac{1}{3},\:w_2=0,\:w_3=0,\:w_4=0,\:w_5=0,\:w_6=\frac{1}{3},\:w_7=\frac{1}{3}
 \end{equation}</span></p>
-<p>Now that we have calculated the sample weights we can solve the optimization problem like we did before. The only difference now is, that we multiply each observation with its corresponding weight, which indicates the similarity to the new sample.</p>
+<p>Now that we have calculated the sample weights, we can solve the optimization problem like before. The only difference is, that we multiply each observation with its corresponding weight, which indicates the similarity to the new sample.</p>
 <p><span class="math">\begin{equation}
-q=18: \frac{1}{3}\bigl[15*(27-18)\bigl]+0\bigl[15*(29-18)\bigl]+...+0\bigl[15*(20-18)\bigl]+\frac{1}{3}\bigl[15*(23-18)\bigl]+\frac{1}{3}\bigl[15*(21-18)\bigl] = 85\\
+q=18: \frac{1}{3}\bigl[15*(27-18)\bigl]+...+\frac{1}{3}\bigl[15*(23-18)\bigl]+\frac{1}{3}\bigl[15*(21-18)\bigl] = 85\\
 ......\\
-q=26: \frac{1}{3}\bigl[15*(27-26)\bigl]+0\bigl[15*(29-26)\bigl]+...+0\bigl[5*(26-20)\bigl]+\frac{1}{3}\bigl[5*(26-23)\bigl]+\frac{1}{3}\bigl[5*(26-21)\bigl] = 18.33\\
-q=27: \frac{1}{3}\bigl[15*(27-27)\bigl]+0\bigl[15*(29-27)\bigl]+...+0\bigl[5*(27-20)\bigl]+\frac{1}{3}\bigl[5*(27-23)\bigl]+\frac{1}{3}\bigl[5*(27-21)\bigl] = 16.67\\
-q=28: \frac{1}{3}\bigl[5*(28-27)\bigl]+0\bigl[15*(29-28)\bigl]+...+0\bigl[5*(28-20)\bigl]+\frac{1}{3}\bigl[5*(28-23)\bigl]+\frac{1}{3}\bigl[5*(28-21)\bigl] = 21.67\\
+q=26: \frac{1}{3}\bigl[15*(27-26)\bigl]+...+\frac{1}{3}\bigl[5*(26-23)\bigl]+\frac{1}{3}\bigl[5*(26-21)\bigl] = 18.33\\
+q=27: \frac{1}{3}\bigl[15*(27-27)\bigl]+...+\frac{1}{3}\bigl[5*(27-23)\bigl]+\frac{1}{3}\bigl[5*(27-21)\bigl] = 16.67\\
+q=28: \frac{1}{3}\bigl[5*(28-27)\bigl]+...+\frac{1}{3}\bigl[5*(28-23)\bigl]+\frac{1}{3}\bigl[5*(28-21)\bigl] = 21.67\\
 ......\\
-q=30: \frac{1}{3}\bigl[5*(30-27)\bigl]+0\bigl[5*(30-29)\bigl]+...+0\bigl[5*(30-20)\bigl]+\frac{1}{3}\bigl[5*(30-23)\bigl]+\frac{1}{3}\bigl[5*(30-21)\bigl] = 30.67
+q=30: \frac{1}{3}\bigl[5*(30-27)\bigl]+...+\frac{1}{3}\bigl[5*(30-23)\bigl]+\frac{1}{3}\bigl[5*(30-21)\bigl] = 30.67
 \end{equation}</span></p>
-<p>So, as we can see from our calculation, <span class="math notranslate nohighlight">\(q=27\)</span> is the quantity minimizing the average costs on the weighted samples.</p>
-<p>We call this approach <strong>“Weigthed Sample Average Approximation (wSAA)”</strong> as it can be seen as weighted form of SAA. More formally the problem can be stated as follow:</p>
+<p>Based on our calculation, <span class="math notranslate nohighlight">\(q=27\)</span> is the quantity minimizing the average costs on the weighted samples.</p>
+<p>We call this approach <strong>“weigthed Sample Average Approximation (wSAA)”</strong> as it can be seen as weighted form of <strong>SAA</strong>. More formally the problem can be stated as follows:</p>
 <p><span class="math">\begin{equation}
 q(x)^*=\min_{q\geq 0} \sum_{i=1}^{n}w_i(x)\bigl[cu(d_i-q)^+ + co(q-d_i)\bigl],
 \tag{5}
 \end{equation}</span></p>
-<p>where <span class="math notranslate nohighlight">\(w_i(x) \in [0,1]\)</span> is the weight of the ith sample based on a new instance <span class="math notranslate nohighlight">\(x\)</span>. The weight function <span class="math notranslate nohighlight">\(w_i(\cdot)\)</span> can be considered a similarity function. In our example above we used a weight function based on a tree regressor given by:</p>
+<p>where <span class="math notranslate nohighlight">\(w_i(x) \in [0,1]\)</span> is the weight of the i-th sample based on a new instance <span class="math notranslate nohighlight">\(x\)</span>. The weight function <span class="math notranslate nohighlight">\(w_i(\cdot)\)</span> can be considered as a similarity function. In our example above we used a weight function based on a tree regressor given by:</p>
 <p><span class="math">\begin{equation}
-w_{i}^{Tree}(x)=\frac{\mathbb{1}x_i \in R(x,\theta)}{N(x,\theta)},
+w_{i}^{Tree}(x)=\frac{\mathbb{1}x_i \in R(x)}{N(x)},
 \end{equation}</span></p>
-<p>where <span class="math notranslate nohighlight">\(\mathbb{1}\)</span> is the indicator function, <span class="math notranslate nohighlight">\(x\)</span> is the feature vector of a new sample, <span class="math notranslate nohighlight">\(x_i\)</span> is the feature vector of the ith sample, <span class="math notranslate nohighlight">\(R(x)\)</span> is the leaf containing <span class="math notranslate nohighlight">\(x\)</span>, and <span class="math notranslate nohighlight">\(N(x)\)</span> is the number of samples falling in leaf <span class="math notranslate nohighlight">\(R(x)\)</span>. In simple terms, the function will give a wight of <span class="math notranslate nohighlight">\(\frac{1}{N(x,\theta)}\)</span> to the ith sample <span class="math notranslate nohighlight">\(x_i\)</span> if it belongs to the same leaf as the new instance <span class="math notranslate nohighlight">\(x\)</span>. If not, a weight of <span class="math notranslate nohighlight">\(0\)</span> is assigned.</p>
-<p>Obviously, the performance of a wSAA approach is driven by the choice of weight function. In the following we therefore introduce two other weight functions based on k-nearest-neighbor- and random forest regression.</p>
-<p><strong>Random forest:</strong></p>
+<p>where <span class="math notranslate nohighlight">\(\mathbb{1}\)</span> is the indicator function, <span class="math notranslate nohighlight">\(x\)</span> is the feature vector of a new sample, <span class="math notranslate nohighlight">\(x_i\)</span> is the feature vector of the i-th sample, <span class="math notranslate nohighlight">\(R(x)\)</span> is the leaf containing <span class="math notranslate nohighlight">\(x\)</span>, and <span class="math notranslate nohighlight">\(N(x)\)</span> is the number of samples falling into leaf <span class="math notranslate nohighlight">\(R(x)\)</span>. In simple terms, the function will give a weight of <span class="math notranslate nohighlight">\(\frac{1}{N(x)}\)</span> to the i-th sample <span class="math notranslate nohighlight">\(x_i\)</span> if it belongs to the same leaf as the new instance <span class="math notranslate nohighlight">\(x\)</span>, and otherwise zero.</p>
+<p>Obviously, the performance of a <strong>wSAA</strong> approach is driven by the choice of the weight function. In the following we introduce two other weight functions based on k-nearest-neighbor- and random forest regression.</p>
+<p><strong>Random Forest:</strong></p>
 <p><span class="math">\begin{equation}
-w_{i}^{RF}(x)=\frac{1}{T} \sum_{t=1}^{T} \frac{\mathbb{1}_{x_i \in R(x, \theta_t)}}{N(x,\theta_t)},
+w_{i}^{RF}(x)=\frac{1}{T} \sum_{t=1}^{T} \frac{\mathbb{1}_{x_i \in R_t(x)}}{N_t(x)},
 \end{equation}</span></p>
-<p>where <span class="math notranslate nohighlight">\(T\)</span> is the number of trees in the forest, <span class="math notranslate nohighlight">\(R(x,\theta_t)\)</span> is the leaf of tree <span class="math notranslate nohighlight">\(t\)</span> containing <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(N(x,\theta_t)\)</span> is the number of samples falling in leaf <span class="math notranslate nohighlight">\(R(x,\theta_t)\)</span>.</p>
-<p><strong>K-nearest-neighbor:</strong></p>
+<p>where <span class="math notranslate nohighlight">\(T\)</span> is the number of trees in the forest, <span class="math notranslate nohighlight">\(R_t(x)\)</span> is the leaf of tree <span class="math notranslate nohighlight">\(t\)</span> containing <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(N_t(x)\)</span> is the number of samples falling in leaf <span class="math notranslate nohighlight">\(R_t(x)\)</span>.</p>
+<p><strong>K-Nearest-Neighbor:</strong></p>
 <p><span class="math">\begin{equation}
 w_{i}^{k \mathrm{NN}}(x)=\frac{1}{k} \mathbb{1}\left[x_i \text { is a } k \mathrm{NN} \text { of } x\right],
 \end{equation}</span></p>
 <p>where <span class="math notranslate nohighlight">\(k\)</span> is the number of neighbors. In simple terms, the function will give a weight of <span class="math notranslate nohighlight">\(\frac{1}{k}\)</span> to sample <span class="math notranslate nohighlight">\(x_i\)</span> if it is a k-nearest-neighbor of <span class="math notranslate nohighlight">\(x\)</span>.</p>
-<p>We now dont want to go into more detail. Instead, let us apply wSAA on our dataset. We can therefore use the class <code class="docutils literal notranslate"><span class="pre">RandomForestWeightedNewsvendor</span></code> and <code class="docutils literal notranslate"><span class="pre">KNeighborsWeightedNewsvendor</span></code> from <code class="docutils literal notranslate"><span class="pre">ddop</span></code>. To initialize the models, we only have to pass our overage- and underage costs. However, there are more model specific parameters that we should modify. For instance, we set the maximum depth for <code class="docutils literal notranslate"><span class="pre">RandomForestWeightedNewsvendor</span></code> to 5 to avoid overfitting. Moreover, we set the number of neighbors
-for <code class="docutils literal notranslate"><span class="pre">KNeighborsWeightedNewsvendor</span></code> to 30. After we have initialized our models we fit them on the training data and calculate the average cost on the test set by using the <code class="docutils literal notranslate"><span class="pre">score</span></code> function:</p>
+<p>We can apply both <strong>wSAA</strong> approaches on our dataset by using the class <code class="docutils literal notranslate"><span class="pre">RandomForestWeightedNewsvendor</span></code> and <code class="docutils literal notranslate"><span class="pre">KNeighborsWeightedNewsvendor</span></code> from <code class="docutils literal notranslate"><span class="pre">ddop</span></code>. To initialize the models, we pass the overage- and underage costs to the constructor. Moreover, we define some addition model-specific parameters. For instance, we set the maximum depth for <code class="docutils literal notranslate"><span class="pre">RandomForestWeightedNewsvendor</span></code> to 5 to avoid overfitting. Moreover, we set the number of neighbors for <code class="docutils literal notranslate"><span class="pre">KNeighborsWeightedNewsvendor</span></code> to 30.
+After we have initialized our models we fit them on the training data and calculate the average costs on the test set by using the <code class="docutils literal notranslate"><span class="pre">score</span></code> function:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>cu = 15
-co = 5
-
-RFW = RandomForestWeightedNewsvendor(cu=cu, co=co, max_depth=5, criterion=&quot;mse&quot;,
-                                     random_state=3)
-RFW.fit(X_train, y_train[&quot;STEAK&quot;])
-RFW_score = RFW.score(X_test,y_test[&quot;STEAK&quot;])
-print(&quot;Avg. cost RFW: &quot;,RFW_score)
+<span></span>RFW = RandomForestWeightedNewsvendor(cu=cu, co=co, max_depth=10,random_state=1)
+RFW.fit(X_train_preprocessed, y_train[&quot;steak&quot;])
+RFW_score = RFW.score(X_test_preprocessed,y_test)
+print(&quot;Avg. cost RFW: &quot;,-RFW_score)
 
 KNW = KNeighborsWeightedNewsvendor(cu=cu, co=co, n_neighbors=30)
-KNW.fit(X_train_scaled, y_train[&quot;STEAK&quot;])
-KNW_score = KNW.score(X_test_scaled,y_test[&quot;STEAK&quot;])
-print(&quot;Avg. cost KNW: &quot;, KNW_score)
+KNW.fit(X_train_preprocessed, y_train)
+KNW_score = KNW.score(X_test_preprocessed,y_test)
+print(&quot;Avg. cost KNW: &quot;, -KNW_score)
 
 </pre></div>
 </div>
@@ -1726,25 +1425,24 @@ print(&quot;Avg. cost KNW: &quot;, KNW_score)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Avg. cost RFW:  -47.76315789473684
-Avg. cost KNW:  -47.473684210526315
+Avg. cost RFW:  50.89473684210526
+Avg. cost KNW:  47.473684210526315
 </pre></div></div>
 </div>
-<p>As we can see we were able to reduce the average costs again by using <strong>wSAA</strong>.</p>
+<p>These are the best results so far. Both models <strong>RFW</strong> (50.89€) and <strong>KNW</strong> (47.47€) outperform all other models we have seen so far.</p>
 <hr class="docutils" />
 </div>
 <div class="section" id="Empirical-Risk-Minimization">
 <h3>Empirical Risk Minimization<a class="headerlink" href="#Empirical-Risk-Minimization" title="Permalink to this headline">¶</a></h3>
-<p>With wSAA we have already learned a data-driven approach that is able to consider features for decision making. However, to obtain a decision <span class="math notranslate nohighlight">\(q\)</span>, we have to first determine weights and then solve an optimization problem for every new sample <span class="math notranslate nohighlight">\(x\)</span>. But wouldn’t it be great to learn a function that instead maps directly from features <span class="math notranslate nohighlight">\(x\in X\)</span> to a decision <span class="math notranslate nohighlight">\(q\in Q\)</span>. A natural way to obtain such a function, given past demand samples (containing both features and demand), is
-though <a class="reference external" href="https://en.wikipedia.org/wiki/Empirical_risk_minimization">empirical risk minimization</a>: <span class="math">\begin{equation}
+<p>With <strong>wSAA</strong> we have already learned a data-driven approach that is able take exogenous features into account. However, to obtain a decision <span class="math notranslate nohighlight">\(q\)</span>, we have to first determine weights and then solve an optimization problem for every new sample <span class="math notranslate nohighlight">\(x\)</span>. But wouldn’t it be great to learn a function that instead maps directly from features <span class="math notranslate nohighlight">\(x\in X\)</span> to a decision <span class="math notranslate nohighlight">\(q\in Q\)</span>? A natural way to obtain such a function, is though <a class="reference external" href="https://en.wikipedia.org/wiki/Empirical_risk_minimization">empirical risk
+minimization</a>: <span class="math">\begin{equation}
 \min_{q(\cdot)\in\mathcal{F}} \frac{1}{n}\sum_{i=1}^{n}\bigl[cu(d_i-q(x_i))^+ + co(q(x_i)-d_i)^+\bigl],
 \tag{6}
 \end{equation}</span></p>
-<p>where <span class="math notranslate nohighlight">\(q(\cdot)\)</span> is the function that maps from feature space <span class="math notranslate nohighlight">\(X\)</span> to decision space <span class="math notranslate nohighlight">\(Q\)</span>, and <span class="math notranslate nohighlight">\(\mathcal{F}\)</span> is its function class. Again, <span class="math notranslate nohighlight">\(x_i\)</span> is the feature vector of the i-th sample, and <span class="math notranslate nohighlight">\(d_i\)</span> is the corresponding demand value. To say it simple, we try to find the function <span class="math notranslate nohighlight">\(q:X\rightarrow Q\)</span>, that minimizes the average costs on <span class="math notranslate nohighlight">\(n\)</span> past demand samples (the empirical risk). The most straightforward way to do this is based on linear regression. So
-let’s look at a simple example:</p>
+<p>where <span class="math notranslate nohighlight">\(q(\cdot)\)</span> is the function that maps from feature space <span class="math notranslate nohighlight">\(X\)</span> to decision space <span class="math notranslate nohighlight">\(Q\)</span>, and <span class="math notranslate nohighlight">\(\mathcal{F}\)</span> is its function class. Again, <span class="math notranslate nohighlight">\(x_i\)</span> is the feature vector of the i-th sample, and <span class="math notranslate nohighlight">\(d_i\)</span> is the corresponding demand value. To say it simple, we try to find the function <span class="math notranslate nohighlight">\(q:X\rightarrow Q\)</span> that minimizes the average costs on <span class="math notranslate nohighlight">\(n\)</span> past demand samples (the empirical risk). The most straightforward way to do this is based on linear regression.</p>
 <div class="section" id="Linear-Regression">
 <h4>Linear Regression<a class="headerlink" href="#Linear-Regression" title="Permalink to this headline">¶</a></h4>
-<p>Suppose we consider only one demand feature, say temperature, and given the temperature we want to know how many steaks to defrost. In other words, we want to find a function <span class="math notranslate nohighlight">\(q(temp)\)</span>, that maps from temperature to a decision <span class="math notranslate nohighlight">\(q\)</span>. Of course, the first thing we need to do is to collect some data.</p>
+<p>Suppose we have only a single feature, say temperature, and given the value for the temperature we want to know how many steaks to defrost. In other words, we want to find a function <span class="math notranslate nohighlight">\(q(temp)\)</span> that maps from temperature to a decision <span class="math notranslate nohighlight">\(q\)</span>. Of course, the first thing we need to do is to collect some data.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 19%" />
@@ -1759,58 +1457,73 @@ let’s look at a simple example:</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>1</p></td>
-<td><p>10</p></td>
 <td><p>5</p></td>
+<td><p>4</p></td>
 </tr>
 <tr class="row-odd"><td><p>2</p></td>
-<td><p>20</p></td>
-<td><p>10</p></td>
+<td><p>7</p></td>
+<td><p>8</p></td>
 </tr>
 <tr class="row-even"><td><p>3</p></td>
-<td><p>30</p></td>
+<td><p>10</p></td>
+<td><p>7</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>12</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>15</p></td>
 <td><p>9</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>18</p></td>
+<td><p>13</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>20</p></td>
+<td><p>11</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>21</p></td>
+<td><p>15</p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p>23</p></td>
+<td><p>12</p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p>25</p></td>
+<td><p>16</p></td>
 </tr>
 </tbody>
 </table>
-<p>We then plot the data and as we can see it looks like there is a linear relationship between temperature and demand. Consequently, we want to find a linear function <span class="math notranslate nohighlight">\(q(temp)=b+w_1*temp\)</span> that fits best on our data. As you can see, we therefore have to learn two variables, the intercept term <span class="math notranslate nohighlight">\(b\)</span> and a weight <span class="math notranslate nohighlight">\(w_1\)</span>. In other words, we want to have a constant value to which we add a certain amound depending on the temperature. We start by selecting two random values,
-e.g. <span class="math notranslate nohighlight">\(b=0\)</span> and <span class="math notranslate nohighlight">\(w_1=0,4\)</span>, which gives us function <span class="math notranslate nohighlight">\(q_1(temp)=0+0,4*temp\)</span></p>
-<p><img alt="4e91c758ecc8429abb96cbdb4d74a661" class="no-scaled-link" src="https://drive.google.com/uc?export=view&amp;id=1TC3-K8j_7hsZcJuf1RrKhyvtdwTfCkSs" style="width: 550px;" /></p>
-<p>Given function <span class="math notranslate nohighlight">\(q_1(\cdot)\)</span> we can determine the decision <span class="math notranslate nohighlight">\(q\)</span> for each sample in our data: <span class="math">\begin{equation}
-q_1(10)=4\\
-q_1(20)=8\\
-q_1(30)=12\\
-\end{equation}</span></p>
-<p>In the next step, we can compare the results with the actual demand. Of course, we are interested in making cost-optimal decisions. So, to see how well the function fits our data, we can determine the average cost associated with our decisions. Recall that each unit of unsold steak costs Yaz 5€, and each unit of demand that cannot be met because Yaz has run out of inventory costs 15€, we can continue as follows:</p>
+<p>We plot the data and it looks like there is a linear relationship between temperature and demand (see figure below). Consequently, to solve our problem, the first thing that comes into our mind is linear regression. For this reason, we cronstruct a linear function <span class="math notranslate nohighlight">\(q=b+w*temp\)</span>, where <span class="math notranslate nohighlight">\(b\)</span> is the intercept term, and <span class="math notranslate nohighlight">\(w\)</span> is a weight. We can think of the intercept as a base demand to which we add a certain amount depending on the temperature and weight <span class="math notranslate nohighlight">\(w\)</span>. To find the
+optimal mapping from temperature to demand, we now have to learn the best fitting values for <span class="math notranslate nohighlight">\(b\)</span> and <span class="math notranslate nohighlight">\(w\)</span>. We start by setting <span class="math notranslate nohighlight">\(b=4\)</span> and <span class="math notranslate nohighlight">\(w=0,4\)</span>, which gives us function <span class="math notranslate nohighlight">\(q(temp)=4+0,4*temp\)</span> that already fits the data right well. However, for each sample <span class="math notranslate nohighlight">\(i\)</span>, we obtain an error, representing the difference between the actual demand <span class="math notranslate nohighlight">\(d_i\)</span> and the estimated decision of <span class="math notranslate nohighlight">\(q(temp_i)\)</span>. In the figure below these errors are illustrated as dotted lines.</p>
+<p><img alt="a692f270daed4ddfb1a5bdb5e9255aea" class="no-scaled-link" src="https://drive.google.com/uc?export=view&amp;id=10YeV8msmUeD7-Nz0xUlSkiOP5v7YXaHv" style="width: 600px;" /></p>
+<p>According to linear regression, the goal would be to adjust the values for <span class="math notranslate nohighlight">\(b\)</span> and <span class="math notranslate nohighlight">\(w\)</span> in a way that minimizes the mean difference (error) between the actual demand and the estimated decision. Formally speaking:</p>
 <p><span class="math">\begin{equation}
-\frac{1}{3}[15*(5-4)+0+5*(12-10)]=8.33
+\min_{b,w} \frac{1}{n}\sum_{i=1}^{n}\Bigl(d_i-(b+w*temp)\Bigl)^2
 \end{equation}</span></p>
-<p>As we can see, function <span class="math notranslate nohighlight">\(q_1(\cdot)\)</span> yields average costs of 8.33€. This is really not a good result. Let us therefore change the values for <span class="math notranslate nohighlight">\(b\)</span> and <span class="math notranslate nohighlight">\(w_1\)</span>, and define a function <span class="math notranslate nohighlight">\(q_2(temp)=4+0,2*temp\)</span>. Following the same procedure as before gives us:</p>
+<p>In our case, however, this can be problematic because overage would have the same effect as underage. Now recall that each unit of unsold steak costs 5€, while each unit of demand that cannot be satisfied costs 15€. In other words, one unit too little costs three times more than one unit too much. Consequently, we minimize the average cost rather than the mean difference. The resulting optimization problem is then given by:</p>
 <p><span class="math">\begin{equation}
-q_2(10)=6\\
-q_2(20)=8\\
-q_2(30)=10\\
-\frac{1}{3}[5*(6-5)+0+5*(10-9)]=3.33
+\min_{b,w} \frac{1}{n}\sum_{i=1}^{n}\bigl[cu(d_i-(b+w*temp))^+ + co((b+w*temp)-d_i)^+\bigl]
 \end{equation}</span></p>
-<p>Look, using function <span class="math notranslate nohighlight">\(q_2(\cdot)\)</span> we were able to reduce the cost down to 3.33. But maybe we can do even better. We could now do the same with other values for <span class="math notranslate nohighlight">\(b\)</span> and <span class="math notranslate nohighlight">\(w_1\)</span> over and over again until we find the function that minimizes the average cost on the training samples. But this sounds very tedious doesn’t it? Instead, we can let a computer do this work. For this, however, we need to formalize the optimization problem at hand:</p>
-<p><span class="math">\begin{equation}
-\min_{b,w_1} \frac{1}{n}\sum_{i=1}^{n}\bigl[cu(d_i-(b+w_1*temp))^+ + co((b+w_1*temp)-d_i)^+\bigl]
-\end{equation}</span></p>
-<p>Doesn’t this look like equation <span class="math notranslate nohighlight">\((6)\)</span>, which we introduced at the very beginning of this chapter? The only difference is that we have defined <span class="math notranslate nohighlight">\(q(\cdot)\)</span> as <span class="math notranslate nohighlight">\(q(temp)=b+w_1*temp\)</span>. To be more precise, we have assumed that temperature and demand have a linear relationship. Luckily we don’t have to implement the optimization problem ourselves to solve it on our computer. It is already implementet by the class <code class="docutils literal notranslate"><span class="pre">LinearRegressionNewsvendor</span></code> from <code class="docutils literal notranslate"><span class="pre">ddop</span></code>. So let’s initialize the
-model and fit it to the data.</p>
+<p>Doesn’t this look like equation <span class="math notranslate nohighlight">\((6)\)</span>, which we introduced at the very beginning of this chapter? The only difference is that we have defined <span class="math notranslate nohighlight">\(q(\cdot)\)</span> as a linear decision function of the form <span class="math notranslate nohighlight">\(q(temp)=b+w*temp\)</span>. To solve this optimization problem, we can use the class <code class="docutils literal notranslate"><span class="pre">LinearRegressionNewsvendor</span></code> from <code class="docutils literal notranslate"><span class="pre">ddop</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>temp = [[10],[20],[30]]
-demand = [5,8,10]
+<span></span>temp = [[5],[7],[10],[12],[15],[18],[20],[21],[23],[25]]
+demand = [4,8,7,10,9,13,11,15,12,16]
 mdl = LinearRegressionNewsvendor(cu=15,co=5)
 mdl.fit(X=temp,y=demand)
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1818,14 +1531,14 @@ mdl.fit(X=temp,y=demand)
 LinearRegressionNewsvendor(co=5, cu=15)
 </pre></div></div>
 </div>
-<p>Once the model is fitted, we can access the intercept term <span class="math notranslate nohighlight">\(b\)</span> via the argument <code class="docutils literal notranslate"><span class="pre">intercept_</span></code> and the weight <span class="math notranslate nohighlight">\(w_1\)</span> via the argument <code class="docutils literal notranslate"><span class="pre">feature_weights_</span></code>.</p>
+<p>After fitting the model, we can access the intercept term <span class="math notranslate nohighlight">\(b\)</span> via the argument <code class="docutils literal notranslate"><span class="pre">intercept_</span></code> and the weight <span class="math notranslate nohighlight">\(w\)</span> via the argument <code class="docutils literal notranslate"><span class="pre">feature_weights_</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>print(&quot;b: &quot;,mdl.intercept_)
-print(&quot;w_1: &quot;,mdl.feature_weights_)
+<span></span>print(&quot;b:&quot;,mdl.intercept_)
+print(&quot;w:&quot;,mdl.feature_weights_)
 </pre></div>
 </div>
 </div>
@@ -1834,17 +1547,17 @@ print(&quot;w_1: &quot;,mdl.feature_weights_)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-b:  [2.0]
-w_1:  [[0.3]]
+b: [4.8181818]
+w: [[0.45454545]]
 </pre></div></div>
 </div>
-<p>Now we know that the linear function <span class="math notranslate nohighlight">\(q(\cdot)\)</span> that fits best on our data is given by:</p>
+<p>Thus, the function <span class="math notranslate nohighlight">\(q(\cdot)\)</span> that fits our data best is given by:</p>
 <p><span class="math">\begin{equation}
-q(temp)=2+0.3*temp
+q(temp)=4.82+0.45*temp
 \end{equation}</span></p>
-<p>In the next step we want to know how many steaks to defrost for the tomorrow. We check the weather forecast, which tells us that it will be 25 degrees. Given the temperature, the function <span class="math notranslate nohighlight">\(q(\cdot)\)</span> then lets us that the optimal inventory stock is: <span class="math notranslate nohighlight">\(2+0.3*25=9.5\)</span>. Instead of determining the decision ourselves, we can also use the model’s predict method:</p>
+<p>In the next step we want to know how many steaks to defrost for tomorrow. We check the weather forecast, which tells us that it will be 25 degrees. Given the temperature, the function <span class="math notranslate nohighlight">\(q(\cdot)\)</span> then tells us that the optimal inventory stock is: <span class="math notranslate nohighlight">\(4.82+0.45*25=16.1\)</span>. Instead of determining the decision ourselves, we can also use the model’s ´predict` method:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
@@ -1853,12 +1566,12 @@ q(temp)=2+0.3*temp
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-array([[9.5]])
+array([[16.18181805]])
 </pre></div></div>
 </div>
 <p>Of course, the Yaz dataset provides a lot more demand features than just the temperature. Conseqently, we are looking for a function of the form:</p>
@@ -1866,89 +1579,89 @@ array([[9.5]])
 q(x)=b+w_1*x_1+...+w_m*x_m=b+\sum_{j=1}^{m}w_j*x_j,
 \tag{7}
 \end{equation}</span></p>
-<p>where <span class="math notranslate nohighlight">\(x_j\)</span> represents the value of the <span class="math notranslate nohighlight">\(j\)</span>-th feature from samle <span class="math notranslate nohighlight">\(x\)</span>, and <span class="math notranslate nohighlight">\(w_j\)</span> is the corresponding feature weight. As a result, the optimization problem that we want to solve becomes:</p>
+<p>where <span class="math notranslate nohighlight">\(x_j\)</span> represents the value of the <span class="math notranslate nohighlight">\(j\)</span>-th feature from sample <span class="math notranslate nohighlight">\(x\)</span>, and <span class="math notranslate nohighlight">\(w_j\)</span> is the corresponding feature weight. As a result, the optimization problem that we want to solve becomes:</p>
 <p><span class="math">\begin{equation}
-\min_{w_0,..,w_m} \frac{1}{n}\sum_{i=1}^{n}\bigl[cu(d_i-b-\sum_{j=1}^{m}w_j*x_{i,j})^+ + co(b+\sum_{j=1}^{m}w_j*x_{i,j}-d_i)^+\bigl],
+\min_{b,w_1,..,w_m} \frac{1}{n}\sum_{i=1}^{n}\bigl[cu(d_i-b-\sum_{j=1}^{m}w_j*x_{i,j})^+ + co(b+\sum_{j=1}^{m}w_j*x_{i,j}-d_i)^+\bigl],
 \tag{8}
 \end{equation}</span></p>
-<p>In simple terms, we now have to learn the value for intercept term <span class="math notranslate nohighlight">\(b\)</span> as well as the weight for each feature <span class="math notranslate nohighlight">\(w_1...,w_m\)</span>. To make things simple, we again use the class <code class="docutils literal notranslate"><span class="pre">LinearRegressionNewsvendor</span></code>. We fit the model to the training data and use the score function to determine the average costs on the training set.</p>
+<p>In simple terms, we now have to learn the value for intercept term <span class="math notranslate nohighlight">\(b\)</span> as well as the weight for each feature <span class="math notranslate nohighlight">\(w_1...,w_m\)</span>. Again, we use the class <code class="docutils literal notranslate"><span class="pre">LinearRegressionNewsvendor</span></code> to apply this approach on the Yaz dataset.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>LRN = LinearRegressionNewsvendor(cu=15,co=5)
-LRN.fit(X_train,y_train[&quot;STEAK&quot;])
-LRN_score = LRN.score(X_test,y_test[&quot;STEAK&quot;])
-print(&quot;Avg. cost LRN: &quot;, LRN_score)
+LRN.fit(X_train_preprocessed,y_train)
+-LRN.score(X_test_preprocessed,y_test)
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Avg. cost LRN:  -48.932357245389476
+48.948374181665365
 </pre></div></div>
 </div>
-<p>Again, we were able to reduce the average cost by taking the feature information into account compared to SAA.</p>
+<p>With average cost of 48.95€ the models performes sligtly worse compared to <strong>wSAA</strong> appraoch with a weight function based on kNN. Overall, however, it is the second best model so far!</p>
 </div>
 <div class="section" id="Deep-Learning">
 <h4>Deep Learning<a class="headerlink" href="#Deep-Learning" title="Permalink to this headline">¶</a></h4>
-<p>In the previouse section, we assumed that the demand is a linear combination of features. Consequently, to find the perfect mapping from features <span class="math notranslate nohighlight">\(x\)</span> to decision <span class="math notranslate nohighlight">\(q\)</span>, we specified that <span class="math notranslate nohighlight">\(q(\cdot)\)</span> belongs to the class of linear decision functions. But sometimes there may not be a linear relationship and we need a more complex function to fit our data. One way to do this is by using a neural network (NN). Let us therefore have a look at a simple NN:</p>
-<p><img alt="7073e9c61a674c059f3fde7b714dab87" src="https://drive.google.com/uc?export=view&amp;id=1rmgdo9urd4Qx5MQrPu4sO9sto8_ogCm1" /></p>
-<p>A neural network uses a cascade of many layers to obtain an output given some input data. In general it can be distingushed between input-, hidden-, and output-layer, each consisting of a number of neurons. In the first layer, the number of neurons corresoponds to the number of inputs. In other words, each neuron takes a single feature, e.g. the temperature or the weekday. The input-layer is followed by a number of hidden-layers, each consisting of an arbitary number of neurons. In the
-output-layer the number of neurons correspons to the number of outputs. In our example, we only have a single neuron that outputs the decision <span class="math notranslate nohighlight">\(q\)</span> conditional on the features temperature and weekday. The individual neurons of a layer are each connected to the neurons of the layer before and behind. In a graph, the neurons can be represented as nodes and their connections as weighted edges. Let’s now have a closer look at a neuron. A neuron takes as input the outputs of the neurons from the
-previous layer. Subsequently, it computes the weighted sum of inputs and adds a bias on it. More formally:</p>
+<p>In the previous section, we assumed that the demand is a linear combination of features. Consequently, to find the perfect mapping from features <span class="math notranslate nohighlight">\(x\)</span> to decision <span class="math notranslate nohighlight">\(q\)</span>, we specified that <span class="math notranslate nohighlight">\(q(\cdot)\)</span> belongs to the class of linear decision functions. However, sometimes there may not be a linear relationship which is why we need a non-linear function to describe our data. One way to do obtain such a function is by using a neural network (NN).</p>
+<p><img alt="e9a27830c40544db9a7675d8437722c0" src="https://drive.google.com/uc?export=view&amp;id=1rmgdo9urd4Qx5MQrPu4sO9sto8_ogCm1" /></p>
+<p>A neural network uses a cascade of many layers to obtain an output given some input data. In general, it can be distingushed between input-, hidden-, and output-layer, each consisting of a number of neurons. In the first layer, the number of neurons corresponds to the number of inputs. In other words, each neuron takes a single feature as input, e.g. the temperature or the weekday. The input-layer is followed by a number of hidden-layers, each presented by an arbitary number of neurons. In the
+output-layer the number of neurons corresponds to the number of outputs. In our example, we only have a single neuron that outputs the decision <span class="math notranslate nohighlight">\(q\)</span> conditional on the features temperature and weekday. The individual neurons of a layer are each connected to the neurons of the layer before and behind. In a graph, the neurons can be represented as nodes and their connections as weighted edges. A neuron takes the outputs of the neurons from the previous layer as inputs. Subsequently, it
+computes the weighted sum of its inputs and adds a bias to it. Formally speaking:</p>
 <p><span class="math">\begin{equation}
 bias+\sum_{i=1}^{n}x_i*w_i
 \tag{9}
 \end{equation}</span></p>
-<p>Does this look familiar? This is the exactly the decision function <span class="math notranslate nohighlight">\((7)\)</span> that we used in the regression based model before. The only difference is that we use the term “bias” for the constant value instead of “intercept”. But what does this mean? If we were just to combine a set of linear functions, we would get a single linear function as a result. In other words, there would be no difference compared to the regression model. This is where the activation function comes into play. The
-activation function is a non-linear function that transforms the weighted sum and then outputs the final result. For example, the Rectified Linear Unit (ReLU) activation function, outpus <span class="math notranslate nohighlight">\(0\)</span> if the input value is negative and otherwise its input. Thus, the neural network models a piecewise linear function, which looks like this:</p>
-<p><img alt="c8016f1a8e084092805d1cb8bd297a0a" class="no-scaled-link" src="https://drive.google.com/uc?export=view&amp;id=18YRxB6jYlqV97FaEPXf-IcRuJt1nWkWI" style="width: 350px;" /></p>
-<p>The goal of the network is now to find the function that fits the data best. In the regression based model the problem therefore was to learn the optimal values for the feature weights and the intercept term. This is basicly the same here. We just have a lot more weights and intercept terms (biases). Since we are trying to obtain cost-optimal decisions, the network tries to determine the weights in a way that minimizes the average cost on our data. Thus, the problem can be stated as follows:</p>
+<p>Does this look familiar? This is the exactly the decision function <span class="math notranslate nohighlight">\((7)\)</span> that we used in the regression based approach before. The only difference is that we use the term “bias” for the constant value instead of “intercept”. But what does this mean? If we were just to combine a set of linear functions, we would get a single linear function as a result. In other words, there would be no difference compared to the regression based approach. This is where the activation function comes into
+play. The activation function is a non-linear function that transforms the the computed value of equation (9) and then outputs the final result of a neuron. For example, the Rectified Linear Unit (ReLU) activation function outputs <span class="math notranslate nohighlight">\(0\)</span> if the input value is negative and otherwise its input. Thus, the NN models a piecewise linear function, which may looks like this:</p>
+<p><img alt="69a94ef6eafe4711990ca5ccbe9332ba" class="no-scaled-link" src="https://drive.google.com/uc?export=view&amp;id=18YRxB6jYlqV97FaEPXf-IcRuJt1nWkWI" style="width: 350px;" /></p>
+<p>The goal of the network is then to find the function that fits the data best. To find such a function in the regression-based model, we had to determine the optimal values for the feature weights and the intercept term. This is basicly the same here. We just have a lot more weights and intercept terms (biases). Since we are trying to obtain cost-optimal decisions, the network tries to determine the unknown parameters in a way that minimizes the average costs on our data. Thus, the problem can be
+stated as follows:</p>
 <p><span class="math">\begin{equation}
 \min_{w,b} \frac{1}{n}\sum_{i=1}^{n}\bigl[cu(d_i-\theta(x_i;w,b))^+ + co(\theta(x_i;w,b)-d_i)^+\bigl],
 \tag{10}
 \end{equation}</span></p>
 <p>where <span class="math notranslate nohighlight">\(\theta(\cdot)\)</span> represents the function of the network with weights <span class="math notranslate nohighlight">\(w\)</span> and biases <span class="math notranslate nohighlight">\(b\)</span>. Now look, this is again similar to equation <span class="math notranslate nohighlight">\((6)\)</span>. The only difference is that <span class="math notranslate nohighlight">\(q(\cdot)\)</span> is represented by a NN.</p>
-<p>Let us now apply this approach on our Yaz dataset. We can therefore use the class <code class="docutils literal notranslate"><span class="pre">DeepLearningNewsvendor</span></code> from <code class="docutils literal notranslate"><span class="pre">ddop</span></code>. As before, we first initialize the model and fit it to the training data. Subsequently we calculate the average cost on the test set by using the score function.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
+<p>To apply this approach on the Yaz dataset, we can use the class <code class="docutils literal notranslate"><span class="pre">DeepLearningNewsvendor</span></code> from <code class="docutils literal notranslate"><span class="pre">ddop</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>DLN = DeepLearningNewsvendor(cu=15,co=5)
-DLN.fit(X_train,y_train[&quot;STEAK&quot;])
-DLN_score = DLN.score(X_test,y_test[&quot;STEAK&quot;])
+DLN.fit(X_train_preprocessed,y_train)
+DLN_score = DLN.score(X_test_preprocessed,y_test)
 print(&quot;Avg. cost DLN: &quot;, DLN_score)
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Avg. cost DLN:  -50.968472254903695
-</pre></div></div>
-</div>
+<p>In this case, the average costs are higher compared to the <code class="docutils literal notranslate"><span class="pre">LinearRegressionNewsvendor</span></code>. One reason for this might be that a neural network often needs more data to learn a good decision function.</p>
 </div>
 </div>
 <div class="section" id="id1">
 <h3>Summary<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<p>In this part of the tutorial we have seen three differnet data driven approaches to prescribe decisions directly from data. Let us now summarize what we have learned:</p>
+<p>In this part of the tutorial we have seen three differnet data-driven approaches to prescribe decisions directly from data.</p>
 <ul class="simple">
-<li><p>In the simplest case where we only have past demand observations we can use sample average approximation (SAA) to solve the newsvendor problem. The goal of SAA is to find the decision q that minimizes the average costs on past demand samples.</p></li>
-<li><p>However, we have seen that additional demand features can improve decision making since they usually reduce the degree of uncertainty.</p></li>
-<li><p>With weighted sample average approximation (wSAA) and empirical risk minimization (ERM) we have then seen two data driven approaches that can take such features into account by using a function <span class="math notranslate nohighlight">\(q(\cdot)\)</span> that maps from features <span class="math notranslate nohighlight">\(x\)</span> to a decision <span class="math notranslate nohighlight">\(q\)</span>.</p></li>
-<li><p>WSAA defines the function <span class="math notranslate nohighlight">\(q(\cdot)\)</span> point-wise. It is based on deriving sample weights from features and optimizing SAA against a re-weighting of the training data. To determine the weights we can use different weight functions e.g. based on k-nearest-neighbor regression,regression trees or random forest regression.</p></li>
-<li><p>The ERM approach, on the other hand, tries to find the function <span class="math notranslate nohighlight">\(q(\cdot)\)</span> that maps directly from features to a decision by minimizing its empirical risk. Therefore, we have to specify the function class to which the decision function belongs. With the classical ERM newsvendor, and the deep learning newsvendor we have seen two methods that define <span class="math notranslate nohighlight">\(q(\cdot)\)</span> in a different manner. While the former one assumes that <span class="math notranslate nohighlight">\(q(\cdot)\)</span> is a linear decision function given by the
-weighted sum of features, the later one defines <span class="math notranslate nohighlight">\(q(\cdot)\)</span> as a deep neural network</p></li>
+<li><p>In the simplest case where we only have past demand observations, we can use sample average approximation <strong>(SAA)</strong> to solve the newsvendor problem. The goal of <strong>SAA</strong> is to find the decision <span class="math notranslate nohighlight">\(q\)</span> that minimizes the average costs on past demand samples.</p></li>
+<li><p>However, we have seen that additional demand features can improve decision making, since they usually reduce the degree of uncertainty.</p></li>
+<li><p>With weighted sample average approximation <strong>(wSAA)</strong> and empirical risk minimization <strong>(ERM)</strong> we got to know two data-driven approaches that can take such features into account by learning a function <span class="math notranslate nohighlight">\(q(\cdot)\)</span> that maps from features <span class="math notranslate nohighlight">\(x\)</span> to a decision <span class="math notranslate nohighlight">\(q\)</span>.</p></li>
+<li><p><strong>wSAA</strong> defines the function <span class="math notranslate nohighlight">\(q(\cdot)\)</span> point-wise. It is based on deriving sample weights from features and optimizing <strong>SAA</strong> against a re-weighting of the training data. To determine the weights we can use different weight functions e.g. based on k-nearest-neighbor regression, regression trees or random forest regression.</p></li>
+<li><p>The <strong>ERM</strong> approach, on the other hand, tries to find the function <span class="math notranslate nohighlight">\(q(\cdot)\)</span> that maps from features to a decision by minimizing its empirical risk. Therefore, we have to specify the function space to which the decision function belongs. With <code class="docutils literal notranslate"><span class="pre">LinearRegressionNewsvendor</span></code>, and <code class="docutils literal notranslate"><span class="pre">DeepLearningNewsvendor</span></code> we have seen two methods that define <span class="math notranslate nohighlight">\(q(\cdot)\)</span> in a different manner. While the former one assumes that <span class="math notranslate nohighlight">\(q(\cdot)\)</span> is a linear decision function, the later one defines
+<span class="math notranslate nohighlight">\(q(\cdot)\)</span> as non-linear function by using as a deep neural network.</p></li>
 </ul>
 </div>
+</div>
+<div class="section" id="A-Final-Note">
+<h2>A Final Note<a class="headerlink" href="#A-Final-Note" title="Permalink to this headline">¶</a></h2>
+<p>In this tutorial, you learned how to solve the newsvendor problem based on past demand data. For the specific case of Yaz and the data for the product “steak”, you have seen that several data-driven algorithms can outperform the traditional parametric approach. The best method has been shown to be <strong>wSAA</strong> with a weight function based on k-nearest-neighbors regression. However, it is important to note that there is no such thing as “the best model”. Which model performs best can vary from one
+task to another. It may depend on the cost parameters, the number of features or the size of the dataset. This is exactly the reason why <code class="docutils literal notranslate"><span class="pre">ddop</span></code> provides easy access to a set of different models that can be used to find the best one for a given problem. As a next step, you can now build up on what you have learned and apply the different algorithms to some other data. For example, you can start by using the data for another product than “steak”, or even several products at once. Alternatively,
+you can use the bakery dataset that is also provided within <code class="docutils literal notranslate"><span class="pre">ddop</span></code>.</p>
 </div>
 </div>
 
