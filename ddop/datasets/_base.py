@@ -33,8 +33,8 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, one_hot_e
             - 'weekday' the day of the week,
             - 'month' the month of the year,
             - 'year' the year,
-            - 'is_holiday' whether it is a national holiday,
-            - 'weekend' whether it is weekend,
+            - 'is_holiday' whether or not it is a national holiday,
+            - 'weekend' whether or not it is weekend,
             - 'wind' the wind force,
             - 'clouds' the cloudiness degree,
             - 'rainfall' the amount of rainfall,
@@ -87,6 +87,13 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, one_hot_e
             The path to the location of the target.
 
     (data, target) : tuple if ``return_X_y`` is True
+
+    Examples:
+    ----------
+    >>> from ddop.datasets import load_yaz
+    >>> X, y = load_yaz(return_X_y=True)
+    >>> print(X.shape)
+        (760, 10)
     """
 
     module_path = dirname(__file__)
@@ -191,7 +198,7 @@ def load_bakery(include_prod=None, include_lag=False, include_date=False, one_ho
 
         :Number of Targets: 3
 
-        :Number of Features: 6
+        :Number of Features: 9
 
         :Target Information:
             - 'roll' the demand for rolls
@@ -202,9 +209,12 @@ def load_bakery(include_prod=None, include_lag=False, include_date=False, one_ho
             - 'weekday' the day of the week,
             - 'month' the month of the year,
             - 'year' the year,
-            - 'is_holiday' whether it is a national holiday,
+            - 'is_holiday' whether or not it is a national holiday
+            - 'is_schoolholiday' whether or not it is a school holiday,
             - 'rainfall' the amount of rainfall,
             - 'temperature' the outdoor temperature,
+            - 'promotion_currentweek' whether or not there is a promotion this week
+            - 'promotion_lastweek' whether there was a promotion last week
 
         Note: The dataset also includes demand lag features as well as a column for the demand date.
         By default, those features are not included when loading the data. You can include them
@@ -252,6 +262,13 @@ def load_bakery(include_prod=None, include_lag=False, include_date=False, one_ho
             The path to the location of the target.
 
     (data, target) : tuple if ``return_X_y`` is True
+
+    Examples:
+    ----------
+    >>> from ddop.datasets import load_bakery
+    >>> X, y = load_bakery(return_X_y=True)
+    >>> print(X.shape)
+        (1155, 9)
     """
 
     module_path = dirname(__file__)

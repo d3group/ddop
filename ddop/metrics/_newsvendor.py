@@ -86,7 +86,7 @@ def pairwise_costs(y_true, y_pred, cu, co):
     return costs
 
 
-def total_costs(y_true, y_pred, cu, co, multioutput="raw_values"):
+def total_costs(y_true, y_pred, cu, co, multioutput="uniform_average"):
     """ Compute total costs based on the the difference between y_true and y_pred
     and the given underage and overage costs.
 
@@ -134,7 +134,7 @@ def total_costs(y_true, y_pred, cu, co, multioutput="raw_values"):
     return np.average(total_costs)
 
 
-def average_costs(y_true, y_pred, cu, co, multioutput="raw_values"):
+def average_costs(y_true, y_pred, cu, co, multioutput="uniform_average"):
     """ Compute average costs based on the the difference between y_true and y_pred
     and the given underage and overage costs.
 
@@ -184,7 +184,7 @@ def average_costs(y_true, y_pred, cu, co, multioutput="raw_values"):
     return np.average(average_costs)
 
 
-def prescriptiveness_score(y_true, y_pred, y_pred_saa, cu, co, multioutput="raw_values"):
+def prescriptiveness_score(y_true, y_pred, y_pred_saa, cu, co, multioutput="uniform_average"):
     """ Compute the coefficient of prescriptiveness that is defined as (1 - u/v), where u are the average
     costs between the true and predicted values (y_true,y_pred), and v are the average costs between the
     true values and the predictions obtained by SAA (y_pred_saa, y_pred). The best possible score
