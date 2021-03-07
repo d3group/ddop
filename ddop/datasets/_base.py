@@ -33,7 +33,7 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, one_hot_e
             - 'weekday' the day of the week,
             - 'month' the month of the year,
             - 'year' the year,
-            - 'isholiday' whether it is a national holiday,
+            - 'is_holiday' whether it is a national holiday,
             - 'weekend' whether it is weekend,
             - 'wind' the wind force,
             - 'clouds' the cloudiness degree,
@@ -194,9 +194,9 @@ def load_bakery(include_prod=None, include_lag=False, include_date=False, one_ho
         :Number of Features: 6
 
         :Target Information:
-            - 'roll' the demand for calamari
-            - 'seeded_roll' the demand for fish
-            - 'pretzel' the demand for shrimps
+            - 'roll' the demand for rolls
+            - 'seeded_roll' the demand for seeded rolls
+            - 'pretzel' the demand for pretzels
 
         :Feature Information:
             - 'weekday' the day of the week,

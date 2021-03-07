@@ -16,9 +16,9 @@ pretzels. Moreover, it stores a number of demand features. A description of targ
     :Number of Features: 6
 
     :Target Information:
-    - 'roll' the demand for calamari
-    - 'seeded_roll' the demand for fish
-    - 'pretzel' the demand for shrimps
+    - 'roll' the demand for rolls
+    - 'seeded_roll' the demand for seeded rolls
+    - 'pretzel' the demand for pretzels
 
     :Feature Information:
     - 'weekday' the day of the week,

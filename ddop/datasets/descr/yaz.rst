@@ -30,7 +30,7 @@ lag demand, weather conditions and more. A full description of targets and featu
         - 'weekday' the day of the week,
         - 'month' the month of the year,
         - 'year' the year,
-        - 'isholiday' whether it is a national holiday,
+        - 'is_holiday' whether it is a national holiday,
         - 'weekend' whether it is weekend,
         - 'wind' the wind force,
         - 'clouds' the cloudiness degree,
