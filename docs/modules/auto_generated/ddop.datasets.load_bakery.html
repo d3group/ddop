@@ -209,13 +209,13 @@ number of demand features. A description of targets and features is given below.
 <dd class="field-even"><p>3</p>
 </dd>
 <dt class="field-odd">Number of Features</dt>
-<dd class="field-odd"><p>6</p>
+<dd class="field-odd"><p>9</p>
 </dd>
 <dt class="field-even">Target Information</dt>
 <dd class="field-even"><ul class="simple">
-<li><p>‘roll’ the demand for calamari</p></li>
-<li><p>‘seeded_roll’ the demand for fish</p></li>
-<li><p>‘pretzel’ the demand for shrimps</p></li>
+<li><p>‘roll’ the demand for rolls</p></li>
+<li><p>‘seeded_roll’ the demand for seeded rolls</p></li>
+<li><p>‘pretzel’ the demand for pretzels</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Feature Information</dt>
@@ -223,9 +223,12 @@ number of demand features. A description of targets and features is given below.
 <li><p>‘weekday’ the day of the week,</p></li>
 <li><p>‘month’ the month of the year,</p></li>
 <li><p>‘year’ the year,</p></li>
-<li><p>‘is_holiday’ whether it is a national holiday,</p></li>
+<li><p>‘is_holiday’ whether or not it is a national holiday</p></li>
+<li><p>‘is_schoolholiday’ whether or not it is a school holiday,</p></li>
 <li><p>‘rainfall’ the amount of rainfall,</p></li>
 <li><p>‘temperature’ the outdoor temperature,</p></li>
+<li><p>‘promotion_currentweek’ whether or not there is a promotion this week</p></li>
+<li><p>‘promotion_lastweek’ whether there was a promotion last week</p></li>
 </ul>
 </dd>
 </dl>
@@ -271,6 +274,11 @@ See below for more information about the <cite>data</cite> and <cite>target</cit
 </dl>
 </li>
 <li><p><strong>(data, target)</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span> <span class="pre">if</span> <span class="pre">``return_X_y`</span></code> is True`)</p></li>
+<li><p><em>Examples</em></p></li>
+<li><p><em>———-</em></p></li>
+<li><p><em>&gt;&gt;&gt; from ddop.datasets import load_bakery</em></p></li>
+<li><p><em>&gt;&gt;&gt; X, y = load_bakery(return_X_y=True)</em></p></li>
+<li><p><em>&gt;&gt;&gt; print(X.shape)</em> – (1155, 9)</p></li>
 </ul>
 </p>
 </dd>

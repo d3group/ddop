@@ -189,7 +189,7 @@ lines of code.</p>
 <hr class="docutils" />
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p>ddom-kit is available via PyPI using:</p>
+<p>ddop is available via PyPI using:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install ddop
 </pre></div>
 </div>
@@ -215,7 +215,7 @@ package in an empty environment with the above mentioned dependencies</p>
 shows how to use one of these models for decision making. It assumes
 a very basic knowledge of data-driven operations management practices.</p>
 <p>As first step we initialize the model we want to use. In this example
-<a class="reference external" href="https://andreasphilippi.github.io/ddom-kit/modules/auto_generated/ddop.newsvendor.LinearRegressionNewsvendor.html#ddop.newsvendor.LinearRegressionNewsvendor">LinearRegressionNewsvendor</a>.</p>
+<a class="reference external" href="https://andreasphilippi.github.io/ddop/modules/auto_generated/ddop.newsvendor.LinearRegressionNewsvendor.html#ddop.newsvendor.LinearRegressionNewsvendor">LinearRegressionNewsvendor</a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ddop.newsvendor</span> <span class="kn">import</span> <span class="n">LinearRegressionNewsvendor</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mdl</span> <span class="o">=</span> <span class="n">LinearRegressionNewsvendor</span><span class="p">(</span><span class="n">cu</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">co</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
@@ -223,7 +223,7 @@ a very basic knowledge of data-driven operations management practices.</p>
 <p>A model can take a set of parameters, each describing the model or the optimization
 problem it tries to solve. Here we set the underage costs <code class="docutils literal notranslate"><span class="pre">cu</span></code> to 2 and
 the overage costs <code class="docutils literal notranslate"><span class="pre">co</span></code> to 1.</p>
-<p>As next step we load the <a class="reference external" href="https://andreasphilippi.github.io/ddom-kit/modules/auto_generated/ddop.datasets.load_yaz.html#ddop.datasets.load_yaz">Yaz Dataset</a> and split it into train and test set.</p>
+<p>As next step we load the <a class="reference external" href="https://andreasphilippi.github.io/ddop-kit/modules/auto_generated/ddop.datasets.load_yaz.html#ddop.datasets.load_yaz">Yaz Dataset</a> and split it into train and test set.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ddop.datasets</span> <span class="kn">import</span> <span class="n">load_yaz</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_yaz</span><span class="p">(</span><span class="n">one_hot_encoding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -250,8 +250,8 @@ the negated average costs with respect to the true values <code class="docutils 
 <hr class="docutils" />
 <div class="section" id="see-also">
 <h2>See also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
-<p>Follow the <a class="reference external" href="https://andreasphilippi.github.io/ddom-kit/api_reference.html">API reference</a> to get an overview of available functionalities and for detailed class and function information.
-To get familiar with <code class="docutils literal notranslate"><span class="pre">ddop</span></code> and to learn more about data-driven operations management check out our <a class="reference external" href="https://andreasphilippi.github.io/ddom-kit/tutorial.html">Tutorials</a>.</p>
+<p>Follow the <a class="reference external" href="https://andreasphilippi.github.io/ddop/api_reference.html">API reference</a> to get an overview of available functionalities and for detailed class and function information.
+To get familiar with <code class="docutils literal notranslate"><span class="pre">ddop</span></code> and to learn more about data-driven operations management check out our <a class="reference external" href="https://andreasphilippi.github.io/ddop/tutorial.html">Tutorials</a>.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>

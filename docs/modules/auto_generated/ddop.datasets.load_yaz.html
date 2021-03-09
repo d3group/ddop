@@ -228,8 +228,8 @@ number of demand features. A description of targets and features is given below.
 <li><p>‘weekday’ the day of the week,</p></li>
 <li><p>‘month’ the month of the year,</p></li>
 <li><p>‘year’ the year,</p></li>
-<li><p>‘isholiday’ whether it is a national holiday,</p></li>
-<li><p>‘weekend’ whether it is weekend,</p></li>
+<li><p>‘is_holiday’ whether or not it is a national holiday,</p></li>
+<li><p>‘weekend’ whether or not it is weekend,</p></li>
 <li><p>‘wind’ the wind force,</p></li>
 <li><p>‘clouds’ the cloudiness degree,</p></li>
 <li><p>‘rainfall’ the amount of rainfall,</p></li>
@@ -280,6 +280,11 @@ See below for more information about the <cite>data</cite> and <cite>target</cit
 </dl>
 </li>
 <li><p><strong>(data, target)</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span> <span class="pre">if</span> <span class="pre">``return_X_y`</span></code> is True`)</p></li>
+<li><p><em>Examples</em></p></li>
+<li><p><em>———-</em></p></li>
+<li><p><em>&gt;&gt;&gt; from ddop.datasets import load_yaz</em></p></li>
+<li><p><em>&gt;&gt;&gt; X, y = load_yaz(return_X_y=True)</em></p></li>
+<li><p><em>&gt;&gt;&gt; print(X.shape)</em> – (760, 10)</p></li>
 </ul>
 </p>
 </dd>

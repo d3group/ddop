@@ -1,4 +1,4 @@
-.. ddom-kit documentation master file, created by
+.. ddop documentation master file, created by
    sphinx-quickstart on Fri Jul 17 13:31:59 2020.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
@@ -22,7 +22,7 @@ lines of code.
 Installation
 ------------
 
-ddom-kit is available via PyPI using:
+ddop is available via PyPI using:
 
 .. code-block:: bash
 
@@ -51,7 +51,7 @@ shows how to use one of these models for decision making. It assumes
 a very basic knowledge of data-driven operations management practices.
 
 As first step we initialize the model we want to use. In this example
-`LinearRegressionNewsvendor <https://andreasphilippi.github.io/ddom-kit/modules/auto_generated/ddop.newsvendor.LinearRegressionNewsvendor.html#ddop.newsvendor.LinearRegressionNewsvendor>`__.
+`LinearRegressionNewsvendor <https://andreasphilippi.github.io/ddop/modules/auto_generated/ddop.newsvendor.LinearRegressionNewsvendor.html#ddop.newsvendor.LinearRegressionNewsvendor>`__.
 
 .. code-block:: python
 
@@ -62,7 +62,7 @@ A model can take a set of parameters, each describing the model or the optimizat
 problem it tries to solve. Here we set the underage costs ``cu`` to 2 and
 the overage costs ``co`` to 1.
 
-As next step we load the `Yaz Dataset <https://andreasphilippi.github.io/ddom-kit/modules/auto_generated/ddop.datasets.load_yaz.html#ddop.datasets.load_yaz>`__ and split it into train and test set.
+As next step we load the `Yaz Dataset <https://andreasphilippi.github.io/ddop-kit/modules/auto_generated/ddop.datasets.load_yaz.html#ddop.datasets.load_yaz>`__ and split it into train and test set.
 
 .. code-block:: python
 
@@ -97,8 +97,8 @@ the negated average costs with respect to the true values ``y_test`` and the ove
 
 See also
 -----------
-Follow the `API reference <https://andreasphilippi.github.io/ddom-kit/api_reference.html>`__ to get an overview of available functionalities and for detailed class and function information.
-To get familiar with ``ddop`` and to learn more about data-driven operations management check out our `Tutorials <https://andreasphilippi.github.io/ddom-kit/tutorial.html>`__.
+Follow the `API reference <https://andreasphilippi.github.io/ddop/api_reference.html>`__ to get an overview of available functionalities and for detailed class and function information.
+To get familiar with ``ddop`` and to learn more about data-driven operations management check out our `Tutorials <https://andreasphilippi.github.io/ddop/tutorial.html>`__.
 
 .. toctree::
    :maxdepth: 1
