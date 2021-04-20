@@ -2,7 +2,9 @@ from ._base import BaseNewsvendor, DataDrivenMixin
 from ..utils.validation import check_cu_co
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
-from tensorflow.keras.backend import switch, less, sum
+from tensorflow.keras.backend import switch, less
+from tensorflow.keras.backend import sum as ksum
+from tensorflow import cast
 
 from sklearn.utils.validation import check_is_fitted
 import numpy as np
@@ -86,8 +88,9 @@ class DeepLearningNewsvendor(BaseNewsvendor, DataDrivenMixin):
         """Create a newsvendor loss function with the given under- and overage costs"""
 
         def customized_loss(y_true, y_pred):
+            y_true = cast(y_true, y_pred.dtype)
             loss = switch(less(y_pred, y_true), cu * (y_true - y_pred), co * (y_pred - y_true))
-            return sum(loss)
+            return ksum(loss)
 
         return customized_loss
 
