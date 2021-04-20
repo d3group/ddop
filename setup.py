@@ -15,6 +15,6 @@ setup(
     include_package_data=True,
     packages=find_packages(),
     python_requires=">=3.6",
-    install_requires=['numpy==1.18.2', 'scipy==1.4.1', 'scikit-learn==0.23.0', 'pandas', 'PuLP==2.0',
-                      'tensorflow==2.1.0', 'Keras==2.3.1', 'statsmodels==0.11.1']
+    install_requires=['numpy>=1.18.2', 'scipy>=1.4.1', 'scikit-learn==0.23.0', 'pandas', 'PuLP==2.0',
+                      'tensorflow>=2.4.1', 'statsmodels>=0.11.1']
 )
