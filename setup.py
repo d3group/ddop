@@ -5,11 +5,11 @@ with open('README.rst') as f:
 
 setup(
     name='ddop',
-    version='v0.6.3',
+    version='v0.6.4',
     url='https://andreasphilippi.github.io/ddop/',
     license='MIT',
     author='Andreas Philippi',
-    author_email='',
+    author_email='andreas.philippi@uni-wuerzburg.de',
     description='Package for data-driven operations management',
     #long_description=README,
     include_package_data=True,
