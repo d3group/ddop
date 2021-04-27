@@ -1,27 +1,38 @@
 ---
-title: 'ddop: A python package for data-driven operationsmanagement'
+title: 'scikit-hubness: Hubness Reduction and Approximate Neighbor Search'
 
 tags:
   - Python
-  - data-driven operations management
-  - newsvendor
- 
+  - scikit-learn
+  - hubness
+  - curse of dimensionality
+  - nearest neighbors
+
 authors:
-  - name: Andreas Philippi
-    orcid: ?
+  - name: Roman Feldbauer
+    orcid: 0000-0003-2216-4295
     affiliation: 1
-  - name: Simone Buttler
-    orcid: ?
+  - name: Thomas Rattei
+    orcid: 0000-0002-0592-7791
     affiliation: 1
+  - name: Arthur Flexer
+    orcid: 0000-0002-1691-737X
+    affiliation: 2
 
 affiliations:
- - name:Chair of Logistics and Quantitative Methods, Julius-Maximilians-Universität Würzburg,     
-        Sandering 2, Würzburg 97070, Germany
+ - name: Division of Computational Systems Biology, Department of Microbiology and Ecosystem Science,
+         University of Vienna, Althanstra&szlig;e 14, 1090 Vienna, Austria
    index: 1
+ - name: Austrian Research Institute for Artificial Intelligence (OFAI),
+         Freyung 6/6/7, 1010 Vienna, Austria
+   index: 2
 
-date: 26 April 2021
+date: 09 December 2019
+
 bibliography: paper.bib
+
 ---
+
 
 # Summary
 In the field of operations management research, several data-driven approaches have recently been developed that combine machine learning methods and traditional optimization techniques to prescribe decisions directly from historical demand data (without having to make assumptions about the underlying demand distribution). 
