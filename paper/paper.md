@@ -1,33 +1,26 @@
 ---
-title: 'scikit-hubness: Hubness Reduction and Approximate Neighbor Search'
+title: 'ddop: A python package for data-driven operationsmanagement'
 
 tags:
   - Python
   - scikit-learn
-  - hubness
-  - curse of dimensionality
-  - nearest neighbors
+  - data-driven operations management
+  - newsvendor
 
 authors:
-  - name: Roman Feldbauer
-    orcid: 0000-0003-2216-4295
+  - name: Andreas Philippi
+    orcid: 0000-0000-0000-0000
     affiliation: 1
   - name: Thomas Rattei
-    orcid: 0000-0002-0592-7791
+    orcid: 0000-0000-0000-0001
     affiliation: 1
-  - name: Arthur Flexer
-    orcid: 0000-0002-1691-737X
-    affiliation: 2
 
 affiliations:
- - name: Division of Computational Systems Biology, Department of Microbiology and Ecosystem Science,
-         University of Vienna, Althanstra&szlig;e 14, 1090 Vienna, Austria
+ - name: Chair of Logistics and Quantitative Methods, Julius-Maximilians-Universität Würzburg,  
+         Sandering 2, Würzburg 97070, Germany
    index: 1
- - name: Austrian Research Institute for Artificial Intelligence (OFAI),
-         Freyung 6/6/7, 1010 Vienna, Austria
-   index: 2
 
-date: 09 December 2019
+date: 26 April 2021
 
 bibliography: paper.bib
 
