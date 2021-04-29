@@ -391,4 +391,3 @@ def _day_to_continuouse(x):
         return 6
     else:
         return 7
-
