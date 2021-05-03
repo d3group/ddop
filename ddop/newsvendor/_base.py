@@ -1,7 +1,7 @@
 from sklearn.base import BaseEstimator
 from sklearn.utils.validation import check_array
 from abc import ABC, abstractmethod
-from ..metrics._newsvendor import average_costs
+from ..metrics._costs import average_costs
 import numpy as np
 
 
