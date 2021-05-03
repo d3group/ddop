@@ -3,6 +3,7 @@ build/
 dist/
 .eggs/
 *.egg-info/
+.idea/
 
 # Shinx documentation
 docsrc/_build/
