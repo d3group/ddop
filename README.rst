@@ -4,7 +4,7 @@
   :target: https://travis-ci.com/github/AndreasPhilippi/ddop
 
 .. image:: https://badge.fury.io/py/ddop.svg
-  :target: https://badge.fury.io/py/ddop
+    :target: https://badge.fury.io/py/ddop
 
 ----------------------
 
