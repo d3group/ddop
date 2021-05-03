@@ -1,5 +1,4 @@
 import unittest
-import numpy as np
 from ddop.metrics._costs import pairwise_costs
 from numpy.testing import assert_array_equal
 
