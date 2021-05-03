@@ -1,3 +1,8 @@
+.. -*- mode: rst -*-
+
+.. image:: https://travis-ci.com/AndreasPhilippi/ddop.svg?branch=master
+  :target: https://travis-ci.com/github/AndreasPhilippi/ddop
+
 Welcome to ddop!
 ====================
 
