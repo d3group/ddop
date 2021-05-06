@@ -100,17 +100,17 @@ def total_costs(y_true, y_pred, cu, co, multioutput="uniform_average"):
         the underage costs per unit.
     co : int or float
         the overage costs per unit.
-    multioutput: {"raw_values", "uniform_average"}, default="raw_values"
-        Defines aggregating of multiple output values. Default is "raw_values".
+    multioutput: {"raw_values", "cumulated"}, default="cumulated"
+        Defines aggregating of multiple output values. Default is "cumulated".
          'raw_values' :
             Returns a full set of cost values in case of multioutput input.
-         'uniform_average' :
-            Costs of all outputs are averaged with uniform weight.
+         'cumulated' :
+            Costs of all outputs are cumulated.
     Returns
     -------
     total_costs :  float or ndarray of floats
         The total costs. If multioutput is ‘raw_values’, then the total costs are returned for each
-        output separately. If multioutput is ‘uniform_average’, then the average of all output costs
+        output separately. If multioutput is ‘cumulated’, then the cumulated costs of all outputs
         is returned. The total costs are non-negative floating points. The best value is 0.0.
 
     Examples
@@ -122,8 +122,8 @@ def total_costs(y_true, y_pred, cu, co, multioutput="uniform_average"):
     >>> co = [1,1]
     >>> total_costs(y_true, y_pred, cu, co, multioutput="raw_values")
     array([4,5])
-    >>> total_costs(y_true, y_pred, cu, co, multioutput="uniform_average")
-    4.5
+    >>> total_costs(y_true, y_pred, cu, co, multioutput="cumulated")
+    9
     """
     costs = pairwise_costs(y_true, y_pred, cu, co)
     total_costs = np.sum(costs, axis=0)
@@ -131,7 +131,7 @@ def total_costs(y_true, y_pred, cu, co, multioutput="uniform_average"):
     if multioutput == "raw_values":
         return total_costs
 
-    return np.average(total_costs)
+    return np.sum(total_costs)
 
 
 def average_costs(y_true, y_pred, cu, co, multioutput="uniform_average"):
@@ -175,7 +175,7 @@ def average_costs(y_true, y_pred, cu, co, multioutput="uniform_average"):
     1.5
     """
     y_true, y_pred = _check_newsvendor_targets(y_true, y_pred)
-    total = total_costs(y_true, y_pred, cu, co)
+    total = total_costs(y_true, y_pred, cu, co, multioutput="raw_values")
     average_costs = total / y_true.shape[0]
 
     if multioutput == "raw_values":
