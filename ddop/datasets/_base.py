@@ -165,10 +165,12 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, one_hot_e
     if one_hot_encoding:
         data = pd.get_dummies(data, columns=["weekday", "month", "year"])
 
-    if not one_hot_encoding and label_encoding:
+    elif not one_hot_encoding and label_encoding:
         data['weekday'] = data['weekday'].apply(_day_to_continuouse)
         data['month'] = data['month'].apply(_month_to_continuouse)
-        data['year'] = data['year'].apply(int)
+
+    else:
+        data['year'] = data['year'].apply(str)
 
     frame = pd.concat([data, target], axis=1)
 
@@ -329,10 +331,12 @@ def load_bakery(include_prod=None, include_lag=False, include_date=False, one_ho
     if one_hot_encoding:
         data = pd.get_dummies(data, columns=["weekday", "month", "year"])
 
-    if not one_hot_encoding and label_encoding:
+    elif not one_hot_encoding and label_encoding:
         data['weekday'] = data['weekday'].apply(_day_to_continuouse)
         data['month'] = data['month'].apply(_month_to_continuouse)
-        data['year'] = data['year'].apply(int)
+
+    else:
+        data['year'] = data['year'].apply(str)
 
     frame = pd.concat([data, target], axis=1)
 

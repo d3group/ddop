@@ -38,7 +38,7 @@ class TestCosts(unittest.TestCase):
         assert_array_equal(average_costs([1, 10], [2, 5], 2, 1), 5.5)
         assert_array_equal(average_costs([1, 10], [2, 5], 1, 2), 3.5)
         # multioutput
-        #assert_array_equal(average_costs([[1, 10], [2, 5]], [[2, 4], [1, 8]], 1, 1, multioutput="uniform_average"), 2.75)
+        assert_array_equal(average_costs([[1, 10], [2, 5]], [[2, 4], [1, 8]], 1, 1, multioutput="uniform_average"), 2.75)
         assert_array_equal(average_costs([[1, 10], [2, 5]], [[2, 4], [1, 8]], 1, 1, multioutput="raw_values"), [1, 4.5])
         # multioutput and differend cost coefficients
         assert_array_equal(average_costs([[1, 10], [2, 5]], [[2, 4], [1, 8]], [1, 1], [1, 2], multioutput="uniform_average"),

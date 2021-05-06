@@ -86,7 +86,7 @@ def pairwise_costs(y_true, y_pred, cu, co):
     return costs
 
 
-def total_costs(y_true, y_pred, cu, co, multioutput="uniform_average"):
+def total_costs(y_true, y_pred, cu, co, multioutput="cumulated"):
     """ Compute total costs based on the the difference between y_true and y_pred
     and the given underage and overage costs.
 
