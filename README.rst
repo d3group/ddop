@@ -8,6 +8,8 @@
 
 .. image:: https://img.shields.io/github/license/andreasphilippi/ddop
     :target: https://github.com/andreasphilippi/ddop/blob/master/LICENSE
+    
+    [![Code Grade](https://www.code-inspector.com/project/22456/status/svg)](https://frontend.code-inspector.com/public/project/22456/ddop/dashboard)
 
 ----------------------
 
