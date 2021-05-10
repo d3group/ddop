@@ -1,7 +1,7 @@
 .. -*- mode: rst -*-
 
-.. image:: https://travis-ci.com/AndreasPhilippi/ddop.svg?branch=master
-    :target: https://travis-ci.com/github/AndreasPhilippi/ddop
+.. image:: https://travis-ci.com/opimwue/ddop.svg?branch=master
+    :target: https://travis-ci.com/opimwue/ddop
 
 .. image:: https://d25lcipzij17d.cloudfront.net/badge.svg?id=py&type=6&v=0.6.5&x2=0
     :target: https://badge.fury.io/py/ddop
