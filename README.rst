@@ -7,6 +7,7 @@
     :target: https://badge.fury.io/py/ddop
 
 .. image:: https://img.shields.io/github/license/andreasphilippi/ddop
+    :target: https://github.com/andreasphilippi/ddop/blob/master/LICENSE
 
 ----------------------
 
