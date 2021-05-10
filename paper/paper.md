@@ -14,6 +14,9 @@ authors:
   - name: Simone Buttler
     orcid: 0000-0000-0000-0001
     affiliation: 1
+  - name: Nikolai Stein
+    orcid: 0000-0001-9847-3444
+    affiliation: 1
 
 affiliations:
  - name: Chair of Logistics and Quantitative Methods, Julius-Maximilians-Universität Würzburg,  
