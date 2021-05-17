@@ -1,5 +1,5 @@
 ---
-title: 'ddop: A python package for data-driven operationsmanagement'
+title: 'ddop: A python package for data-driven operations management'
 
 tags:
   - Python
