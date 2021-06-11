@@ -78,7 +78,7 @@ A model can take a set of parameters, each describing the model or the optimizat
 problem it tries to solve. Here we set the underage costs ``cu`` to 2 and
 the overage costs ``co`` to 1.
 
-As next step we load the `Yaz Dataset <https://opimwue.github.io/ddop-kit/modules/auto_generated/ddop.datasets.load_yaz.html#ddop.datasets.load_yaz>`__ and split it into train and test set.
+As next step we load the `Yaz Dataset <https://opimwue.github.io/ddop/modules/auto_generated/ddop.datasets.load_yaz.html#ddop.datasets.load_yaz>`__ and split it into train and test set.
 
 .. code-block:: python
 
@@ -113,7 +113,7 @@ the negated average costs with respect to the true values ``y_test`` and the ove
 
 See also
 -----------
-* Follow the `API reference <https://opimwue.github.io/ddop-kit/api_reference.html>`__ to get an overview of available functionalities and for detailed class and function information.
+* Follow the `API reference <https://opimwue.github.io/ddop/api_reference.html>`__ to get an overview of available functionalities and for detailed class and function information.
 * To get familiar with ``ddop`` and to learn more about data-driven operations management check out our `Tutorials <https://opimewue.github.io/ddop/tutorial.html>`__.
 
 ------------------------------------------------------------
