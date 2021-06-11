@@ -11,6 +11,10 @@
     
 .. image:: https://www.code-inspector.com/project/22456/status/svg
     :target: https://frontend.code-inspector.com/public/project/22456/ddop/dashboard
+    
+.. image:: https://joss.theoj.org/papers/0de119f95840b69fcea94309c18058e4/status.svg
+    :target: https://joss.theoj.org/papers/0de119f95840b69fcea94309c18058e4   
+    
 
 ----------------------
 
