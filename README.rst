@@ -114,6 +114,6 @@ the negated average costs with respect to the true values ``y_test`` and the ove
 See also
 -----------
 * Follow the `API reference <https://opimwue.github.io/ddop/api_reference.html>`__ to get an overview of available functionalities and for detailed class and function information.
-* To get familiar with ``ddop`` and to learn more about data-driven operations management check out our `Tutorials <https://opimewue.github.io/ddop/tutorial.html>`__.
+* To get familiar with ``ddop`` and to learn more about data-driven operations management check out our `Tutorials <https://opimwue.github.io/ddop/tutorial.html>`__.
 
 ------------------------------------------------------------
