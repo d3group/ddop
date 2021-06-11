@@ -85,10 +85,7 @@ class LinearRegressionNewsvendor(BaseNewsvendor, DataDrivenMixin):
         # Check and format under- and overage costs
         self.cu_, self.co_ = check_cu_co(self.cu, self.co, self.n_outputs_)
 
-        # Add intercept
         n_samples = X.shape[0]
-        X = np.c_[np.ones(n_samples), X]
-        n_features = X.shape[1]
 
         feature_weights = []
         intercept = []
@@ -98,8 +95,8 @@ class LinearRegressionNewsvendor(BaseNewsvendor, DataDrivenMixin):
         for k in range(self.n_outputs_):
             opt_model = pulp.LpProblem(sense=pulp.LpMinimize)
             n = np.arange(n_samples)
-            p = np.arange(n_features)
-
+            p = np.arange(self.n_features_)
+            q0 = pulp.LpVariable('q0')
             q = pulp.LpVariable.dicts('q', p)
             u = pulp.LpVariable.dicts('u', n, lowBound=0)
             o = pulp.LpVariable.dicts('o', n, lowBound=0)
@@ -111,19 +108,17 @@ class LinearRegressionNewsvendor(BaseNewsvendor, DataDrivenMixin):
             opt_model.setObjective(objective)
 
             for i in n:
-                opt_model += u[i] >= y[i,k] - q[0] - sum([q[j] * X[i, j] for j in p if j != 0])
-                opt_model += o[i] >= q[0] + sum([q[j] * X[i, j] for j in p if j != 0]) - y[i,k]
+                opt_model += u[i] >= y[i,k] - q0 - sum([q[j] * X[i, j] for j in p])
+                opt_model += o[i] >= q0 + sum([q[j] * X[i, j] for j in p]) - y[i,k]
             opt_model.solve()
 
             feature_weights_yk = []
-            b = True
+
             for feature in q:
-                if b:
-                    intercept.append(q[feature].value())
-                    b = False
-                    continue
                 feature_weights_yk += [q[feature].value()]
+
             feature_weights.append(feature_weights_yk)
+            intercept.append(q0.value())
 
         #make sure no weight is None
         feature_weights = np.array(feature_weights)
