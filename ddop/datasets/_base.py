@@ -4,7 +4,7 @@ from os.path import dirname, join
 from sklearn.utils import Bunch
 
 
-def load_yaz(include_prod=None, include_lag=False, include_date=False, one_hot_encoding=False,
+def load_yaz(include_date=False, one_hot_encoding=False,
              label_encoding=False, return_X_y=False):
     """Load and return the YAZ dataset
 
@@ -14,11 +14,11 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, one_hot_e
 
     **Dataset Characteristics:**
 
-        :Number of Instances: 760
+        :Number of Instances: 765
 
         :Number of Targets: 7
 
-        :Number of Features: 10
+        :Number of Features: 12
 
         :Target Information:
             - 'calamari' the demand for calamari
@@ -30,28 +30,21 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, one_hot_e
             - 'steak' the demand for steak
 
         :Feature Information:
+            - 'date' the date,
             - 'weekday' the day of the week,
             - 'month' the month of the year,
             - 'year' the year,
             - 'is_holiday' whether or not it is a national holiday,
+            - 'is_closed' whether or not the restaurant is closed,
             - 'weekend' whether or not it is weekend,
             - 'wind' the wind force,
             - 'clouds' the cloudiness degree,
-            - 'rainfall' the amount of rainfall,
+            - 'rain' the amount of rain,
             - 'sunshine' the sunshine hours,
             - 'temperature' the outdoor temperature,
 
-        Note: The dataset also includes demand lag features as well as a column for the demand date.
-        By default, those features are not included when loading the data. You can include them
-        by setting the parameter `include_lag`/`include_date` to `True`.
-
     Parameters
     ----------
-    include_prod : 1d array or list , default=None
-        List of products to include. Valid products are {"steak", "chicken", "koefte", "lamb", "fish", "shrimp",
-        "calamari"}. If None, all products are included
-    include_lag : bool, default=False
-        Whether to include lag features
     include_date : bool, default=False
         Whether to include the demand date
     one_hot_encoding : bool, default=False
@@ -68,11 +61,11 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, one_hot_e
     data : sklearn Bunch
         Dictionary-like object, with the following attributes.
 
-        data : Pandas DataFrame of shape (760, n_features)
+        data : Pandas DataFrame of shape (765, n_features)
             The data matrix.
-        target: Pandas DataFrame of shape (760, n_targets)
+        target: Pandas DataFrame of shape (765, n_targets)
             The target values.
-        frame: pandas DataFrame of shape (760, n_features+n_targets)
+        frame: pandas DataFrame of shape (765, n_features+n_targets)
             Only present when `as_frame=True`. Pandas DataFrame with `data` and
             `target`.
         n_features: int
@@ -93,7 +86,7 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, one_hot_e
     >>> from ddop.datasets import load_yaz
     >>> X, y = load_yaz(return_X_y=True)
     >>> print(X.shape)
-        (760, 10)
+        (765, 11)
     """
 
     module_path = dirname(__file__)
@@ -108,56 +101,6 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, one_hot_e
 
     if not include_date:
         data = data.drop('date', axis=1)
-
-    feature_terms_to_drop = []
-    targets_to_drop = []
-
-    if not include_lag:
-        for term in ["_t1", "_t2", "_t3", "_t4", "_t5", "_t6", "_t7", "_w2", "_w3", "_w4"]:
-            feature_terms_to_drop.append(term)
-
-    if include_prod is not None:
-
-        products = ["steak", "chicken", "koefte", "lamb", "fish", "shrimp", "calamari"]
-
-        if not np.any([prod in products for prod in include_prod]):
-            raise ValueError(
-                "No valid product in include_prod. If you specify this parameter, please select at least one valid "
-                "product. Supported are %s" % (list(products)))
-
-        if "lamb" not in include_prod:
-            feature_terms_to_drop.append("lamb")
-            targets_to_drop.append("lamb")
-
-        if "steak" not in include_prod:
-            feature_terms_to_drop.append("steak")
-            targets_to_drop.append("steak")
-
-        if "koefte" not in include_prod:
-            feature_terms_to_drop.append("koefte")
-            targets_to_drop.append("koefte")
-
-        if "chicken" not in include_prod:
-            feature_terms_to_drop.append("chicken")
-            targets_to_drop.append("chicken")
-
-        if "shrimp" not in include_prod:
-            feature_terms_to_drop.append("shrimp")
-            targets_to_drop.append("shrimp")
-
-        if "fish" not in include_prod:
-            feature_terms_to_drop.append("fish")
-            targets_to_drop.append("fish")
-
-        if "calamari" not in include_prod:
-            feature_terms_to_drop.append("calamari")
-            targets_to_drop.append("calamari")
-
-    for col in data.columns:
-        if np.any([term in col for term in feature_terms_to_drop]):
-            data = data.drop(col, 1)
-
-    target = target.drop(targets_to_drop, axis=1)
 
     n_features = data.shape[0]
     n_targets = data.shape[1]
@@ -187,48 +130,41 @@ def load_yaz(include_prod=None, include_lag=False, include_date=False, one_hot_e
                  target_filename=target_filename)
 
 
-def load_bakery(include_prod=None, include_lag=False, include_date=False, one_hot_encoding=False,
+def load_bakery(include_date=False, one_hot_encoding=False,
              label_encoding=False, return_X_y=False):
     """Load and return the bakery dataset
 
-    The bakery dataset contains the demand for rolls, seeded rolls and pretzels. Moreover, it stores a
+    The bakery dataset contains the demand for a number of products from different stores. Moreover, it stores a
     number of demand features. A description of targets and features is given below.
 
     **Dataset Characteristics:**
 
-        :Number of Instances: 1155
+        :Number of Instances: 127575
 
-        :Number of Targets: 3
+        :Number of Targets: 1
 
-        :Number of Features: 9
+        :Number of Features: 13
 
         :Target Information:
-            - 'roll' the demand for rolls
-            - 'seeded_roll' the demand for seeded rolls
-            - 'pretzel' the demand for pretzels
+            - 'demand' the corresponding demand observation
 
         :Feature Information:
+            - 'date' the date
             - 'weekday' the day of the week,
             - 'month' the month of the year,
             - 'year' the year,
-            - 'is_holiday' whether or not it is a national holiday
+            - 'is_holiday' whether or not it is a national holiday,
+            - 'is_holiday_next2days' whether or not it is a national holiday in the next two days,
             - 'is_schoolholiday' whether or not it is a school holiday,
-            - 'rainfall' the amount of rainfall,
-            - 'temperature' the outdoor temperature,
+            - 'store' the store id,
+            - 'product' the product id,
+            - 'rain' the amount of rain,
+            - 'temperature' the average temperature in °C,
             - 'promotion_currentweek' whether or not there is a promotion this week
             - 'promotion_lastweek' whether there was a promotion last week
 
-        Note: The dataset also includes demand lag features as well as a column for the demand date.
-        By default, those features are not included when loading the data. You can include them
-        by setting the parameter `include_lag`/`include_date` to `True`.
-
     Parameters
     ----------
-    include_prod : 1d array or list , default=None
-        List of products to include. Valid products are {"roll", "seeded_roll", "pretzel"}.
-        If None, all products are included
-    include_lag : bool, default=False
-        Whether to include lag features
     include_date : bool, default=False
         Whether to include the demand date
     one_hot_encoding : bool, default=False
@@ -245,11 +181,11 @@ def load_bakery(include_prod=None, include_lag=False, include_date=False, one_ho
     data : sklearn Bunch
         Dictionary-like object, with the following attributes.
 
-        data : Pandas DataFrame of shape (1155, n_features)
+        data : Pandas DataFrame of shape (127575, n_features)
             The data matrix.
-        target: Pandas DataFrame of shape (1155, n_targets)
+        target: Pandas DataFrame of shape (127575, n_targets)
             The target values.
-        frame: pandas DataFrame of shape (1155, n_features+n_targets)
+        frame: pandas DataFrame of shape (127575, n_features+n_targets)
             Only present when `as_frame=True`. Pandas DataFrame with `data` and
             `target`.
         n_features: int
@@ -285,45 +221,6 @@ def load_bakery(include_prod=None, include_lag=False, include_date=False, one_ho
 
     if not include_date:
         data = data.drop('date', axis=1)
-
-    feature_terms_to_drop = []
-    targets_to_drop = []
-
-    if not include_lag:
-        for term in ["_t1", "_t2", "_t3", "_t4", "_t5", "_t6", "_t7", "_w2", "_w3", "_w4"]:
-            feature_terms_to_drop.append(term)
-    else:
-        data.drop(data.index[:28], inplace=True)
-        data.reset_index(drop=True, inplace=True)
-        target.drop(data.index[:28], inplace=True)
-        target.reset_index(drop=True, inplace=True)
-
-    if include_prod is not None:
-
-        products = ["roll", "seeded_roll", "pretzel"]
-
-        if not np.any([prod in products for prod in include_prod]):
-            raise ValueError(
-                "No valid product in include_prod. If you specify this parameter, please select at least one valid "
-                "product. Supported are %s" % (list(products)))
-
-        if "roll" not in include_prod:
-            targets_to_drop.append("roll")
-            feature_terms_to_drop.append("roll")
-
-        if "seeded_roll" not in include_prod:
-            targets_to_drop.append("seeded_roll")
-            feature_terms_to_drop.append("seeded_roll")
-
-        if "pretzel" not in include_prod:
-            targets_to_drop.append("pretzel")
-            feature_terms_to_drop.append("pretzel")
-
-    for col in data.columns:
-        if np.any([term in col for term in feature_terms_to_drop]):
-            data = data.drop(col, 1)
-
-    target = target.drop(targets_to_drop, axis=1)
 
     n_features = data.shape[0]
     n_targets = data.shape[1]
