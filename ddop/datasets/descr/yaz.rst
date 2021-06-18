@@ -38,9 +38,8 @@ lag demand, weather conditions and more. A full description of targets and featu
         - 'sunshine' the sunshine hours,
         - 'temperature' the outdoor temperature,
 
-    Note: The dataset also includes demand lag features as well as a column for the demand date.
-    By default, those features are not included when loading the data. You can include them
-    by setting the parameter `include_lag`/`include_date` to `True`.
+    Note: By default the date feature is not included when loading the data. You can include it
+    by setting the parameter `include_date` to `True`.
 
 
 
