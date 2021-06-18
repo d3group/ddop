@@ -32,6 +32,7 @@ bibliography: paper.bib
 # Summary
 In today's fast-paced world, companies face considerable uncertainty when making important decisions in operations management, for example, when deciding upon capacity, inventory levels, transportation, and production schedules. However, with the rise of digitization, companies have gained unprecedented access to data related to their particular decision problem, offering the opportunity to reduce the degree of uncertainty. For example, in inventory management the decision maker may have access to historical demand data as well as additional side information, such as social media data, customer behaviour, weather forecasts or calendar data. Driven by the availability of such rich data sources there has recently emerged a stream of literature in operations management research called “data-driven operations management” (DDOM). The focus of DDOM is to combine machine learning and traditional optimization techniques to prescribe cost optimal decisions directly from data. Various models have been developed and shown great performance on the dataset used. However, what is missing is efficient access to open-source code and datasets.
 With *ddop*, we provide a Python library that integrates well-established algorithms form the field of data-driven operations management, as well as standard benchmark datasets. Thus, *ddop* helps researchers in two ways:
+
 * Researchers can efficiently apply and compare well-established DDOM models.
 * Researchers can test new developed models on benchmark datasets provided in the package. 
 
