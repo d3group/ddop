@@ -206,7 +206,7 @@ def load_bakery(include_date=False, one_hot_encoding=False,
     >>> from ddop.datasets import load_bakery
     >>> X, y = load_bakery(return_X_y=True)
     >>> print(X.shape)
-        (1155, 9)
+        (127575, 12)
     """
 
     module_path = dirname(__file__)
@@ -217,6 +217,124 @@ def load_bakery(include_date=False, one_hot_encoding=False,
     target = pd.read_csv(target_filename)
 
     with open(join(module_path, 'descr', 'bakery.rst')) as rst_file:
+        fdescr = rst_file.read()
+
+    if not include_date:
+        data = data.drop('date', axis=1)
+
+    n_features = data.shape[0]
+    n_targets = data.shape[1]
+
+    if one_hot_encoding:
+        data = pd.get_dummies(data, columns=["weekday", "month", "year"])
+
+    elif not one_hot_encoding and label_encoding:
+        data['weekday'] = data['weekday'].apply(_day_to_continuouse)
+        data['month'] = data['month'].apply(_month_to_continuouse)
+
+    else:
+        data['year'] = data['year'].apply(str)
+
+    frame = pd.concat([data, target], axis=1)
+
+    if return_X_y:
+        return data, target
+
+    return Bunch(data=data,
+                 target=target,
+                 frame=frame,
+                 n_features=n_features,
+                 n_targets=n_targets,
+                 DESCR=fdescr,
+                 data_filename=data_filename,
+                 target_filename=target_filename)
+
+
+def load_SID(include_date=False, one_hot_encoding=False,
+             label_encoding=False, return_X_y=False):
+
+    """Load and return the store item demand dataset.
+
+    **Dataset Characteristics:**
+
+        :Number of Instances: 887284
+
+        :Number of Targets: 1
+
+        :Number of Features: 6
+
+        :Target Information:
+            - 'demand' the corresponding demand observation
+
+        :Feature Information:
+            - 'date' the date
+            - 'weekday' the day of the week,
+            - 'month' the month of the year,
+            - 'year' the year,
+            - 'store' the store id,
+            - 'item' the item id
+    Parameters
+    ----------
+    include_date : bool, default=False
+        Whether to include the demand date
+    one_hot_encoding : bool, default=False
+        Whether to one hot encode categorical features
+    label_encoding : bool, default=False
+        Whether to convert categorical columns (weekday, month, year) to continuous.
+        Will only be applied if `one_hot_encoding=False`
+    return_X_y : bool, default=False.
+        If True, returns ``(data, target)`` instead of a Bunch object.
+        See below for more information about the `data` and `target` object.
+
+    Returns
+    -------
+    data : sklearn Bunch
+        Dictionary-like object, with the following attributes.
+
+        data : Pandas DataFrame of shape (887284, n_features)
+            The data matrix.
+        target: Pandas DataFrame of shape (887284, n_targets)
+            The target values.
+        frame: pandas DataFrame of shape (887284, n_features+n_targets)
+            Only present when `as_frame=True`. Pandas DataFrame with `data` and
+            `target`.
+        n_features: int
+            The number of features included
+        n_targets: int
+            The number of target variables included
+        DESCR: str
+            The full description of the dataset.
+        data_filename: str
+            The path to the location of the data.
+        target_filename: str
+            The path to the location of the target.
+
+    (data, target) : tuple if ``return_X_y`` is True
+
+    Notes:
+    -------
+    The store item demand dataset was published within a demand forecasting challenge on kaggle [1]
+
+    References
+    ----------
+    .. [1] https://www.kaggle.com/c/demand-forecasting-kernels-only/overview
+
+    Examples:
+    ----------
+    >>> from ddop.datasets import load_SID
+    >>> X, y = load_SID(return_X_y=True)
+    >>> print(X.shape)
+        (887284, 5)
+    """
+
+    module_path = dirname(__file__)
+    base_dir = join(module_path, 'data')
+    data_filename = join(base_dir, 'SID_data.csv')
+    data = pd.read_csv(data_filename)
+    target_filename = join(base_dir, 'SID_target.csv')
+    target = pd.read_csv(target_filename)
+
+    with open(join(module_path, 'descr', 'SID.rst')) as rst_file:
         fdescr = rst_file.read()
 
     if not include_date:
