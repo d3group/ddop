@@ -121,5 +121,6 @@ Loaders
 
     load_yaz
     load_bakery
+    load_SID
 
 These datasets are useful to quickly illustrate the behavior of the various algorithms implemented in ddop.

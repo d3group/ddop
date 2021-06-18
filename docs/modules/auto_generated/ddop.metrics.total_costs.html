@@ -195,7 +195,7 @@
 <h1>ddop.metrics.total_costs<a class="headerlink" href="#ddop-metrics-total-costs" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="ddop.metrics.total_costs">
-<code class="sig-prename descclassname">ddop.metrics.</code><code class="sig-name descname">total_costs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y_true</span></em>, <em class="sig-param"><span class="n">y_pred</span></em>, <em class="sig-param"><span class="n">cu</span></em>, <em class="sig-param"><span class="n">co</span></em>, <em class="sig-param"><span class="n">multioutput</span><span class="o">=</span><span class="default_value">'uniform_average'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.metrics.total_costs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">ddop.metrics.</code><code class="sig-name descname">total_costs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y_true</span></em>, <em class="sig-param"><span class="n">y_pred</span></em>, <em class="sig-param"><span class="n">cu</span></em>, <em class="sig-param"><span class="n">co</span></em>, <em class="sig-param"><span class="n">multioutput</span><span class="o">=</span><span class="default_value">'cumulated'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.metrics.total_costs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute total costs based on the the difference between y_true and y_pred
 and the given underage and overage costs.</p>
 <dl class="field-list simple">
@@ -205,11 +205,11 @@ and the given underage and overage costs.</p>
 <li><p><strong>y_pred</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code>) – The predicted vales</p></li>
 <li><p><strong>cu</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – the underage costs per unit.</p></li>
 <li><p><strong>co</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – the overage costs per unit.</p></li>
-<li><p><strong>multioutput</strong> (<code class="docutils literal notranslate"><span class="pre">{&quot;raw_values&quot;,</span> <span class="pre">&quot;uniform_average&quot;}</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">&quot;raw_values&quot;</span></code>) – <dl class="simple">
-<dt>Defines aggregating of multiple output values. Default is “raw_values”.</dt><dd><dl class="simple">
+<li><p><strong>multioutput</strong> (<code class="docutils literal notranslate"><span class="pre">{&quot;raw_values&quot;,</span> <span class="pre">&quot;cumulated&quot;}</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">&quot;cumulated&quot;</span></code>) – <dl class="simple">
+<dt>Defines aggregating of multiple output values. Default is “cumulated”.</dt><dd><dl class="simple">
 <dt>’raw_values’ :</dt><dd><p>Returns a full set of cost values in case of multioutput input.</p>
 </dd>
-<dt>’uniform_average’ :</dt><dd><p>Costs of all outputs are averaged with uniform weight.</p>
+<dt>’cumulated’ :</dt><dd><p>Costs of all outputs are cumulated.</p>
 </dd>
 </dl>
 </dd>
@@ -219,7 +219,7 @@ and the given underage and overage costs.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>total_costs</strong> – The total costs. If multioutput is ‘raw_values’, then the total costs are returned for each
-output separately. If multioutput is ‘uniform_average’, then the average of all output costs
+output separately. If multioutput is ‘cumulated’, then the cumulated costs of all outputs
 is returned. The total costs are non-negative floating points. The best value is 0.0.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
@@ -234,8 +234,8 @@ is returned. The total costs are non-negative floating points. The best value is
 <span class="gp">&gt;&gt;&gt; </span><span class="n">co</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">total_costs</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">cu</span><span class="p">,</span> <span class="n">co</span><span class="p">,</span> <span class="n">multioutput</span><span class="o">=</span><span class="s2">&quot;raw_values&quot;</span><span class="p">)</span>
 <span class="go">array([4,5])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">total_costs</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">cu</span><span class="p">,</span> <span class="n">co</span><span class="p">,</span> <span class="n">multioutput</span><span class="o">=</span><span class="s2">&quot;uniform_average&quot;</span><span class="p">)</span>
-<span class="go">4.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">total_costs</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">cu</span><span class="p">,</span> <span class="n">co</span><span class="p">,</span> <span class="n">multioutput</span><span class="o">=</span><span class="s2">&quot;cumulated&quot;</span><span class="p">)</span>
+<span class="go">9</span>
 </pre></div>
 </div>
 </dd></dl>

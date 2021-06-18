@@ -1,0 +1,6 @@
+﻿ddop.datasets.load\_SID
+=======================
+
+.. currentmodule:: ddop.datasets
+
+.. autofunction:: load_SID

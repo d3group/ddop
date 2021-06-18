@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ddop.datasets.load_yaz &mdash; ddop  documentation</title>
+  <title>ddop.datasets.load_SID &mdash; ddop  documentation</title>
   
 
   
@@ -39,8 +39,8 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="ddop.datasets.load_bakery" href="ddop.datasets.load_bakery.html" />
-    <link rel="prev" title="ddop.metrics.pairwise_costs" href="ddop.metrics.pairwise_costs.html" /> 
+    <link rel="next" title="Tutorial" href="../../tutorial.html" />
+    <link rel="prev" title="ddop.datasets.load_bakery" href="ddop.datasets.load_bakery.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -91,8 +91,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../../api_reference.html#ddop-metrics-evaluation-metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.metrics</span></code>: Evaluation metrics</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../api_reference.html#ddop-datasets-datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.datasets</span></code>: Datasets</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="../../api_reference.html#loaders">Loaders</a><ul class="current">
-<li class="toctree-l4 current"><a class="current reference internal" href="#">ddop.datasets.load_yaz</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ddop.datasets.load_yaz.html">ddop.datasets.load_yaz</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ddop.datasets.load_bakery.html">ddop.datasets.load_bakery</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">ddop.datasets.load_SID</a></li>
 </ul>
 </li>
 </ul>
@@ -148,13 +149,13 @@
         
           <li><a href="../../api_reference.html">API Reference</a> &raquo;</li>
         
-      <li>ddop.datasets.load_yaz</li>
+      <li>ddop.datasets.load_SID</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/modules/auto_generated/ddop.datasets.load_yaz.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/modules/auto_generated/ddop.datasets.load_SID.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -191,52 +192,37 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="ddop-datasets-load-yaz">
-<h1>ddop.datasets.load_yaz<a class="headerlink" href="#ddop-datasets-load-yaz" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="ddop-datasets-load-sid">
+<h1>ddop.datasets.load_SID<a class="headerlink" href="#ddop-datasets-load-sid" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt id="ddop.datasets.load_yaz">
-<code class="sig-prename descclassname">ddop.datasets.</code><code class="sig-name descname">load_yaz</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include_date</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">one_hot_encoding</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">label_encoding</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">return_X_y</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.datasets.load_yaz" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load and return the YAZ dataset</p>
-<p>Yaz is a fast casual restaurant in Stuttgart providing good service and food at short waiting times.
-The dataset contains the demand for the main ingredients at YAZ. Moreover, it stores a
-number of demand features. A description of targets and features is given below.</p>
+<dt id="ddop.datasets.load_SID">
+<code class="sig-prename descclassname">ddop.datasets.</code><code class="sig-name descname">load_SID</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include_date</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">one_hot_encoding</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">label_encoding</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">return_X_y</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.datasets.load_SID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load and return the store item demand dataset.</p>
 <p><strong>Dataset Characteristics:</strong></p>
 <blockquote>
 <div><dl class="field-list simple">
 <dt class="field-odd">Number of Instances</dt>
-<dd class="field-odd"><p>765</p>
+<dd class="field-odd"><p>887284</p>
 </dd>
 <dt class="field-even">Number of Targets</dt>
-<dd class="field-even"><p>7</p>
+<dd class="field-even"><p>1</p>
 </dd>
 <dt class="field-odd">Number of Features</dt>
-<dd class="field-odd"><p>12</p>
+<dd class="field-odd"><p>6</p>
 </dd>
 <dt class="field-even">Target Information</dt>
 <dd class="field-even"><ul class="simple">
-<li><p>‘calamari’ the demand for calamari</p></li>
-<li><p>‘fish’ the demand for fish</p></li>
-<li><p>‘shrimp’ the demand for shrimps</p></li>
-<li><p>‘chicken’ the demand for chicken</p></li>
-<li><p>‘koefte’ the demand for koefte</p></li>
-<li><p>‘lamb’ the demand for lamb</p></li>
-<li><p>‘steak’ the demand for steak</p></li>
+<li><p>‘demand’ the corresponding demand observation</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Feature Information</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p>‘date’ the date,</p></li>
+<li><p>‘date’ the date</p></li>
 <li><p>‘weekday’ the day of the week,</p></li>
 <li><p>‘month’ the month of the year,</p></li>
 <li><p>‘year’ the year,</p></li>
-<li><p>‘is_holiday’ whether or not it is a national holiday,</p></li>
-<li><p>‘is_closed’ whether or not the restaurant is closed,</p></li>
-<li><p>‘weekend’ whether or not it is weekend,</p></li>
-<li><p>‘wind’ the wind force,</p></li>
-<li><p>‘clouds’ the cloudiness degree,</p></li>
-<li><p>‘rain’ the amount of rain,</p></li>
-<li><p>‘sunshine’ the sunshine hours,</p></li>
-<li><p>‘temperature’ the outdoor temperature,</p></li>
+<li><p>‘store’ the store id,</p></li>
+<li><p>‘item’ the item id</p></li>
 </ul>
 </dd>
 </dl>
@@ -256,11 +242,11 @@ See below for more information about the <cite>data</cite> and <cite>target</cit
 <dd class="field-even"><p><ul>
 <li><p><strong>data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn</span> <span class="pre">Bunch</span></code>) – Dictionary-like object, with the following attributes.</p>
 <dl class="simple">
-<dt>data<span class="classifier">Pandas DataFrame of shape (765, n_features)</span></dt><dd><p>The data matrix.</p>
+<dt>data<span class="classifier">Pandas DataFrame of shape (887284, n_features)</span></dt><dd><p>The data matrix.</p>
 </dd>
-<dt>target: Pandas DataFrame of shape (765, n_targets)</dt><dd><p>The target values.</p>
+<dt>target: Pandas DataFrame of shape (887284, n_targets)</dt><dd><p>The target values.</p>
 </dd>
-<dt>frame: pandas DataFrame of shape (765, n_features+n_targets)</dt><dd><p>Only present when <cite>as_frame=True</cite>. Pandas DataFrame with <cite>data</cite> and
+<dt>frame: pandas DataFrame of shape (887284, n_features+n_targets)</dt><dd><p>Only present when <cite>as_frame=True</cite>. Pandas DataFrame with <cite>data</cite> and
 <cite>target</cite>.</p>
 </dd>
 <dt>n_features: int</dt><dd><p>The number of features included</p>
@@ -276,15 +262,25 @@ See below for more information about the <cite>data</cite> and <cite>target</cit
 </dl>
 </li>
 <li><p><strong>(data, target)</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span> <span class="pre">if</span> <span class="pre">``return_X_y`</span></code> is True`)</p></li>
-<li><p><em>Examples</em></p></li>
-<li><p><em>———-</em></p></li>
-<li><p><em>&gt;&gt;&gt; from ddop.datasets import load_yaz</em></p></li>
-<li><p><em>&gt;&gt;&gt; X, y = load_yaz(return_X_y=True)</em></p></li>
-<li><p><em>&gt;&gt;&gt; print(X.shape)</em> – (765, 11)</p></li>
+<li><p><em>Notes</em></p></li>
+<li><p><em>——-</em></p></li>
+<li><p><em>The store item demand dataset was published within a demand forecasting challenge on kaggle [1]</em></p></li>
 </ul>
 </p>
 </dd>
 </dl>
+<p class="rubric">References</p>
+<dl class="footnote brackets">
+<dt class="label" id="id1"><span class="brackets">1</span></dt>
+<dd><p><a class="reference external" href="https://www.kaggle.com/c/demand-forecasting-kernels-only/overview">https://www.kaggle.com/c/demand-forecasting-kernels-only/overview</a></p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ddop.datasets</span> <span class="kn">import</span> <span class="n">load_SID</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_SID</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">    (887284, 5)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </div>
@@ -297,10 +293,10 @@ See below for more information about the <cite>data</cite> and <cite>target</cit
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="ddop.datasets.load_bakery.html" class="btn btn-neutral float-right" title="ddop.datasets.load_bakery" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../tutorial.html" class="btn btn-neutral float-right" title="Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="ddop.metrics.pairwise_costs.html" class="btn btn-neutral float-left" title="ddop.metrics.pairwise_costs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="ddop.datasets.load_bakery.html" class="btn btn-neutral float-left" title="ddop.datasets.load_bakery" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
