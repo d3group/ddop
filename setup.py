@@ -5,7 +5,7 @@ with open('README.rst') as f:
 
 setup(
     name='ddop',
-    version='v0.6.8',
+    version='v0.6.9',
     url='https://andreasphilippi.github.io/ddop/',
     license='MIT',
     author='Andreas Philippi',

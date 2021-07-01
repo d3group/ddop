@@ -11,11 +11,11 @@ lag demand, weather conditions and more. A full description of targets and featu
 
 **Dataset Characteristics:**
 
-    :Number of Instances: 760
+    :Number of Instances: 765
 
     :Number of Targets: 7
 
-    :Number of Features: 10
+    :Number of Features: 12
 
     :Target Information:
         - 'calamari' the demand for calamari
@@ -27,16 +27,18 @@ lag demand, weather conditions and more. A full description of targets and featu
         - 'steak' the demand for steak
 
     :Feature Information:
+        - 'date' the date,
         - 'weekday' the day of the week,
         - 'month' the month of the year,
         - 'year' the year,
         - 'is_holiday' whether or not it is a national holiday,
+        - 'is_closed' whether or not the restaurant is closed,
         - 'weekend' whether or not it is weekend,
         - 'wind' the wind force,
         - 'clouds' the cloudiness degree,
-        - 'rainfall' the amount of rainfall,
+        - 'rain' the amount of rain,
         - 'sunshine' the sunshine hours,
-        - 'temperature' the outdoor temperature,
+        - 'temperature' the outdoor temperature
 
     Note: By default the date feature is not included when loading the data. You can include it
     by setting the parameter `include_date` to `True`.
