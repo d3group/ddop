@@ -65,9 +65,6 @@ def load_yaz(include_date=False, one_hot_encoding=False,
             The data matrix.
         target: Pandas DataFrame of shape (765, n_targets)
             The target values.
-        frame: pandas DataFrame of shape (765, n_features+n_targets)
-            Only present when `as_frame=True`. Pandas DataFrame with `data` and
-            `target`.
         n_features: int
             The number of features included
         n_targets: int
@@ -115,14 +112,11 @@ def load_yaz(include_date=False, one_hot_encoding=False,
     else:
         data['year'] = data['year'].apply(str)
 
-    frame = pd.concat([data, target], axis=1)
-
     if return_X_y:
         return data, target
 
     return Bunch(data=data,
                  target=target,
-                 frame=frame,
                  n_features=n_features,
                  n_targets=n_targets,
                  DESCR=fdescr,
@@ -185,9 +179,6 @@ def load_bakery(include_date=False, one_hot_encoding=False,
             The data matrix.
         target: Pandas DataFrame of shape (127575, n_targets)
             The target values.
-        frame: pandas DataFrame of shape (127575, n_features+n_targets)
-            Only present when `as_frame=True`. Pandas DataFrame with `data` and
-            `target`.
         n_features: int
             The number of features included
         n_targets: int
@@ -234,14 +225,11 @@ def load_bakery(include_date=False, one_hot_encoding=False,
     else:
         data['year'] = data['year'].apply(str)
 
-    frame = pd.concat([data, target], axis=1)
-
     if return_X_y:
         return data, target
 
     return Bunch(data=data,
                  target=target,
-                 frame=frame,
                  n_features=n_features,
                  n_targets=n_targets,
                  DESCR=fdescr,
@@ -294,9 +282,6 @@ def load_SID(include_date=False, one_hot_encoding=False,
             The data matrix.
         target: Pandas DataFrame of shape (887284, n_targets)
             The target values.
-        frame: pandas DataFrame of shape (887284, n_features+n_targets)
-            Only present when `as_frame=True`. Pandas DataFrame with `data` and
-            `target`.
         n_features: int
             The number of features included
         n_targets: int
@@ -351,14 +336,11 @@ def load_SID(include_date=False, one_hot_encoding=False,
     else:
         data['year'] = data['year'].apply(str)
 
-    frame = pd.concat([data, target], axis=1)
-
     if return_X_y:
         return data, target
 
     return Bunch(data=data,
                  target=target,
-                 frame=frame,
                  n_features=n_features,
                  n_targets=n_targets,
                  DESCR=fdescr,
