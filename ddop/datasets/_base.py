@@ -81,8 +81,8 @@ def load_yaz(include_date=False, one_hot_encoding=False,
 
     (data, target) : tuple if ``return_X_y`` is True
 
-    Examples:
-    ----------
+    Examples
+    ---------
     >>> from ddop.datasets import load_yaz
     >>> X, y = load_yaz(return_X_y=True)
     >>> print(X.shape)
@@ -198,10 +198,9 @@ def load_bakery(include_date=False, one_hot_encoding=False,
             The path to the location of the data.
         target_filename: str
             The path to the location of the target.
-
     (data, target) : tuple if ``return_X_y`` is True
 
-    Examples:
+    Examples
     ----------
     >>> from ddop.datasets import load_bakery
     >>> X, y = load_bakery(return_X_y=True)
@@ -308,19 +307,18 @@ def load_SID(include_date=False, one_hot_encoding=False,
             The path to the location of the data.
         target_filename: str
             The path to the location of the target.
+    (data, target): tuple if ``return_X_y`` is True
 
-    (data, target) : tuple if ``return_X_y`` is True
-
-    Notes:
-    -------
+    Notes
+    -----
     The store item demand dataset was published within a demand forecasting challenge on kaggle [1]
 
     References
     ----------
     .. [1] https://www.kaggle.com/c/demand-forecasting-kernels-only/overview
 
-    Examples:
-    ----------
+    Examples
+    --------
     >>> from ddop.datasets import load_SID
     >>> X, y = load_SID(return_X_y=True)
     >>> print(X.shape)

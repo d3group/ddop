@@ -93,6 +93,7 @@
 <li class="toctree-l3 current"><a class="reference internal" href="../../api_reference.html#loaders">Loaders</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">ddop.datasets.load_yaz</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ddop.datasets.load_bakery.html">ddop.datasets.load_bakery</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ddop.datasets.load_SID.html">ddop.datasets.load_SID</a></li>
 </ul>
 </li>
 </ul>
@@ -276,15 +277,17 @@ See below for more information about the <cite>data</cite> and <cite>target</cit
 </dl>
 </li>
 <li><p><strong>(data, target)</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span> <span class="pre">if</span> <span class="pre">``return_X_y`</span></code> is True`)</p></li>
-<li><p><em>Examples</em></p></li>
-<li><p><em>———-</em></p></li>
-<li><p><em>&gt;&gt;&gt; from ddop.datasets import load_yaz</em></p></li>
-<li><p><em>&gt;&gt;&gt; X, y = load_yaz(return_X_y=True)</em></p></li>
-<li><p><em>&gt;&gt;&gt; print(X.shape)</em> – (765, 11)</p></li>
 </ul>
 </p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ddop.datasets</span> <span class="kn">import</span> <span class="n">load_yaz</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_yaz</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">    (765, 11)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </div>
