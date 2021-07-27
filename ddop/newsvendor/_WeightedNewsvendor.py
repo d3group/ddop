@@ -840,7 +840,13 @@ class GaussianWeightedNewsvendor(BaseWeightedNewsvendor):
         distances = distance_matrix(self.X_, [sample]).ravel()
         distances_kernel_weighted = np.array([self.kernel_.get_kernel_output(x) for x in distances])
         total = np.sum(distances_kernel_weighted)
-        weights = distances_kernel_weighted / total
+
+        if total == 0:
+            weights = np.full((self.n_samples_,),1/self.n_samples_)
+
+        else:
+            weights = distances_kernel_weighted / total
+
         return weights
 
     def fit(self, X, y):
