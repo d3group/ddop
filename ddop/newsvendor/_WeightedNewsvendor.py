@@ -8,6 +8,9 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.utils.validation import check_is_fitted, check_array
 from scipy.spatial import distance_matrix
 from ..utils.kernels import Kernel
+import mpmath as mp
+import math
+import warnings
 
 
 class BaseWeightedNewsvendor(BaseNewsvendor, DataDrivenMixin, ABC):
@@ -834,17 +837,28 @@ class GaussianWeightedNewsvendor(BaseWeightedNewsvendor):
         )
 
     def _get_fitted_model(self, X=None, y=None):
-        self.kernel_ = Kernel("gaussian", self.kernel_bandwidth)
+        #self.kernel_ = Kernel("gaussian", self.kernel_bandwidth)
+        pass
+
+    def get_kernel_output_mpmath(self, u):
+        k_w = 1 * mp.exp(-0.5 * math.pow(u / self.kernel_bandwidth, 2))
+        return k_w/self.kernel_bandwidth
+
+    def get_kernel_output(self, u):
+        k_w = 1 * math.pow(math.e, -0.5 * math.pow(u / self.kernel_bandwidth, 2))
+        return k_w/self.kernel_bandwidth
 
     def _calc_weights(self, sample):
         distances = distance_matrix(self.X_, [sample]).ravel()
-        distances_kernel_weighted = np.array([self.kernel_.get_kernel_output(x) for x in distances])
-        total = np.sum(distances_kernel_weighted)
+        try:
+            distances_kernel_weighted = np.array([self.kernel_.get_kernel_output(x) for x in distances])
+            total = np.sum(distances_kernel_weighted)
+            weights = distances_kernel_weighted / total
 
-        if total == 0:
-            weights = np.full((self.n_samples_,),1/self.n_samples_)
-
-        else:
+        except:
+            warnings.warn("Sum of gaussian kernel outputs are zero. Consider using a higher kernel bandwidth")
+            distances_kernel_weighted = np.array([self.get_kernel_output_mpmath(x) for x in distances])
+            total = np.sum(distances_kernel_weighted)
             weights = distances_kernel_weighted / total
 
         return weights
