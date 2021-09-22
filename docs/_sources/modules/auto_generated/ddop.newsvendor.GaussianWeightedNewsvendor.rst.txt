@@ -13,6 +13,8 @@
    
       ~GaussianWeightedNewsvendor.__init__
       ~GaussianWeightedNewsvendor.fit
+      ~GaussianWeightedNewsvendor.get_kernel_output
+      ~GaussianWeightedNewsvendor.get_kernel_output_mpmath
       ~GaussianWeightedNewsvendor.get_params
       ~GaussianWeightedNewsvendor.predict
       ~GaussianWeightedNewsvendor.score

@@ -35,10 +35,9 @@ The installation requires the following dependencies:
 - pandas==1.1.4
 - statsmodels==0.12.1
 - scikit-learn==0.23.0
-- tensorflow==2.1.0
-- keras==2.3.1
+- tensorflow==2.4.1
 - pulp==2.0
-- lightgbm==2.3.1
+- mpmath
 
 Note: The package is actively developed and conflicts with other packages may occur during
 installation. To avoid any installation conflicts we therefore recommend to install the

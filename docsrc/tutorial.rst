@@ -1,5 +1,5 @@
 Tutorial
-============
+==========
 
 The following tutorial is designed especially for developers without prior knowledge of the domain covered by the API.
 Within the tutorial you can run through a complete application scenario, from the installation to the comparison of
@@ -9,4 +9,4 @@ are discussed.
 .. toctree::
     :maxdepth: 1
 
-    tutorial_modules/tutorial.ipynb
+    The Data-Driven Newsvendor <tutorial_modules/tutorial.ipynb>

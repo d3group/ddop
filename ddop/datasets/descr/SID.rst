@@ -1,7 +1,8 @@
 .. _SID_dataset:
 
 SID dataset
-----------------
+-------------
+
 This dataset contains 5 zears of store-item demand data
 
 **Dataset Characteristics:**

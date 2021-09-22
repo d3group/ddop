@@ -43,7 +43,7 @@ extensions = [
 # see https://github.com/numpy/numpydoc/issues/69
 numpydoc_class_members_toctree = False
 
-autodoc_mock_imports = ["keras","statsmodels"]
+autodoc_mock_imports = ["tensorflow"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

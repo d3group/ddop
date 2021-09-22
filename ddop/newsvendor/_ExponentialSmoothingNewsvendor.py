@@ -1,9 +1,8 @@
 from scipy.stats import norm
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 from ._base import BaseNewsvendor, ClassicMixin
-from ..utils.validation import check_cu_co, formate_hyperparameter
+from ..utils.validation import check_cu_co
 from sklearn.utils.validation import check_array
-from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error
 import numpy as np
 

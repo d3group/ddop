@@ -1,7 +1,7 @@
 from ._base import BaseNewsvendor, DataDrivenMixin
-import pulp
 from ..utils.validation import check_cu_co
 import numpy as np
+import pulp
 from sklearn.utils.validation import check_array, check_is_fitted
 
 

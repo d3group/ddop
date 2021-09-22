@@ -59,6 +59,7 @@ class BaseWeightedNewsvendor(BaseNewsvendor, DataDrivenMixin, ABC):
 
     def _validate_X_predict(self, X):
         """Validate X whenever one tries to predict"""
+
         X = check_array(X)
 
         n_features = X.shape[1]

@@ -6,11 +6,6 @@ API Reference
 
 This is the class and function reference of ddop.
 
-.. autosummary::
-    :toctree: modules/auto_generated/
-
-------------------------------------------------------------
-
 .. _newsvendor_ref:
 
 :mod:`ddop.newsvendor`: Newsvendor decision making
@@ -49,14 +44,15 @@ Weighted SAA (wSAA)
 
 
 Empirical Risk Minimization (ERM)
-----------------------------
+---------------------------------
 
 .. autosummary::
     :toctree: modules/auto_generated/
     :template: class.rst
 
-    DeepLearningNewsvendor
     LinearRegressionNewsvendor
+    DeepLearningNewsvendor
+
 
 ------------------------------------------------------------
 
