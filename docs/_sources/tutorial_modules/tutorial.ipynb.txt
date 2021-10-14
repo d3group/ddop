@@ -69,7 +69,7 @@
     "id": "NCdRffbpKh_C"
    },
    "source": [
-    "pip install ddop==0.7.4 seaborn==0.11.0 matplotlib"
+    "pip install ddop==0.7.5 seaborn==0.11.0 matplotlib"
    ],
    "execution_count": null,
    "outputs": []
