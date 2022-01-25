@@ -5,6 +5,7 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.backend import switch, less
 from tensorflow.keras.backend import sum as ksum
 from tensorflow import cast
+from tensorflow.random import set_seed
 
 from sklearn.utils.validation import check_is_fitted
 import numpy as np
@@ -38,6 +39,8 @@ class DeepLearningNewsvendor(BaseNewsvendor, DataDrivenMixin):
         The optimizer to be used.
     epochs: int, default=100
         Number of epochs to train the model
+    random_state: int, RandomState instance, default=None
+        Pass an int for reproducible results across multiple function calls.
     verbose: int 0, 1, or 2, default=0
         Verbosity mode. 0 = silent, 1 = progress bar, 2 = one line per epoch.
 
@@ -74,11 +77,12 @@ class DeepLearningNewsvendor(BaseNewsvendor, DataDrivenMixin):
     """
 
     def __init__(self, cu=None, co=None, neurons=[100, 50], activations=['relu', 'relu'], optimizer='adam', epochs=100,
-                 verbose=0):
+                 random_state=None, verbose=0):
         self.neurons = neurons
         self.activations = activations
         self.optimizer = optimizer
         self.epochs = epochs
+        self.random_state = random_state
         self.verbose = verbose
         super().__init__(
             cu=cu,
@@ -100,6 +104,8 @@ class DeepLearningNewsvendor(BaseNewsvendor, DataDrivenMixin):
         activations = self.activations
         n_features = self.n_features_
         n_outputs = self.n_outputs_
+
+        set_seed(self.random_state)
 
         model = Sequential()
 
