@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ddop.datasets.load_bakery &mdash; ddop  documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <title>ddop.datasets.load_bakery &mdash; ddop  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -107,10 +106,10 @@
 }
 </style>
 <section id="ddop-datasets-load-bakery">
-<h1>ddop.datasets.load_bakery<a class="headerlink" href="#ddop-datasets-load-bakery" title="Permalink to this headline">¶</a></h1>
+<h1>ddop.datasets.load_bakery<a class="headerlink" href="#ddop-datasets-load-bakery" title="Permalink to this headline"></a></h1>
 <dl class="py function">
-<dt id="ddop.datasets.load_bakery">
-<code class="sig-prename descclassname">ddop.datasets.</code><code class="sig-name descname">load_bakery</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include_date</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">one_hot_encoding</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">label_encoding</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">return_X_y</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.datasets.load_bakery" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ddop.datasets.load_bakery">
+<span class="sig-prename descclassname"><span class="pre">ddop.datasets.</span></span><span class="sig-name descname"><span class="pre">load_bakery</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">include_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">one_hot_encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_X_y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.datasets.load_bakery" title="Permalink to this definition"></a></dt>
 <dd><p>Load and return the bakery dataset</p>
 <p>The bakery dataset contains the demand for a number of products from different stores. Moreover, it stores a
 number of demand features. A description of targets and features is given below.</p>
@@ -153,17 +152,17 @@ number of demand features. A description of targets and features is given below.
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>include_date</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>) – Whether to include the demand date</p></li>
-<li><p><strong>one_hot_encoding</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>) – Whether to one hot encode categorical features</p></li>
-<li><p><strong>label_encoding</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>) – Whether to convert categorical columns (weekday, month, year) to continuous.
+<li><p><strong>include_date</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to include the demand date</p></li>
+<li><p><strong>one_hot_encoding</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to one hot encode categorical features</p></li>
+<li><p><strong>label_encoding</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to convert categorical columns (weekday, month, year) to continuous.
 Will only be applied if <cite>one_hot_encoding=False</cite></p></li>
-<li><p><strong>return_X_y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">False.</span></code>) – If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
+<li><p><strong>return_X_y</strong> (<em>bool</em><em>, </em><em>default=False.</em>) – If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
 See below for more information about the <cite>data</cite> and <cite>target</cite> object.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul>
-<li><p><strong>data</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn</span> <span class="pre">Bunch</span></code>) – Dictionary-like object, with the following attributes.</p>
+<li><p><strong>data</strong> (<em>sklearn Bunch</em>) – Dictionary-like object, with the following attributes.</p>
 <dl class="simple">
 <dt>data<span class="classifier">Pandas DataFrame of shape (127575, n_features)</span></dt><dd><p>The data matrix.</p>
 </dd>
@@ -181,7 +180,7 @@ See below for more information about the <cite>data</cite> and <cite>target</cit
 </dd>
 </dl>
 </li>
-<li><p><strong>(data, target)</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span> <span class="pre">if</span> <span class="pre">``return_X_y`</span></code> is True`)</p></li>
+<li><p><strong>(data, target)</strong> (tuple if <code class="docutils literal notranslate"><span class="pre">return_X_y</span></code> is True)</p></li>
 </ul>
 </p>
 </dd>

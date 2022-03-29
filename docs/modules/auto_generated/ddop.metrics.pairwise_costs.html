@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ddop.metrics.pairwise_costs &mdash; ddop  documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <title>ddop.metrics.pairwise_costs &mdash; ddop  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -106,26 +105,26 @@
 }
 </style>
 <section id="ddop-metrics-pairwise-costs">
-<h1>ddop.metrics.pairwise_costs<a class="headerlink" href="#ddop-metrics-pairwise-costs" title="Permalink to this headline">¶</a></h1>
+<h1>ddop.metrics.pairwise_costs<a class="headerlink" href="#ddop-metrics-pairwise-costs" title="Permalink to this headline"></a></h1>
 <dl class="py function">
-<dt id="ddop.metrics.pairwise_costs">
-<code class="sig-prename descclassname">ddop.metrics.</code><code class="sig-name descname">pairwise_costs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y_true</span></em>, <em class="sig-param"><span class="n">y_pred</span></em>, <em class="sig-param"><span class="n">cu</span></em>, <em class="sig-param"><span class="n">co</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.metrics.pairwise_costs" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ddop.metrics.pairwise_costs">
+<span class="sig-prename descclassname"><span class="pre">ddop.metrics.</span></span><span class="sig-name descname"><span class="pre">pairwise_costs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">co</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.metrics.pairwise_costs" title="Permalink to this definition"></a></dt>
 <dd><p>Compute pairwise costs based on the the difference between y_true and y_pred
 and the given underage and overage costs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>y_true</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code>) – The true values</p></li>
-<li><p><strong>y_pred</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code>) – The predicted vales</p></li>
-<li><p><strong>cu</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – the underage costs per unit.</p></li>
-<li><p><strong>co</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – the overage costs per unit.</p></li>
+<li><p><strong>y_true</strong> (<em>array-like</em>) – The true values</p></li>
+<li><p><strong>y_pred</strong> (<em>array-like</em>) – The predicted vales</p></li>
+<li><p><strong>cu</strong> (<em>int</em><em> or </em><em>float</em>) – the underage costs per unit.</p></li>
+<li><p><strong>co</strong> (<em>int</em><em> or </em><em>float</em>) – the overage costs per unit.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>costs</strong></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_outputs)</span></code></p>
+<dd class="field-odd"><p>ndarray of shape (n_samples, n_outputs)</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>

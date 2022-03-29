@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ddop.newsvendor.GaussianWeightedNewsvendor &mdash; ddop  documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <title>ddop.newsvendor.GaussianWeightedNewsvendor &mdash; ddop  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -110,103 +109,103 @@
 }
 </style>
 <section id="ddop-newsvendor-gaussianweightednewsvendor">
-<h1><a class="reference internal" href="../../api_reference.html#module-ddop.newsvendor" title="ddop.newsvendor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code></a>.GaussianWeightedNewsvendor<a class="headerlink" href="#ddop-newsvendor-gaussianweightednewsvendor" title="Permalink to this headline">¶</a></h1>
+<h1><a class="reference internal" href="../../api_reference.html#module-ddop.newsvendor" title="ddop.newsvendor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ddop.newsvendor</span></code></a>.GaussianWeightedNewsvendor<a class="headerlink" href="#ddop-newsvendor-gaussianweightednewsvendor" title="Permalink to this headline"></a></h1>
 <dl class="py class">
-<dt id="ddop.newsvendor.GaussianWeightedNewsvendor">
-<em class="property">class </em><code class="sig-prename descclassname">ddop.newsvendor.</code><code class="sig-name descname">GaussianWeightedNewsvendor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cu</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">co</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">kernel_bandwidth</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ddop.newsvendor.GaussianWeightedNewsvendor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ddop.newsvendor.</span></span><span class="sig-name descname"><span class="pre">GaussianWeightedNewsvendor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">co</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_bandwidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor" title="Permalink to this definition"></a></dt>
 <dd><p>A gaussian kernel weighted SAA model to solve the newsvendor problem</p>
 <p>This class implements the approach described in [1] with a gaussian kernel weight function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cu</strong> (<code class="docutils literal notranslate"><span class="pre">{array-like</span> <span class="pre">of</span> <span class="pre">shape</span> <span class="pre">(n_outputs,),</span> <span class="pre">Number</span> <span class="pre">or</span> <span class="pre">None}</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – The underage costs per unit. If None, then underage costs are one
+<li><p><strong>cu</strong> (<em>{array-like of shape</em><em> (</em><em>n_outputs</em><em>,</em><em>)</em><em>, </em><em>Number</em><em> or </em><em>None}</em><em>, </em><em>default=None</em>) – The underage costs per unit. If None, then underage costs are one
 for each target variable</p></li>
-<li><p><strong>co</strong> (<code class="docutils literal notranslate"><span class="pre">{array-like</span> <span class="pre">of</span> <span class="pre">shape</span> <span class="pre">(n_outputs,),</span> <span class="pre">Number</span> <span class="pre">or</span> <span class="pre">None}</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>) – The overage costs per unit. If None, then overage costs are one
+<li><p><strong>co</strong> (<em>{array-like of shape</em><em> (</em><em>n_outputs</em><em>,</em><em>)</em><em>, </em><em>Number</em><em> or </em><em>None}</em><em>, </em><em>default=None</em>) – The overage costs per unit. If None, then overage costs are one
 for each target variable</p></li>
-<li><p><strong>kernel_bandwidth</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <em>default</em> <code class="docutils literal notranslate"><span class="pre">1</span></code>) – The bandwidth of the kernel function</p></li>
+<li><p><strong>kernel_bandwidth</strong> (<em>float</em><em> or </em><em>int</em><em>, </em><em>default=1</em>) – The bandwidth of the kernel function</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py attribute">
-<dt id="ddop.newsvendor.GaussianWeightedNewsvendor.X_">
-<code class="sig-name descname">X_</code><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.X_" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ddop.newsvendor.GaussianWeightedNewsvendor.X_">
+<span class="sig-name descname"><span class="pre">X_</span></span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.X_" title="Permalink to this definition"></a></dt>
 <dd><p>The X training data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code></p>
+<dd class="field-odd"><p>array of shape (n_samples, n_features)</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="ddop.newsvendor.GaussianWeightedNewsvendor.y_">
-<code class="sig-name descname">y_</code><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.y_" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ddop.newsvendor.GaussianWeightedNewsvendor.y_">
+<span class="sig-name descname"><span class="pre">y_</span></span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.y_" title="Permalink to this definition"></a></dt>
 <dd><p>The y training data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_outputs)</span></code></p>
+<dd class="field-odd"><p>array of shape (n_samples, n_outputs)</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="ddop.newsvendor.GaussianWeightedNewsvendor.cu_">
-<code class="sig-name descname">cu_</code><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.cu_" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ddop.newsvendor.GaussianWeightedNewsvendor.cu_">
+<span class="sig-name descname"><span class="pre">cu_</span></span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.cu_" title="Permalink to this definition"></a></dt>
 <dd><p>Validated underage costs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_outputs,)</span></code></p>
+<dd class="field-odd"><p>ndarray, shape (n_outputs,)</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="ddop.newsvendor.GaussianWeightedNewsvendor.co_">
-<code class="sig-name descname">co_</code><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.co_" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ddop.newsvendor.GaussianWeightedNewsvendor.co_">
+<span class="sig-name descname"><span class="pre">co_</span></span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.co_" title="Permalink to this definition"></a></dt>
 <dd><p>Validated overage costs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_outputs,)</span></code></p>
+<dd class="field-odd"><p>ndarray, shape (n_outputs,)</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="ddop.newsvendor.GaussianWeightedNewsvendor.n_features_">
-<code class="sig-name descname">n_features_</code><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.n_features_" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ddop.newsvendor.GaussianWeightedNewsvendor.n_features_">
+<span class="sig-name descname"><span class="pre">n_features_</span></span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.n_features_" title="Permalink to this definition"></a></dt>
 <dd><p>The number of features when <code class="docutils literal notranslate"><span class="pre">fit</span></code> is performed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="ddop.newsvendor.GaussianWeightedNewsvendor.n_outputs_">
-<code class="sig-name descname">n_outputs_</code><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.n_outputs_" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ddop.newsvendor.GaussianWeightedNewsvendor.n_outputs_">
+<span class="sig-name descname"><span class="pre">n_outputs_</span></span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.n_outputs_" title="Permalink to this definition"></a></dt>
 <dd><p>The number of outputs when <code class="docutils literal notranslate"><span class="pre">fit</span></code> is performed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="ddop.newsvendor.GaussianWeightedNewsvendor.n_samples_">
-<code class="sig-name descname">n_samples_</code><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.n_samples_" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ddop.newsvendor.GaussianWeightedNewsvendor.n_samples_">
+<span class="sig-name descname"><span class="pre">n_samples_</span></span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.n_samples_" title="Permalink to this definition"></a></dt>
 <dd><p>The number of samples when <code class="docutils literal notranslate"><span class="pre">fit</span></code> is performed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="ddop.newsvendor.GaussianWeightedNewsvendor.kernel_">
-<code class="sig-name descname">kernel_</code><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.kernel_" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ddop.newsvendor.GaussianWeightedNewsvendor.kernel_">
+<span class="sig-name descname"><span class="pre">kernel_</span></span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.kernel_" title="Permalink to this definition"></a></dt>
 <dd><p>The kernel object</p>
 </dd></dl>
 
@@ -231,14 +230,14 @@ for each target variable</p></li>
 </pre></div>
 </div>
 <p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ddop.newsvendor.GaussianWeightedNewsvendor.__init__" title="ddop.newsvendor.GaussianWeightedNewsvendor.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([cu, co, kernel_bandwidth])</p></td>
-<td><p>Initialize self.</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ddop.newsvendor.GaussianWeightedNewsvendor.fit" title="ddop.newsvendor.GaussianWeightedNewsvendor.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X, y)</p></td>
 <td><p>Fit the estimator from the training set (X,y)</p></td>
@@ -264,113 +263,112 @@ for each target variable</p></li>
 </tbody>
 </table>
 <dl class="py method">
-<dt id="ddop.newsvendor.GaussianWeightedNewsvendor.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cu</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">co</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">kernel_bandwidth</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
-</dd></dl>
+<dt class="sig sig-object py" id="ddop.newsvendor.GaussianWeightedNewsvendor.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">co</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_bandwidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
-<dt id="ddop.newsvendor.GaussianWeightedNewsvendor.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.fit" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ddop.newsvendor.GaussianWeightedNewsvendor.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.fit" title="Permalink to this definition"></a></dt>
 <dd><p>Fit the estimator from the training set (X,y)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>) – The training input samples.</p></li>
-<li><p><strong>y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>) – The training target values.</p></li>
+<li><p><strong>X</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The training input samples.</p></li>
+<li><p><strong>y</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The training target values.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>self</strong> – Fitted estimator</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#ddop.newsvendor.GaussianWeightedNewsvendor" title="ddop.newsvendor.GaussianWeightedNewsvendor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GaussianWeightedNewsvendor</span></code></a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#ddop.newsvendor.GaussianWeightedNewsvendor" title="ddop.newsvendor.GaussianWeightedNewsvendor">GaussianWeightedNewsvendor</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="ddop.newsvendor.GaussianWeightedNewsvendor.get_kernel_output">
-<code class="sig-name descname">get_kernel_output</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">u</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.get_kernel_output" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ddop.newsvendor.GaussianWeightedNewsvendor.get_kernel_output">
+<span class="sig-name descname"><span class="pre">get_kernel_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.get_kernel_output" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="ddop.newsvendor.GaussianWeightedNewsvendor.get_kernel_output_mpmath">
-<code class="sig-name descname">get_kernel_output_mpmath</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">u</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.get_kernel_output_mpmath" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ddop.newsvendor.GaussianWeightedNewsvendor.get_kernel_output_mpmath">
+<span class="sig-name descname"><span class="pre">get_kernel_output_mpmath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.get_kernel_output_mpmath" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="ddop.newsvendor.GaussianWeightedNewsvendor.get_params">
-<code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">deep</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.get_params" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ddop.newsvendor.GaussianWeightedNewsvendor.get_params">
+<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.get_params" title="Permalink to this definition"></a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>deep</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <em>default</em> <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>) – If True, will return the parameters for this estimator and
+<dd class="field-odd"><p><strong>deep</strong> (<em>bool</em><em>, </em><em>default=True</em>) – If True, will return the parameters for this estimator and
 contained subobjects that are estimators.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>params</strong> – Parameter names mapped to their values.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<dd class="field-odd"><p>mapping of string to any</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="ddop.newsvendor.GaussianWeightedNewsvendor.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.predict" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ddop.newsvendor.GaussianWeightedNewsvendor.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.predict" title="Permalink to this definition"></a></dt>
 <dd><p>Predict value for X.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>) – The input samples to predict.</p>
+<dd class="field-odd"><p><strong>X</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The input samples to predict.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>y</strong> – The predicted values</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_outputs)</span></code></p>
+<dd class="field-odd"><p>array-like of shape (n_samples, n_outputs)</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="ddop.newsvendor.GaussianWeightedNewsvendor.score">
-<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.score" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ddop.newsvendor.GaussianWeightedNewsvendor.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.score" title="Permalink to this definition"></a></dt>
 <dd><p>Return the average costs of the prediction</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_features)</span></code>) – The input samples to predict.</p></li>
-<li><p><strong>y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">array-like</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">shape</span> <span class="pre">(n_samples</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">n_outputs)</span></code>) – The true values for x.</p></li>
+<li><p><strong>X</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_features</em><em>)</em>) – The input samples to predict.</p></li>
+<li><p><strong>y</strong> (<em>array-like of shape</em><em> (</em><em>n_samples</em><em>, </em><em>n_outputs</em><em>)</em>) – The true values for x.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>score</strong> – The average costs</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="ddop.newsvendor.GaussianWeightedNewsvendor.set_params">
-<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">params</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.set_params" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ddop.newsvendor.GaussianWeightedNewsvendor.set_params">
+<span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ddop.newsvendor.GaussianWeightedNewsvendor.set_params" title="Permalink to this definition"></a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
-(such as <code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code>). The latter have
-parameters of the form <code class="docutils literal notranslate"><span class="pre">&lt;component&gt;__&lt;parameter&gt;</span></code> so that it’s
-possible to update each component of a nested object.</p>
+(such as pipelines). The latter have parameters of the form
+<code class="docutils literal notranslate"><span class="pre">&lt;component&gt;__&lt;parameter&gt;</span></code> so that it’s possible to update each
+component of a nested object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>**params</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>) – Estimator parameters.</p>
+<dd class="field-odd"><p><strong>**params</strong> (<em>dict</em>) – Estimator parameters.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>self</strong> – Estimator instance.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">estimator</span> <span class="pre">instance</span></code></p>
+<dd class="field-odd"><p>object</p>
 </dd>
 </dl>
 </dd></dl>
