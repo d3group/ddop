@@ -74,17 +74,19 @@ class BaseWeightedNewsvendor(BaseNewsvendor, DataDrivenMixin, ABC):
 
         y = self.y_
         q = []
-
+        
         for i in range(self.n_outputs_):
-            data = np.c_[weights, y[:, i]]
-            data = data[np.argsort(data[:, 1])]
-            sum_wi = 0
-            for row in data:
-                sum_wi = sum_wi + row[0]
-                if sum_wi >= self.cu_[i] / (self.cu_[i] + self.co_[i]):
-                    q.append(row[1])
-                    break
-
+            serviceLevel = self.cu_[i] / (self.cu_[i] + self.co_[i])
+            
+            indicesYSort = np.argsort(y[:, i])
+            ySorted = y[indicesYSort, i]
+            
+            distributionFunction = np.cumsum(weights[indicesYSort])
+            decisionIndex = np.where(distributionFunction >= serviceLevel)[0][0]
+            
+            q.append(ySorted[decisionIndex])
+        
+        
         return q
 
     def predict(self, X):
