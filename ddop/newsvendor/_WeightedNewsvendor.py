@@ -774,12 +774,9 @@ class KNeighborsWeightedNewsvendor(BaseWeightedNewsvendor):
 
     def _calc_weights(self, sample):
         neighbors = self.model_.kneighbors([sample], return_distance=False)[0]
+        weightsPos = np.array([1 / self.n_neighbors for i in range(len(neighbors))])
         
-        weights = np.array([1 / self.n_neighbors if i in neighbors else 0 for i in range(self.n_samples_)])
-        weightPosIndex = np.where(weights > 0)[0]
-        weightsPos = weights[weightPosIndex]
-        
-        return (weightsPos, weightPosIndex)
+        return (weightsPos, neighbors)
     
 
     def fit(self, X, y):
@@ -894,7 +891,9 @@ class GaussianWeightedNewsvendor(BaseWeightedNewsvendor):
             total = np.sum(distances_kernel_weighted)
 
         weights = distances_kernel_weighted / total
-
+        
+        # Actually unnecessary as all weights will be positive for the
+        # gaussian kernel anyway. Included only for the sake of code consistency.
         weightPosIndex = np.where(weights > 0)[0]
         weightsPos = weights[weightPosIndex]
 
