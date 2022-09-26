@@ -24,6 +24,7 @@ class BaseWeightedNewsvendor(BaseNewsvendor, DataDrivenMixin, ABC):
                  ):
         self.cu = cu
         self.co = co
+        
 
     def fit(self, X, y):
         """ Fit the estimator to the training set (X,y)"""
@@ -48,14 +49,17 @@ class BaseWeightedNewsvendor(BaseNewsvendor, DataDrivenMixin, ABC):
         self.cu_, self.co_ = check_cu_co(self.cu, self.co, self.n_outputs_)
 
         return self
+    
 
     @abstractmethod
     def _get_fitted_model(self, X, y):
         """Initialise the underlying model"""
+        
 
     @abstractmethod
     def _calc_weights(self, sample):
         """Calculate the sample weights"""
+        
 
     def _validate_X_predict(self, X):
         """Validate X whenever one tries to predict"""
@@ -69,25 +73,28 @@ class BaseWeightedNewsvendor(BaseNewsvendor, DataDrivenMixin, ABC):
                              % (self.n_features_, n_features))
         return X
 
-    def _findQ(self, weights):
+    
+    def _findQ(self, weights, weightPosIndices):
         """Calculate the optimal order quantity q"""
-
+        
         y = self.y_
+        yWeightPos = y[weightPosIndices]
+        
         q = []
         
         for i in range(self.n_outputs_):
             serviceLevel = self.cu_[i] / (self.cu_[i] + self.co_[i])
             
-            indicesYSort = np.argsort(y[:, i])
-            ySorted = y[indicesYSort, i]
+            indicesYSort = np.argsort(yWeightPos[:, i])
+            ySorted = yWeightPos[indicesYSort, i]
             
             distributionFunction = np.cumsum(weights[indicesYSort])
             decisionIndex = np.where(distributionFunction >= serviceLevel)[0][0]
             
             q.append(ySorted[decisionIndex])
         
-        
         return q
+    
 
     def predict(self, X):
         """Predict value for X.
@@ -104,9 +111,13 @@ class BaseWeightedNewsvendor(BaseNewsvendor, DataDrivenMixin, ABC):
         """
 
         X = self._validate_X_predict(X)
-        check_is_fitted(self)
-        weights = np.apply_along_axis(self._calc_weights, 1, X)
-        pred = np.apply_along_axis(self._findQ, 1, weights)
+        check_is_fitted(self)        
+       
+        weightsDataList = [self._calc_weights(row) for row in X]
+        pred = [self._findQ(weights, weightPosIndices) 
+                for weights, weightPosIndices in weightsDataList]
+        pred = np.array(pred)        
+        
         return pred
 
 
@@ -291,6 +302,7 @@ class DecisionTreeWeightedNewsvendor(BaseWeightedNewsvendor):
             cu=cu,
             co=co
         )
+        
 
     def _get_fitted_model(self, X, y):
         model = DecisionTreeRegressor(
@@ -310,12 +322,17 @@ class DecisionTreeWeightedNewsvendor(BaseWeightedNewsvendor):
         self.model_ = model.fit(X, y)
         self.train_leaf_indices_ = model.apply(X)
 
+    
     def _calc_weights(self, sample):
         sample_leaf_indices = self.model_.apply([sample])
         n = np.sum(sample_leaf_indices == self.train_leaf_indices_, axis=0)
         weights = (sample_leaf_indices == self.train_leaf_indices_) / n
+        
+        weightPosIndex = np.where(weights > 0)[0]
+        weightsPos = weights[weightPosIndex]
 
-        return weights
+        return (weightsPos, weightPosIndex)
+    
 
     def fit(self, X, y):
         """ Fit the estimator from the training set (X,y)
@@ -557,6 +574,7 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
             cu=cu,
             co=co
         )
+        
 
     def _get_fitted_model(self, X, y):
         model = RandomForestRegressor(
@@ -581,6 +599,7 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
 
         self.model_ = model.fit(X, y)
         self.train_leaf_indices_ = model.apply(X)
+        
 
     def _calc_weights(self, sample):
         sample_leaf_indices = self.model_.apply([sample])
@@ -592,7 +611,12 @@ class RandomForestWeightedNewsvendor(BaseWeightedNewsvendor):
             n = np.sum(sample_leaf_indices == self.train_leaf_indices_)
             treeWeights = (sample_leaf_indices == self.train_leaf_indices_) / n
             weights = np.sum(treeWeights, axis=1)
-        return weights
+        
+        weightPosIndex = np.where(weights > 0)[0]
+        weightsPos = weights[weightPosIndex]
+
+        return (weightsPos, weightPosIndex)
+    
 
     def fit(self, X, y):
         """ Fit the estimator from the training set (X,y)
@@ -731,6 +755,7 @@ class KNeighborsWeightedNewsvendor(BaseWeightedNewsvendor):
             cu=cu,
             co=co
         )
+        
 
     def _get_fitted_model(self, X, y=None):
         model = NearestNeighbors(
@@ -745,11 +770,17 @@ class KNeighborsWeightedNewsvendor(BaseWeightedNewsvendor):
         )
 
         self.model_ = model.fit(X)
+        
 
     def _calc_weights(self, sample):
         neighbors = self.model_.kneighbors([sample], return_distance=False)[0]
+        
         weights = np.array([1 / self.n_neighbors if i in neighbors else 0 for i in range(self.n_samples_)])
-        return weights
+        weightPosIndex = np.where(weights > 0)[0]
+        weightsPos = weights[weightPosIndex]
+        
+        return (weightsPos, weightPosIndex)
+    
 
     def fit(self, X, y):
         """ Fit the estimator from the training set (X,y)
@@ -839,14 +870,17 @@ class GaussianWeightedNewsvendor(BaseWeightedNewsvendor):
 
     def _get_fitted_model(self, X=None, y=None):
         pass
+    
 
     def get_kernel_output_mpmath(self, u):
         k_w = mp.exp(-0.5 * math.pow(u / self.kernel_bandwidth, 2))
         return k_w
+    
 
     def get_kernel_output(self, u):
         k_w = math.exp(-0.5 * math.pow(u / self.kernel_bandwidth, 2))
         return k_w
+    
 
     def _calc_weights(self, sample):
         distances = distance_matrix(self.X_, [sample]).ravel()
@@ -861,7 +895,11 @@ class GaussianWeightedNewsvendor(BaseWeightedNewsvendor):
 
         weights = distances_kernel_weighted / total
 
-        return weights
+        weightPosIndex = np.where(weights > 0)[0]
+        weightsPos = weights[weightPosIndex]
+
+        return (weightsPos, weightPosIndex)
+    
 
     def fit(self, X, y):
         """ Fit the estimator from the training set (X,y)
