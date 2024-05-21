@@ -107,7 +107,7 @@ class SampleAverageApproximationNewsvendor(BaseNewsvendor, ClassicMixin):
 
         for k in range(self.n_outputs_):
             alpha = self.cu_[k] / (self.cu_[k] + self.co_[k])
-            q.append(np.quantile(y[:, k], alpha, interpolation="higher"))
+            q.append(np.quantile(y[:, k], alpha, interpolation="inverted_cdf"))
 
         return q
 
